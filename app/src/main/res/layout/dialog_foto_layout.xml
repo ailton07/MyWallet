@@ -17,10 +17,24 @@
             <Button android:layout_alignParentTop="true" android:layout_height="wrap_content" android:id="@+id/picImagebutton"
                 android:layout_width="fill_parent" android:layout_alignParentLeft="true" android:layout_marginLeft="1dp"
                 android:layout_marginRight="1dp" android:layout_marginTop="1dp" android:text="Selecione uma imagem"/>
+           <!--
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Start OCR"
+                android:id="@+id/bstartocr"
+                android:onClick="DoStartOCR"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"/>
+                -->
 
 
-
-
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/pbocrrecognizing"
+                android:visibility="gone"
+                android:layout_gravity="center" />
 
 
 
@@ -102,6 +116,15 @@
         android:datePickerMode="spinner"
         android:calendarViewShown="false"
         android:id="@+id/datePicker" />
+
+            <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:id="@+id/imageView"
+                android:visibility="invisible"
+                android:layout_weight="0" />
+
+
 
         </LinearLayout>
 

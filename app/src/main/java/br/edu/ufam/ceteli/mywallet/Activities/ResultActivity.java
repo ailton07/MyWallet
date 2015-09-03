@@ -7,6 +7,9 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -26,16 +29,28 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import br.edu.ufam.ceteli.mywallet.Classes.OCR.CommsEngine;
 import br.edu.ufam.ceteli.mywallet.LoginClasses.FacebookAccountConnection;
 import br.edu.ufam.ceteli.mywallet.LoginClasses.GoogleAccountConnection;
 import br.edu.ufam.ceteli.mywallet.R;
@@ -43,7 +58,7 @@ import br.edu.ufam.ceteli.mywallet.Classes.AdapterListView;
 import br.edu.ufam.ceteli.mywallet.Classes.Entrada;
 import br.edu.ufam.ceteli.mywallet.Classes.NavigationDrawerFragment;
 import br.edu.ufam.ceteli.mywallet.Classes.OCR.OCRResposta;
-import br.edu.ufam.ceteli.mywallet.Classes.OCR.OCRServiceAPI;
+import br.edu.ufam.ceteli.mywallet.Classes.OCR.*;
 
 
 public class ResultActivity extends AppCompatActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks, AdapterView.OnItemSelectedListener{
@@ -70,6 +85,21 @@ public class ResultActivity extends AppCompatActivity implements NavigationDrawe
     private String apiKey;
     private String langCode;
     private String fileName = "";
+
+    CommsEngine commsEngine;
+    private static final int SELECT_PICTURE = 1;
+    private static final int TAKE_PICTURE = 2;
+    private String mImageFullPathAndName = "";
+    private String localImagePath = "";
+    private static final int OPTIMIZED_LENGTH = 1024;
+
+    private  final  String idol_ocr_service = "https://api.idolondemand.com/1/api/async/ocrdocument/v1?";
+    private  final  String idol_ocr_job_result = "https://api.idolondemand.com/1/job/result/";
+    private String jobID = "";
+
+    ProgressBar pbOCRReconizing;
+    ImageView ivSelectedImg;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,6 +182,12 @@ public class ResultActivity extends AppCompatActivity implements NavigationDrawe
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
+
+        //***************************************************
+        // OCR
+
+
+        CreateLocalImageFolder();
 
     }
 
@@ -390,14 +426,20 @@ public class ResultActivity extends AppCompatActivity implements NavigationDrawe
 
         Button pickButton = (Button) v.findViewById((R.id.picImagebutton));
         picNameText = (TextView) v.findViewById(R.id.imageName);
-        estabelecimento = (TextView) v.findViewById(R.id.descricao);
+        estabelecimento = (TextView) v.findViewById(R.id.estabelecimento);
         valor = (TextView) v.findViewById(R.id.valor);
+
+        pbOCRReconizing = (ProgressBar) v.findViewById(R.id.pbocrrecognizing);
+        ivSelectedImg = (ImageView) v.findViewById(R.id.imageView);
 
         pickButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Starting image picker activity
-                startActivityForResult(new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI), IMAGE_PICKER_REQUEST);
+//                // Starting image picker activity
+//                startActivityForResult(new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI), IMAGE_PICKER_REQUEST);
+                Intent i = new Intent(
+                        Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(i, SELECT_PICTURE);
             }
         });
 
@@ -488,78 +530,273 @@ public class ResultActivity extends AppCompatActivity implements NavigationDrawe
     // OCR
 
     public void trabalhaImagem(){
-        //**********************************
-        // OCR
-        //apiKey = apiKeyFiled.getText().toString();
-        apiKey = "CxZhB9b6FQ";
-        //langCode = langCodeField.getText().toString();
-        langCode = "pt";
 
-        // Checking are all fields set
-        if (fileName != null && !apiKey.equals("") && !langCode.equals("")) {
-            final ProgressDialog dialogBar = ProgressDialog.show(ResultActivity.this, "Processando ...", "Convertendo para texto.", true, false);
-            final Thread thread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    final OCRServiceAPI apiClient = new OCRServiceAPI(apiKey);
-                    apiClient.convertToText(langCode, fileName);
-
-                    // Doing UI related code in UI thread
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            dialogBar.dismiss();
-
-                            String[] resposta = apiClient.getResponseText().split("\n");
-                            OCRResposta res = new OCRResposta(apiClient.getResponseText());
-                            estabelecimento.setText(res.getEmpresa());
-                            valor.setText(res.getTotal());
-
-                            if (apiClient.getResponseCode() == RESPONSE_OK) {
-                                Log.v("OCRApp","Success");
-                                Log.v("OCRApp",res.getEmpresa() + res.getTotal());
-                            } else {
-                                Log.v("OCRApp", "Fail");
-                            }
-
-                        }
-                    });
-                }
-            });
-            thread.start();
-        } else {
-            Toast.makeText(ResultActivity.this, "All data are required.", Toast.LENGTH_SHORT).show();
-        }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == IMAGE_PICKER_REQUEST && resultCode == RESULT_OK) {
-            fileName = getRealPathFromURI(data.getData());
-            picNameText.setText("Selected: en" + getStringNameFromRealPath(fileName));
+
+        if (requestCode == SELECT_PICTURE || requestCode == TAKE_PICTURE) {
+            if (resultCode == RESULT_OK && null != data) {
+                Uri selectedImage = data.getData();
+                String[] filePathColumn = {MediaStore.Images.Media.DATA};
+
+                Cursor cursor = getContentResolver().query(selectedImage,
+                        filePathColumn, null, null, null);
+                cursor.moveToFirst();
+
+                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                mImageFullPathAndName = cursor.getString(columnIndex);
+                cursor.close();
+                jobID = "";
+                File file = new File(mImageFullPathAndName);
+                Bitmap mCurrentSelectedBitmap = decodeFile(file);
+
+                if (mCurrentSelectedBitmap != null) {
+                    // display the full size image
+//                    ivSelectedImg.setImageBitmap(mCurrentSelectedBitmap);
+                    // scale the image
+                    // let check the resolution of the image.
+                    // If it's too large, we can optimize it
+                    int w = mCurrentSelectedBitmap.getWidth();
+                    int h = mCurrentSelectedBitmap.getHeight();
+
+                    int length = (w > h) ? w : h;
+                    if (length > OPTIMIZED_LENGTH) {
+                        // let's resize the image
+                        float ratio = (float) w / h;
+                        int newW, newH = 0;
+
+                        if (ratio > 1.0) {
+                            newW = OPTIMIZED_LENGTH;
+                            newH = (int) (OPTIMIZED_LENGTH / ratio);
+                        } else {
+                            newH = OPTIMIZED_LENGTH;
+                            newW = (int) (OPTIMIZED_LENGTH * ratio);
+                        }
+                        mCurrentSelectedBitmap = rescaleBitmap(mCurrentSelectedBitmap, newW, newH);
+                    }
+                    // let save the new image to our local folder
+                    mImageFullPathAndName = SaveImage(mCurrentSelectedBitmap);
+                    picNameText.setText(mImageFullPathAndName);
+                }
+            }
         }
-
-        trabalhaImagem();
+        //*******************************
+        DoStartOCR();
     }
 
-    /*
-     * Returns image real path.
-     */
-    private String getRealPathFromURI(final Uri contentUri) {
-        final String[] proj = { MediaStore.Images.Media.DATA };
-        final Cursor cursor = managedQuery(contentUri, proj, null, null, null);
-        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-        cursor.moveToFirst();
+    private void ParseSyncResponse(String response) {
+        pbOCRReconizing.setVisibility(View.GONE);
+        if (response == null) {
+            Toast.makeText(this, "Unknown error occurred. Try again", Toast.LENGTH_LONG).show();
+            return;
+        }
+        try {
+            JSONObject mainObject = new JSONObject(response);
+            JSONArray textBlockArray = mainObject.getJSONArray("text_block");
+            int count = textBlockArray.length();
+            if (count > 0) {
+                for (int i = 0; i < count; i++) {
+                    JSONObject texts = textBlockArray.getJSONObject(i);
+                    String text = texts.getString("text");
+                   // ivSelectedImg.setVisibility(View.GONE);
+                  //  llResultContainer.setVisibility(View.VISIBLE);
+                    OCRResposta reposta = new OCRResposta(text);
+                    Log.v("ETSS", text);
+                    estabelecimento.setText(reposta.getEmpresa());
+                    valor.setText(reposta.getTotal());
+                }
+            }
+            else
+                Toast.makeText(this, "Not available", Toast.LENGTH_LONG).show();
+        } catch (Exception ex){}
+    }
+    private void ParseAsyncResponse(String response) {
+        pbOCRReconizing.setVisibility(View.GONE);
+        if (response == null) {
+            Toast.makeText(this, "Unknown error occurred. Try again", Toast.LENGTH_LONG).show();
+            return;
+        }
+        try {
+            JSONObject mainObject = new JSONObject(response);
+            JSONArray textBlockArray = mainObject.getJSONArray("actions");
+            int count = textBlockArray.length();
+            if (count > 0) {
+                for (int i = 0; i < count; i++) {
+                    JSONObject actions = textBlockArray.getJSONObject(i);
+                    String action = actions.getString("action");
+                    String status = actions.getString("status");
+                    JSONObject result = actions.getJSONObject("result");
+                    JSONArray textArray = result.getJSONArray("text_block");
+                    count = textArray.length();
+                    if (count > 0) {
+                        for (int n = 0; n < count; n++) {
+                            JSONObject texts = textArray.getJSONObject(n);
+                            String text = texts.getString("text");
+                        //    ivSelectedImg.setVisibility(View.GONE);
+                            //llResultContainer.setVisibility(View.VISIBLE);
+                            OCRResposta reposta = new OCRResposta(text);
+                            //edTextResult.setText(text);
+                            Log.v("ETSS", reposta.getEmpresa());
+                            Log.v("ETSS", reposta.getTotal());
+                            estabelecimento.setText(reposta.getEmpresa());
+                            valor.setText(reposta.getTotal());
 
-        return cursor.getString(column_index);
+                        }
+                    }
+                }
+            } else {
+                Toast.makeText(this, "Not available", Toast.LENGTH_LONG).show();
+            }
+        } catch (Exception ex) {
+        }
     }
 
-    /*
-     * Cuts selected file name from real path to show in screen.
-     */
-    private String getStringNameFromRealPath(final String bucketName) {
-        return bucketName.lastIndexOf('/') > 0 ? bucketName.substring(bucketName.lastIndexOf('/') + 1) : bucketName;
+    //**************************
+    // HP
+
+    public void DoStartOCR() {
+        pbOCRReconizing.setVisibility(View.VISIBLE);
+        if (jobID.length() > 0)
+            getResultByJobId();
+        else if (!mImageFullPathAndName.isEmpty()){
+            Map<String,String> map =  new HashMap<String,String>();
+            map.put("file", mImageFullPathAndName);
+            //map.put("file", (picNameText.getText().toString()));
+            String fileType = "image/jpeg";
+            map.put("mode", "document_photo");
+            commsEngine.ServicePostRequest(idol_ocr_service, fileType, map, new OnServerRequestCompleteListener() {
+                @Override
+                public void onServerRequestComplete(String response) {
+                    try {
+                        JSONObject mainObject = new JSONObject(response);
+                        if (!mainObject.isNull("jobID")) {
+                            jobID = mainObject.getString("jobID");
+                            getResultByJobId();
+                        } else
+                            ParseSyncResponse(response);
+                    } catch (Exception ex) {}
+                }
+                @Override
+                public void onErrorOccurred(String error) {
+                    // handle error
+                }
+            });
+        } else
+            Toast.makeText(this, "Please select an image.", Toast.LENGTH_LONG).show();
+    }
+
+    public void DoStartOCR(View v) {
+        pbOCRReconizing.setVisibility(View.VISIBLE);
+        if (jobID.length() > 0)
+            getResultByJobId();
+        else if (!mImageFullPathAndName.isEmpty()){
+            Map<String,String> map =  new HashMap<String,String>();
+            map.put("file", mImageFullPathAndName);
+            //map.put("file", (picNameText.getText().toString()));
+            String fileType = "image/jpeg";
+            map.put("mode", "document_photo");
+            commsEngine.ServicePostRequest(idol_ocr_service, fileType, map, new OnServerRequestCompleteListener() {
+                @Override
+                public void onServerRequestComplete(String response) {
+                    try {
+                        JSONObject mainObject = new JSONObject(response);
+                        if (!mainObject.isNull("jobID")) {
+                            jobID = mainObject.getString("jobID");
+                            getResultByJobId();
+                        } else
+                            ParseSyncResponse(response);
+                    } catch (Exception ex) {}
+                }
+                @Override
+                public void onErrorOccurred(String error) {
+                    // handle error
+                }
+            });
+        } else
+            Toast.makeText(this, "Please select an image.", Toast.LENGTH_LONG).show();
+    }
+
+    private void getResultByJobId() {
+        String param = idol_ocr_job_result + jobID + "?";
+        commsEngine.ServiceGetRequest(param, "", new
+                OnServerRequestCompleteListener() {
+                    @Override
+                    public void onServerRequestComplete(String response) {
+                        ParseAsyncResponse(response);
+                    }
+
+                    @Override
+                    public void onErrorOccurred(String error) {
+                        // handle error
+                    }
+                });
+    }
+
+    public Bitmap decodeFile(File file) {
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = false;
+        options.inSampleSize = 1;
+        int mImageRealWidth = options.outWidth;
+        int mImageRealHeight = options.outHeight;
+        Bitmap pic = null;
+        try {
+            pic = BitmapFactory.decodeFile(file.getPath(), options);
+        } catch (Exception ex) {
+            Log.e("MainActivity", ex.getMessage());
+        }
+        return pic;
+    }
+
+    public Bitmap rescaleBitmap(Bitmap bm, int newWidth, int newHeight) {
+        int width = bm.getWidth();
+        int height = bm.getHeight();
+        float scaleWidth = ((float) newWidth) / width;
+        float scaleHeight = ((float) newHeight) / height;
+        Matrix matrix = new Matrix();
+        matrix.postScale(scaleWidth, scaleHeight);
+        Bitmap resizedBitmap = Bitmap.createBitmap(bm, 0, 0, width, height, matrix, false);
+        return resizedBitmap;
+    }
+
+    private String SaveImage(Bitmap image)
+    {
+        String fileName = localImagePath + "imagetoocr.jpg";
+        try {
+
+            File file = new File(fileName);
+            FileOutputStream fileStream = new FileOutputStream(file);
+
+            image.compress(Bitmap.CompressFormat.JPEG, 100, fileStream);
+            try {
+                fileStream.flush();
+                fileStream.close();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return fileName;
+    }
+
+    public void CreateLocalImageFolder()
+    {
+        if (localImagePath.length() == 0)
+        {
+            localImagePath = getFilesDir().getAbsolutePath() + "/orc/";
+            File folder = new File(localImagePath);
+            boolean success = true;
+            if (!folder.exists()) {
+                success = folder.mkdir();
+            }
+            if (!success)
+                Toast.makeText(this, "Cannot create local folder", Toast.LENGTH_LONG).show();
+        }
     }
 
     //******************************************************
@@ -638,6 +875,13 @@ public class ResultActivity extends AppCompatActivity implements NavigationDrawe
             ((ResultActivity) activity).onSectionAttached(
                     getArguments().getInt(ARG_SECTION_NUMBER));
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (commsEngine == null)
+            commsEngine = new CommsEngine();
     }
 
 }

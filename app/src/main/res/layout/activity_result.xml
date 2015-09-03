@@ -59,6 +59,8 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true" />
 
+
+
         <ListView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -80,5 +82,7 @@
         android:layout_gravity="start"
         android:name="br.edu.ufam.ceteli.mywallet.Classes.NavigationDrawerFragment"
         tools:layout="@layout/fragment_navigation_drawer" />
+
+
 
 </android.support.v4.widget.DrawerLayout>

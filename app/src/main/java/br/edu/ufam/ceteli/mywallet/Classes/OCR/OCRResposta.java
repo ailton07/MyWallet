@@ -1,7 +1,7 @@
 package br.edu.ufam.ceteli.mywallet.Classes.OCR;
 
 /**
- * Created by AiltonFH on 02/09/2015.
+ * Created by AiltonFH on 03/09/2015.
  */
 public class OCRResposta {
     String resposta;
@@ -29,12 +29,16 @@ public class OCRResposta {
         String aux= "";
         for (String aux2: vetorResposta ) {
             if(aux2.toLowerCase().contains("total")){
-                aux = aux2;
-                return aux2;
+                aux = aux2.split("RS")[1];
+                return aux2.split("RS")[1];
             }
-            else if(aux2.toLowerCase().contains("r$")){
-                aux = aux2;
-                return aux2;
+            else if(aux2.toLowerCase().contains("pagamento")){
+                aux = aux2.split("RS")[1];
+                return aux2.split("RS")[1];
+            }
+            else if(aux2.contains("RS")){
+                aux = aux2.split("RS")[1];
+                return aux2.split("RS")[1];
             }
 
         }
