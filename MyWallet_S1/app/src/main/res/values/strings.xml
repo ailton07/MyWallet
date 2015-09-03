@@ -1,0 +1,43 @@
+<resources>
+    <string name="app_name">MyWallet</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_result">ResultActivity</string>
+
+    <string name="title_section1">Principal</string>
+    <string name="title_section2">Relatórios</string>
+    <string name="title_section3">Configurações</string>
+
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_example">Nova Entrada</string>
+
+    <string name="dialog_title">Nova Entrada</string>
+    <string name="dialog_message">Nova Entrada</string>
+
+    <string name="username">Usuário</string>
+    <string name="password">Password</string>
+    <string name="tipo">Tipo de Entrada</string>
+    <string name="descricao">Breve Descrição</string>
+    <string name="estabelecimento">Estabelecimento</string>
+    <string name="categoria">Categoria</string>
+    <string name="dataCompra">Data da Compra</string>
+    <string name="valor">Valor R$</string>
+
+    <string name="radio_opcao1">Entrada</string>
+    <string name="radio_opcao2">Saída</string>
+
+    <string-array name="categoria_array">
+        <item>Mensais</item>
+        <item>Casa</item>
+        <item>Restaurante</item>
+        <item>Lazer</item>
+        <item>Ocasional</item>
+
+    </string-array>
+
+
+</resources>
