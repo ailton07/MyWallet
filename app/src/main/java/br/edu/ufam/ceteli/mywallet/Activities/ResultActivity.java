@@ -3,8 +3,13 @@ package br.edu.ufam.ceteli.mywallet.Activities;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
@@ -19,11 +24,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -32,21 +39,43 @@ import java.util.List;
 import br.edu.ufam.ceteli.mywallet.LoginClasses.FacebookAccountConnection;
 import br.edu.ufam.ceteli.mywallet.LoginClasses.GoogleAccountConnection;
 import br.edu.ufam.ceteli.mywallet.R;
+import br.edu.ufam.ceteli.mywallet.Classes.AdapterListView;
 import br.edu.ufam.ceteli.mywallet.Classes.Entrada;
 import br.edu.ufam.ceteli.mywallet.Classes.NavigationDrawerFragment;
+import br.edu.ufam.ceteli.mywallet.Classes.OCR.OCRResposta;
+import br.edu.ufam.ceteli.mywallet.Classes.OCR.OCRServiceAPI;
 
 
 public class ResultActivity extends AppCompatActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks, AdapterView.OnItemSelectedListener{
+
     private NavigationDrawerFragment mNavigationDrawerFragment;
+
     private CharSequence mTitle;
+    // 0 -> Entrada e 1 -> Saída
     private int radioClicado = 0;
     private String categoriaSpinnerSelecionado="";
-    private ArrayAdapter<Entrada> adapter;
+
+   // private ArrayAdapter<Entrada> adapter;
+   private AdapterListView adapter;
+    // ListView listView;
+
+    // Dialog
+    TextView estabelecimento;
+    TextView valor;
+
+    // OCR
+    private final int RESPONSE_OK = 200;
+    private final int IMAGE_PICKER_REQUEST = 1;
+    private TextView picNameText;
+    private String apiKey;
+    private String langCode;
+    private String fileName = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result);
+
 
         /* Obviamente vai ser retirado */
         //Google
@@ -100,36 +129,19 @@ public class ResultActivity extends AppCompatActivity implements NavigationDrawe
 
         List<Entrada> values = Entrada.getComments();
 
-       adapter = new ArrayAdapter<Entrada>(this,
-                android.R.layout.simple_list_item_1, values);
+
+    //  Adapter Original
+    //    adapter = new ArrayAdapter<Entrada>(this,
+    //           android.R.layout.simple_list_item_1, values);
+
+        adapter = new AdapterListView(this, values);
 
         ListView lv = (ListView) findViewById(android.R.id.list);
         //setListAdapter(adapter);
+        //lv.setAdapter(adapter);
         lv.setAdapter(adapter);
 
-        /*
 
-        Teste
-
-        Entrada entrada = new Entrada();
-        entrada.setTipo(0);
-        entrada.setEstabelecimento("Casa");
-        entrada.setValor(12);
-        entrada.setCategoria("Oias");
-
-        entrada.setDescricao(tv.getText().toString());
-
-        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
-        Date date = new Date();
-        entrada.setDataInsercao(dateFormat.format(date).toString());
-
-        entrada.setDataCompra(dateFormat.format(date).toString());
-        //entrada.setIconeRid(R.drawable.com_facebook_button_icon);
-
-        entrada.save();
-
-        adapter.add(entrada);
-        */
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
@@ -141,6 +153,23 @@ public class ResultActivity extends AppCompatActivity implements NavigationDrawe
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
 
+    }
+
+    /*
+     * Botão Logout, só pra demonstrar
+     */
+    public void logOut(View view){
+        if(getIntent().getExtras().getString("TYPE").contains("GOOGLE")){
+            /*
+             * Ao desconectar também destruimos a atividade atual e iniciamos automaticamente a atividade de login (tela inicial)
+             */
+            //GoogleAccountConnection.getInstance(this).revoke(this);
+            GoogleAccountConnection.getInstance(null).disconnect(this);
+        }
+        if(getIntent().getExtras().getString("TYPE").contains("FACEBOOK")){
+            //FacebookAccountConnection.getInstance(null).revoke(this);
+            FacebookAccountConnection.getInstance(null).disconnect(this);
+        }
     }
 
     @Override
@@ -221,8 +250,23 @@ public class ResultActivity extends AppCompatActivity implements NavigationDrawe
             //AlertDialog dialog = builder.create();
             AlertDialog dialog = (AlertDialog) onCreateDialog();
             dialog.show();
-
             return true;
+        }
+        else if(id == R.id.action_foto){
+            // 1. Instantiate an AlertDialog.Builder with its constructor
+
+
+            // 2. Chain together various setter methods to set the dialog characteristics
+            //builder.setMessage(R.string.dialog_message)
+            //        .setTitle(R.string.dialog_title);
+
+            // 3. Get the AlertDialog from create()
+            //AlertDialog dialog = builder.create();
+            AlertDialog dialog = (AlertDialog) onCreateDialogFoto();
+            dialog.show();
+            return true;
+
+
         }
 
         return super.onOptionsItemSelected(item);
@@ -271,25 +315,32 @@ public class ResultActivity extends AppCompatActivity implements NavigationDrawe
                         entrada.setCategoria(categoriaSpinnerSelecionado);
 
                         //Data de Inserção
-                        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
+                        //SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
                         Date date = new Date();
 
-                        entrada.setDataInsercao(dateFormat.format(date).toString());
+                        //entrada.setDataInsercao(dateFormat.format(date).toString());
 
                         //Data de Compra
 
                         DatePicker dataCompra = (DatePicker) v.findViewById(R.id.datePicker);
                         dataCompra.setCalendarViewShown(false);
+
                         Date dateDataCompra = new Date();
                         dateDataCompra.setDate(dataCompra.getDayOfMonth());
                         dateDataCompra.setMonth(dataCompra.getMonth());
-                        dateDataCompra.setYear(dataCompra.getYear());
+                        dateDataCompra.setYear(dataCompra.getYear()-1900); // http://stackoverflow.com/questions/9751050/simpledateformat-subclass-adds-1900-to-the-year
 
+
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
                         entrada.setDataCompra(dateFormat.format(dateDataCompra).toString());
 
                         entrada.save();
 
+
+
+
                         adapter.add(entrada);
+                        adapter.notifyDataSetChanged();
 
                         //Log
                         Log.v("App123", descricao.getText().toString());
@@ -298,7 +349,7 @@ public class ResultActivity extends AppCompatActivity implements NavigationDrawe
                         Log.v("App123", String.valueOf(entrada.getValor()));
                         Log.v("App123", entrada.getEstabelecimento());
                         Log.v("App123", entrada.getCategoria());
-                        Log.v("App123", entrada.getDataInsercao());
+                        //Log.v("App123", entrada.getDataInsercaoFormatada().toString());
                         Log.v("App123", entrada.getDataCompra());
 
                     }
@@ -309,6 +360,7 @@ public class ResultActivity extends AppCompatActivity implements NavigationDrawe
                         dialog.cancel();
                     }
                 });
+
 
         // Spinner configuration
         Spinner spinner = (Spinner) v.findViewById(R.id.categoria);
@@ -324,6 +376,193 @@ public class ResultActivity extends AppCompatActivity implements NavigationDrawe
         return builder.create();
     }
 
+    public Dialog onCreateDialogFoto() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        // Get the layout inflater
+        LayoutInflater inflater = this.getLayoutInflater();
+
+        builder.setTitle(R.string.dialog_title);
+
+        // Inflate and set the layout for the dialog
+        // Pass null as the parent view because its going in the dialog layout
+        // Referencias:  http://stackoverflow.com/questions/30032005/access-buttons-in-custom-alert-dialog
+        final View v = inflater.inflate(R.layout.dialog_foto_layout, null);
+
+        Button pickButton = (Button) v.findViewById((R.id.picImagebutton));
+        picNameText = (TextView) v.findViewById(R.id.imageName);
+        estabelecimento = (TextView) v.findViewById(R.id.descricao);
+        valor = (TextView) v.findViewById(R.id.valor);
+
+        pickButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Starting image picker activity
+                startActivityForResult(new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI), IMAGE_PICKER_REQUEST);
+            }
+        });
+
+        builder.setView(v).setPositiveButton("Adicionar ", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int id) {
+                Entrada entrada = new Entrada();
+
+                //Tipo
+                entrada.setTipo(1);
+
+                //Descrição
+                //TextView descricao = (TextView) findViewById(R.id.descricao);
+                TextView descricao = (TextView) v.findViewById(R.id.descricao);
+                entrada.setDescricao(estabelecimento.getText().toString());
+
+                //Valor
+                valor = (TextView) v.findViewById(R.id.valor);
+                entrada.setValor(Float.parseFloat(valor.getText().toString()));
+
+                //Estabelecimento
+                estabelecimento = (TextView) v.findViewById(R.id.estabelecimento);
+                entrada.setEstabelecimento(estabelecimento.getText().toString());
+
+                //Categoria
+                //TextView categoria = (TextView) v.findViewById(R.id.categoria);
+                //entrada.setCategoria(categoria.getText().toString());
+                Spinner categoria = (Spinner) v.findViewById(R.id.categoria);
+                entrada.setCategoria(categoriaSpinnerSelecionado);
+
+                //Data de Inserção
+//                SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
+                Date date = new Date();
+
+                //entrada.setDataInsercao(dateFormat.format(date).toString());
+                entrada.setDataInsercao(date);
+
+                //Data de Compra
+
+                DatePicker dataCompra = (DatePicker) v.findViewById(R.id.datePicker);
+                dataCompra.setCalendarViewShown(false);
+                Date dateDataCompra = new Date();
+                dateDataCompra.setDate(dataCompra.getDayOfMonth());
+                dateDataCompra.setMonth(dataCompra.getMonth());
+                dateDataCompra.setYear(dataCompra.getYear());
+
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                entrada.setDataCompra(dateFormat.format(dateDataCompra).toString());
+
+                entrada.save();
+
+                adapter.add(entrada);
+                adapter.notifyDataSetChanged();
+
+                //Log
+                Log.v("App123", estabelecimento.getText().toString());
+                Log.v("App123", String.valueOf(entrada.getTipo()));
+                Log.v("App123", entrada.getDescricao());
+                Log.v("App123", String.valueOf(entrada.getValor()));
+                Log.v("App123", entrada.getEstabelecimento());
+                Log.v("App123", entrada.getCategoria());
+
+                Log.v("App123", entrada.getDataCompra());
+
+
+            }
+        }).setNegativeButton("Cancelar ", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                //  LoginDialogFragment.this.getDialog().cancel();
+                dialog.cancel();
+            }
+        });
+            // Spinner configuration
+            Spinner spinner = (Spinner) v.findViewById(R.id.categoria);
+            ArrayAdapter<CharSequence> adapterS = ArrayAdapter.createFromResource(this,
+                    R.array.categoria_array, android.R.layout.simple_spinner_item);
+            adapterS.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinner.setAdapter(adapterS);
+            spinner.setOnItemSelectedListener(this);
+
+            DatePicker dataCompra = (DatePicker) v.findViewById(R.id.datePicker);
+            dataCompra.setCalendarViewShown(false);
+
+            return builder.create();
+    }
+
+    //***************************
+    // OCR
+
+    public void trabalhaImagem(){
+        //**********************************
+        // OCR
+        //apiKey = apiKeyFiled.getText().toString();
+        apiKey = "CxZhB9b6FQ";
+        //langCode = langCodeField.getText().toString();
+        langCode = "pt";
+
+        // Checking are all fields set
+        if (fileName != null && !apiKey.equals("") && !langCode.equals("")) {
+            final ProgressDialog dialogBar = ProgressDialog.show(ResultActivity.this, "Processando ...", "Convertendo para texto.", true, false);
+            final Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    final OCRServiceAPI apiClient = new OCRServiceAPI(apiKey);
+                    apiClient.convertToText(langCode, fileName);
+
+                    // Doing UI related code in UI thread
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            dialogBar.dismiss();
+
+                            String[] resposta = apiClient.getResponseText().split("\n");
+                            OCRResposta res = new OCRResposta(apiClient.getResponseText());
+                            estabelecimento.setText(res.getEmpresa());
+                            valor.setText(res.getTotal());
+
+                            if (apiClient.getResponseCode() == RESPONSE_OK) {
+                                Log.v("OCRApp","Success");
+                                Log.v("OCRApp",res.getEmpresa() + res.getTotal());
+                            } else {
+                                Log.v("OCRApp", "Fail");
+                            }
+
+                        }
+                    });
+                }
+            });
+            thread.start();
+        } else {
+            Toast.makeText(ResultActivity.this, "All data are required.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == IMAGE_PICKER_REQUEST && resultCode == RESULT_OK) {
+            fileName = getRealPathFromURI(data.getData());
+            picNameText.setText("Selected: en" + getStringNameFromRealPath(fileName));
+        }
+
+        trabalhaImagem();
+    }
+
+    /*
+     * Returns image real path.
+     */
+    private String getRealPathFromURI(final Uri contentUri) {
+        final String[] proj = { MediaStore.Images.Media.DATA };
+        final Cursor cursor = managedQuery(contentUri, proj, null, null, null);
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+
+        return cursor.getString(column_index);
+    }
+
+    /*
+     * Cuts selected file name from real path to show in screen.
+     */
+    private String getStringNameFromRealPath(final String bucketName) {
+        return bucketName.lastIndexOf('/') > 0 ? bucketName.substring(bucketName.lastIndexOf('/') + 1) : bucketName;
+    }
+
+    //******************************************************
 
     public void onItemSelected(AdapterView<?> parent, View view,
                                int pos, long id) {

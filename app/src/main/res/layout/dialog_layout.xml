@@ -39,6 +39,7 @@
         <RadioGroup
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:checkedButton="@+id/radio_opcao1"
             android:orientation="horizontal">
                 <RadioButton android:id="@+id/radio_opcao1"
                 android:layout_width="wrap_content"
@@ -58,7 +59,6 @@
 
     <EditText
         android:id="@+id/descricao"
-        android:inputType="text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
@@ -80,7 +80,6 @@
         android:hint="@string/valor"/>
     <EditText
         android:id="@+id/estabelecimento"
-        android:inputType="text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"

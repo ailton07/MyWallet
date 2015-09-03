@@ -1,6 +1,8 @@
 package br.edu.ufam.ceteli.mywallet.Classes;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 
 import com.activeandroid.Model;
@@ -27,7 +29,8 @@ public class Entrada extends Model {
     private String categoria;
 
     @Column(name="DataInsercao")
-    private String dataInsercao;
+    private Date dataInsercao;
+    //private String dataInsercao;
 
     @Column(name="DataCompra")
     private String dataCompra;
@@ -58,10 +61,21 @@ public class Entrada extends Model {
     public void setCategoria(String categoria) {
         this.categoria = categoria;
     }
-    public String getDataInsercao() {
+    public Date getDataInsercao() {
         return dataInsercao;
     }
-    public void setDataInsercao(String dataInsercao) {
+
+    public String getDataInsercaoFormatada() {
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+
+        //FIX
+
+//        return (String.valueOf(dateFormat.format(dataInsercao)));
+        return null;
+    }
+
+    public void setDataInsercao(Date dataInsercao) {
         this.dataInsercao = dataInsercao;
     }
     public String getDataCompra() {
@@ -91,6 +105,8 @@ public class Entrada extends Model {
     // Will be used by the ArrayAdapter in the ListView
     @Override
     public String toString() {
-        return descricao+" "+dataInsercao;
+
+
+        return getDataCompra()+" "+ descricao  + " " + valor;
     }
 }
