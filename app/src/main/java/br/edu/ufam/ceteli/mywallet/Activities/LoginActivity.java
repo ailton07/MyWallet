@@ -90,7 +90,7 @@ public class LoginActivity extends AppCompatActivity implements Observer {
      * Observer
      */
     @Override
-    public void update(Observable observable, Object data) {
+    public synchronized void update(Observable observable, Object data) {
         if((observable != googleAccountConnection) && (observable != facebookAccountConnection)) {
             return;
         }
