@@ -3,7 +3,6 @@ package br.edu.ufam.ceteli.mywallet.Activities;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -50,15 +49,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import br.edu.ufam.ceteli.mywallet.Classes.OCR.CommsEngine;
-import br.edu.ufam.ceteli.mywallet.LoginClasses.FacebookAccountConnection;
-import br.edu.ufam.ceteli.mywallet.LoginClasses.GoogleAccountConnection;
-import br.edu.ufam.ceteli.mywallet.R;
 import br.edu.ufam.ceteli.mywallet.Classes.AdapterListView;
 import br.edu.ufam.ceteli.mywallet.Classes.Entrada;
 import br.edu.ufam.ceteli.mywallet.Classes.NavigationDrawerFragment;
+import br.edu.ufam.ceteli.mywallet.Classes.OCR.CommsEngine;
 import br.edu.ufam.ceteli.mywallet.Classes.OCR.OCRResposta;
-import br.edu.ufam.ceteli.mywallet.Classes.OCR.*;
+import br.edu.ufam.ceteli.mywallet.Classes.OCR.OnServerRequestCompleteListener;
+import br.edu.ufam.ceteli.mywallet.LoginClasses.FacebookAccountConnection;
+import br.edu.ufam.ceteli.mywallet.LoginClasses.GoogleAccountConnection;
+import br.edu.ufam.ceteli.mywallet.LoginClasses.ILoginConnection;
+import br.edu.ufam.ceteli.mywallet.R;
 
 
 public class ResultActivity extends AppCompatActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks, AdapterView.OnItemSelectedListener{
@@ -70,8 +70,8 @@ public class ResultActivity extends AppCompatActivity implements NavigationDrawe
     private int radioClicado = 0;
     private String categoriaSpinnerSelecionado="";
 
-   // private ArrayAdapter<Entrada> adapter;
-   private AdapterListView adapter;
+    // private ArrayAdapter<Entrada> adapter;
+    private AdapterListView adapter;
     // ListView listView;
 
     // Dialog
@@ -100,6 +100,9 @@ public class ResultActivity extends AppCompatActivity implements NavigationDrawe
     ProgressBar pbOCRReconizing;
     ImageView ivSelectedImg;
 
+    /* Deixa o programa mais simples */
+    ILoginConnection loggedAccount = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,48 +124,32 @@ public class ResultActivity extends AppCompatActivity implements NavigationDrawe
         tv5.setText(getIntent().getExtras().getString("TYPE"));
 
         if(getIntent().getExtras().getString("TYPE").contains("GOOGLE")){
+            loggedAccount = GoogleAccountConnection.getInstance(null);
             /* Já foi instanciado na primeira atividade, tão tu faz passar null ou this */
-            tv.setText(GoogleAccountConnection.getInstance(null).getAccountID());
-            tv2.setText(GoogleAccountConnection.getInstance(null).getAccountName());
-            tv3.setText(GoogleAccountConnection.getInstance(this).getAccountEmail());
+            tv.setText(loggedAccount.getAccountID());
+            tv2.setText(loggedAccount.getAccountName());
+            tv3.setText(loggedAccount.getAccountEmail());
             /* Posteriormente poderemos usar isso para a UI */
-            //tv4.setText(GoogleAccountConnection.getInstance(this).getAccountPicURL());
-
-            /*
-             * Oferecer uma dessas opções no Drawer
-             * Revogar acesso ou Desconectar (Desconectar é am elhor opção)
-             * Não precisa destruir a atividade, pois a classe já faz isso ao passar a atividade
-             * como parametro
-             */
-            //GoogleAccountConnection.getInstance(this).revoke(this);
-            //GoogleAccountConnection.getInstance(this).disconnect(this);
+            //tv4.setText(loggedAccount.getAccountPicURL());
         }
 
         if(getIntent().getExtras().getString("TYPE").contains("FACEBOOK")){
+            loggedAccount = FacebookAccountConnection.getInstance(null);
             /* Já foi instanciado na primeira atividade, tão tu faz passar null ou this */
-            tv.setText(FacebookAccountConnection.getInstance(null).getAccountID());
-            tv2.setText(FacebookAccountConnection.getInstance(null).getAccountName());
-            tv3.setText(FacebookAccountConnection.getInstance(null).getAccountEmail());
+            tv.setText(loggedAccount.getAccountID());
+            tv2.setText(loggedAccount.getAccountName());
+            tv3.setText(loggedAccount.getAccountEmail());
             /* Posteriormente poderemos usar isso para a UI */
-            //tv4.setText(FacebookAccountConnection.getInstance(this).getAccountPicURL());
-
-            /*
-             * Oferecer uma dessas opções no Drawer
-             * Revogar acesso ou Desconectar (Desconectar é am elhor opção)
-             * Não precisa destruir a atividade, pois a classe já faz isso ao passar a atividade
-             * como parametro
-             */
-            //FacebookAccountConnection.getInstance(this).revoke(this);
-            //FacebookAccountConnection.getInstance(this).disconnect(this);
+            //tv4.setText(loggedAccount.getAccountPicURL());
         }
 
 
         List<Entrada> values = Entrada.getComments();
 
 
-    //  Adapter Original
-    //    adapter = new ArrayAdapter<Entrada>(this,
-    //           android.R.layout.simple_list_item_1, values);
+        //  Adapter Original
+        //    adapter = new ArrayAdapter<Entrada>(this,
+        //           android.R.layout.simple_list_item_1, values);
 
         adapter = new AdapterListView(this, values);
 
@@ -195,17 +182,8 @@ public class ResultActivity extends AppCompatActivity implements NavigationDrawe
      * Botão Logout, só pra demonstrar
      */
     public void logOut(View view){
-        if(getIntent().getExtras().getString("TYPE").contains("GOOGLE")){
-            /*
-             * Ao desconectar também destruimos a atividade atual e iniciamos automaticamente a atividade de login (tela inicial)
-             */
-            //GoogleAccountConnection.getInstance(this).revoke(this);
-            GoogleAccountConnection.getInstance(null).disconnect(this);
-        }
-        if(getIntent().getExtras().getString("TYPE").contains("FACEBOOK")){
-            //FacebookAccountConnection.getInstance(null).revoke(this);
-            FacebookAccountConnection.getInstance(null).disconnect(this);
-        }
+        loggedAccount.disconnect(this);
+        //loggedAccount.revoke(this);
     }
 
     @Override
@@ -512,18 +490,18 @@ public class ResultActivity extends AppCompatActivity implements NavigationDrawe
                 dialog.cancel();
             }
         });
-            // Spinner configuration
-            Spinner spinner = (Spinner) v.findViewById(R.id.categoria);
-            ArrayAdapter<CharSequence> adapterS = ArrayAdapter.createFromResource(this,
-                    R.array.categoria_array, android.R.layout.simple_spinner_item);
-            adapterS.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            spinner.setAdapter(adapterS);
-            spinner.setOnItemSelectedListener(this);
+        // Spinner configuration
+        Spinner spinner = (Spinner) v.findViewById(R.id.categoria);
+        ArrayAdapter<CharSequence> adapterS = ArrayAdapter.createFromResource(this,
+                R.array.categoria_array, android.R.layout.simple_spinner_item);
+        adapterS.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapterS);
+        spinner.setOnItemSelectedListener(this);
 
-            DatePicker dataCompra = (DatePicker) v.findViewById(R.id.datePicker);
-            dataCompra.setCalendarViewShown(false);
+        DatePicker dataCompra = (DatePicker) v.findViewById(R.id.datePicker);
+        dataCompra.setCalendarViewShown(false);
 
-            return builder.create();
+        return builder.create();
     }
 
     //***************************
@@ -601,8 +579,8 @@ public class ResultActivity extends AppCompatActivity implements NavigationDrawe
                 for (int i = 0; i < count; i++) {
                     JSONObject texts = textBlockArray.getJSONObject(i);
                     String text = texts.getString("text");
-                   // ivSelectedImg.setVisibility(View.GONE);
-                  //  llResultContainer.setVisibility(View.VISIBLE);
+                    // ivSelectedImg.setVisibility(View.GONE);
+                    //  llResultContainer.setVisibility(View.VISIBLE);
                     OCRResposta reposta = new OCRResposta(text);
                     Log.v("ETSS", text);
                     estabelecimento.setText(reposta.getEmpresa());
@@ -635,7 +613,7 @@ public class ResultActivity extends AppCompatActivity implements NavigationDrawe
                         for (int n = 0; n < count; n++) {
                             JSONObject texts = textArray.getJSONObject(n);
                             String text = texts.getString("text");
-                        //    ivSelectedImg.setVisibility(View.GONE);
+                            //    ivSelectedImg.setVisibility(View.GONE);
                             //llResultContainer.setVisibility(View.VISIBLE);
                             OCRResposta reposta = new OCRResposta(text);
                             //edTextResult.setText(text);
@@ -823,11 +801,11 @@ public class ResultActivity extends AppCompatActivity implements NavigationDrawe
             case R.id.radio_opcao1:
                 if (checked)
                     radioClicado = 0;
-                    break;
+                break;
             case R.id.radio_opcao2:
                 if (checked)
                     radioClicado = 1;
-                    break;
+                break;
         }
 
 

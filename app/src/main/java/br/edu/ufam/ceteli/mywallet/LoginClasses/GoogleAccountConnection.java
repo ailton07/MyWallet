@@ -18,13 +18,14 @@ import com.google.android.gms.plus.Plus;
 
 import java.lang.ref.WeakReference;
 import java.util.Observable;
+import java.util.Observer;
 
 import br.edu.ufam.ceteli.mywallet.Activities.LoginActivity;
 
 /**
  * Created by rodri on 28/08/2015.
  */
-public class GoogleAccountConnection extends Observable implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class GoogleAccountConnection extends Observable implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, ILoginConnection {
     private static GoogleAccountConnection googleAccountConnectionInstance = null;
     private GoogleApiClient.Builder googleApiClientBuilder = null;
     private WeakReference<Activity> activityWeakReference = null;
@@ -40,10 +41,10 @@ public class GoogleAccountConnection extends Observable implements GoogleApiClie
         Log.i(TAGINFO, "Initializing/Disconnected");
         activityWeakReference = new WeakReference<>(activity);
         googleApiClientBuilder = new GoogleApiClient.Builder(activity)
-                                                    .addConnectionCallbacks(this)
-                                                    .addOnConnectionFailedListener(this)
-                                                    .addApi(Plus.API, Plus.PlusOptions.builder().build())
-                                                    .addScope(Plus.SCOPE_PLUS_LOGIN);
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(Plus.API, Plus.PlusOptions.builder().build())
+                .addScope(Plus.SCOPE_PLUS_LOGIN);
         googleApiClient = googleApiClientBuilder.build();
     }
 
@@ -140,67 +141,6 @@ public class GoogleAccountConnection extends Observable implements GoogleApiClie
         return googleAccountConnectionInstance;
     }
 
-    public void connect(){
-        currentState.connect(this);
-    }
-
-    public void disconnect(Activity currentActivity){
-        currentState.disconnect(this, currentActivity);
-    }
-
-    public void revoke(Activity currentActivity){
-        currentState.revoke(this, currentActivity);
-    }
-
-    public void onActivityResult(int resultCode){
-        if (resultCode == Activity.RESULT_OK) {
-            changeCurrentState(StatusGoogleConn.CREATED);
-            Log.i(TAGINFO, "Created");
-        } else {
-            changeCurrentState(StatusGoogleConn.DISCONNECTED);
-            Log.i(TAGINFO, "Disconnected");
-        }
-        onSignIn();
-    }
-
-    /* Embora seja mais fácil pegar a API instanciada, é melhor deixar que esta classe cuide da API
-     * pois retornando a API qualquer um poderia desconectar sem avisar outras classes que a conta
-     * foi desconectada (ou conectada).
-     *
-     *  public GoogleApiClient getGoogleApiCLient(){
-     *    return googleApiClient;
-     * }
-     */
-
-    public String getAccountID(){
-        return Plus.PeopleApi.getCurrentPerson(googleApiClient).getId();
-    }
-
-    public String getAccountName(){
-        return Plus.PeopleApi.getCurrentPerson(googleApiClient).getDisplayName();
-    }
-
-    public String getAccountEmail(){
-        return Plus.AccountApi.getAccountName(googleApiClient);
-    }
-
-    public String getAccountPicURL(){
-        return Plus.PeopleApi.getCurrentPerson(googleApiClient).getImage().getUrl();
-    }
-
-    public void clearInstanceReference(){
-        googleAccountConnectionInstance = null;
-        Log.i(TAGINFO, "Removed");
-    }
-
-    public StatusGoogleConn getState(){
-        return currentState;
-    }
-
-    public void updateWeakReference(Activity currentActivity){
-        activityWeakReference = new WeakReference<>(currentActivity);
-    }
-
     @Override
     public void onConnected(Bundle bundle) {
         if(Plus.PeopleApi.getCurrentPerson(googleApiClient) == null) {
@@ -233,5 +173,87 @@ public class GoogleAccountConnection extends Observable implements GoogleApiClie
                 GooglePlayServicesUtil.getErrorDialog(connectionResult.getErrorCode(), activityWeakReference.get(), 0).show();
             }
         }
+    }
+
+    /*
+     * IConnection
+     */
+    @Override
+    public void connect() {
+        currentState.connect(this);
+    }
+
+    @Override
+    public void disconnect(Activity currentActivity) {
+        currentState.disconnect(this, currentActivity);
+    }
+
+    @Override
+    public void revoke(Activity currentActivity) {
+        currentState.revoke(this, currentActivity);
+    }
+
+    @Override
+    public Object getState() {
+        return currentState;
+    }
+
+    @Override
+    public String getAccountID() {
+        return Plus.PeopleApi.getCurrentPerson(googleApiClient).getId();
+    }
+
+    @Override
+    public String getAccountName() {
+        return Plus.PeopleApi.getCurrentPerson(googleApiClient).getDisplayName();
+    }
+
+    @Override
+    public String getAccountEmail() {
+        return Plus.AccountApi.getAccountName(googleApiClient);
+    }
+
+    @Override
+    public String getAccountPicURL() {
+        return Plus.PeopleApi.getCurrentPerson(googleApiClient).getImage().getUrl();
+    }
+
+    @Override
+    public boolean verifyLogin() {
+        return false;
+    }
+
+    @Override
+    public void updateWeakReference(Activity currentActivity) {
+        activityWeakReference = new WeakReference<>(currentActivity);
+    }
+
+    @Override
+    public void clearInstanceReference() {
+        googleAccountConnectionInstance = null;
+        Log.i(TAGINFO, "Removed");
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == Activity.RESULT_OK) {
+            changeCurrentState(StatusGoogleConn.CREATED);
+            Log.i(TAGINFO, "Created");
+        } else {
+            changeCurrentState(StatusGoogleConn.DISCONNECTED);
+            Log.i(TAGINFO, "Disconnected");
+        }
+        onSignIn();
+    }
+
+    @Override
+    public void addObserverClass(Observer observer) {
+        addObserver(observer);
+    }
+
+    @Override
+    public void delObserverClass(Observer observer) {
+        deleteObserver(observer);
+
     }
 }

@@ -30,6 +30,7 @@ import java.lang.ref.WeakReference;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Observable;
+import java.util.Observer;
 import java.util.concurrent.ExecutionException;
 
 import br.edu.ufam.ceteli.mywallet.Activities.LoginActivity;
@@ -37,7 +38,7 @@ import br.edu.ufam.ceteli.mywallet.Activities.LoginActivity;
 /**
  * Created by rodri on 28/08/2015.
  */
-public class FacebookAccountConnection extends Observable implements FacebookCallback<LoginResult> {
+public class FacebookAccountConnection extends Observable implements FacebookCallback<LoginResult>, ILoginConnection {
     private static final List facebookPermissions = Arrays.asList("public_profile", "email");
     private static FacebookAccountConnection facebookAccountConnection = null;
     private WeakReference<Activity> activityWeakReference = null;
@@ -151,63 +152,11 @@ public class FacebookAccountConnection extends Observable implements FacebookCal
         }
     }
 
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(callbackManager != null) {
-            callbackManager.onActivityResult(requestCode, resultCode, data);
-        }
-    }
-
-    public void connect(){
-        currentState.connect(this);
-    }
-
-    public void disconnect(Activity currentActivity){
-        currentState.disconnect(this, currentActivity);
-    }
-
-    public void revoke(Activity currentActivity){
-        currentState.revoke(this, currentActivity);
-    }
-
     public static FacebookAccountConnection getInstance(Activity activity) {
         if (facebookAccountConnection == null){
             facebookAccountConnection = new FacebookAccountConnection(activity);
         }
         return facebookAccountConnection;
-    }
-
-    public String getAccountID(){
-        return Profile.getCurrentProfile().getId();
-    }
-
-    public String getAccountName(){
-        return Profile.getCurrentProfile().getName();
-    }
-
-    public String getAccountEmail(){
-        return activityWeakReference.get().getSharedPreferences("FacebookSession", Context.MODE_PRIVATE).getString("FacebookEmail", null);
-    }
-
-    public String getAccountPicURL(){
-        return Profile.getCurrentProfile().getProfilePictureUri(128, 128).toString();
-    }
-
-    public boolean verifyLogin(){
-        if(activityWeakReference.get().getSharedPreferences("FacebookSession", Context.MODE_PRIVATE).getBoolean("FacebookLogged", false)){
-            changeCurrentState(StatusFacebookConn.CONNECTED);
-            Log.i(TAGINFO, "Saved/Connected");
-            return true;
-        }
-        return false;
-    }
-
-    public void clearInstanceReference(){
-        facebookAccountConnection = null;
-        Log.i(TAGINFO, "Removed");
-    }
-
-    public void updateWeakReference(Activity currentActivity){
-        activityWeakReference = new WeakReference<>(currentActivity);
     }
 
     @Override
@@ -236,5 +185,86 @@ public class FacebookAccountConnection extends Observable implements FacebookCal
     public void onError(FacebookException e) {
         changeCurrentState(StatusFacebookConn.DISCONNECTED);
         Log.e(TAGERROR, e.getMessage());
+    }
+
+    /*
+     * IConnection
+     */
+    @Override
+    public void connect() {
+        currentState.connect(this);
+    }
+
+    @Override
+    public void disconnect(Activity currentActivity) {
+        currentState.disconnect(this, currentActivity);
+    }
+
+    @Override
+    public void revoke(Activity currentActivity) {
+        currentState.revoke(this, currentActivity);
+    }
+
+    @Override
+    public Object getState() {
+        return currentState;
+    }
+
+    @Override
+    public void updateWeakReference(Activity currentActivity){
+        activityWeakReference = new WeakReference<>(currentActivity);
+    }
+
+    @Override
+    public void clearInstanceReference(){
+        facebookAccountConnection = null;
+        Log.i(TAGINFO, "Removed");
+    }
+
+    @Override
+    public String getAccountID() {
+        return Profile.getCurrentProfile().getId();
+    }
+
+    @Override
+    public String getAccountName() {
+        return Profile.getCurrentProfile().getName();
+    }
+
+    @Override
+    public String getAccountEmail() {
+        return activityWeakReference.get().getSharedPreferences("FacebookSession", Context.MODE_PRIVATE).getString("FacebookEmail", null);
+    }
+
+    @Override
+    public String getAccountPicURL() {
+        return Profile.getCurrentProfile().getProfilePictureUri(128, 128).toString();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(callbackManager != null) {
+            callbackManager.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    @Override
+    public void addObserverClass(Observer observer){
+        addObserver(observer);
+    }
+
+    @Override
+    public void delObserverClass(Observer observer){
+        deleteObserver(observer);
+    }
+
+    @Override
+    public boolean verifyLogin(){
+        if(activityWeakReference.get().getSharedPreferences("FacebookSession", Context.MODE_PRIVATE).getBoolean("FacebookLogged", false)){
+            changeCurrentState(StatusFacebookConn.CONNECTED);
+            Log.i(TAGINFO, "Saved/Connected");
+            return true;
+        }
+        return false;
     }
 }
