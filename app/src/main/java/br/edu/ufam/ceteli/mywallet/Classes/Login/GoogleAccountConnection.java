@@ -1,4 +1,4 @@
-package br.edu.ufam.ceteli.mywallet.LoginClasses;
+package br.edu.ufam.ceteli.mywallet.Classes.Login;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -220,7 +220,7 @@ public class GoogleAccountConnection extends Observable implements GoogleApiClie
 
     @Override
     public boolean verifyLogin() {
-        return false;
+        return googleApiClient.isConnected();
     }
 
     @Override

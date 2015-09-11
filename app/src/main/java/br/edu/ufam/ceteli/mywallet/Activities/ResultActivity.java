@@ -51,18 +51,21 @@ import java.util.Map;
 
 import br.edu.ufam.ceteli.mywallet.Classes.AdapterListView;
 import br.edu.ufam.ceteli.mywallet.Classes.Entrada;
+import br.edu.ufam.ceteli.mywallet.Classes.Login.FacebookAccountConnection;
+import br.edu.ufam.ceteli.mywallet.Classes.Login.GoogleAccountConnection;
+import br.edu.ufam.ceteli.mywallet.Classes.Login.ILoginConnection;
 import br.edu.ufam.ceteli.mywallet.Classes.NavigationDrawerFragment;
 import br.edu.ufam.ceteli.mywallet.Classes.OCR.CommsEngine;
 import br.edu.ufam.ceteli.mywallet.Classes.OCR.OCRResposta;
 import br.edu.ufam.ceteli.mywallet.Classes.OCR.OnServerRequestCompleteListener;
-import br.edu.ufam.ceteli.mywallet.LoginClasses.FacebookAccountConnection;
-import br.edu.ufam.ceteli.mywallet.LoginClasses.GoogleAccountConnection;
-import br.edu.ufam.ceteli.mywallet.LoginClasses.ILoginConnection;
 import br.edu.ufam.ceteli.mywallet.R;
 
 
 public class ResultActivity extends AppCompatActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks, AdapterView.OnItemSelectedListener{
+    // Login (usem essa interface pra simplificar as treta)
+    private ILoginConnection loggedAccount = null;
 
+    // Drawer
     private NavigationDrawerFragment mNavigationDrawerFragment;
 
     private CharSequence mTitle;
@@ -100,47 +103,20 @@ public class ResultActivity extends AppCompatActivity implements NavigationDrawe
     ProgressBar pbOCRReconizing;
     ImageView ivSelectedImg;
 
-    /* Deixa o programa mais simples */
-    ILoginConnection loggedAccount = null;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result);
 
-
-        /* Obviamente vai ser retirado */
-        //Google
-        TextView tv = (TextView) findViewById(R.id.textView);
-        //ID
-        TextView tv2 = (TextView) findViewById(R.id.textView2);
-        //Nome
-        TextView tv3 = (TextView) findViewById(R.id.textView3);
-        //Email
-        TextView tv4 = (TextView) findViewById(R.id.textView4);
-        TextView tv5 = (TextView) findViewById(R.id.tvEmail);
-
-        tv5.setText(getIntent().getExtras().getString("TYPE"));
-
-        if(getIntent().getExtras().getString("TYPE").contains("GOOGLE")){
-            loggedAccount = GoogleAccountConnection.getInstance(null);
-            /* Já foi instanciado na primeira atividade, tão tu faz passar null ou this */
-            tv.setText(loggedAccount.getAccountID());
-            tv2.setText(loggedAccount.getAccountName());
-            tv3.setText(loggedAccount.getAccountEmail());
-            /* Posteriormente poderemos usar isso para a UI */
-            //tv4.setText(loggedAccount.getAccountPicURL());
-        }
-
-        if(getIntent().getExtras().getString("TYPE").contains("FACEBOOK")){
-            loggedAccount = FacebookAccountConnection.getInstance(null);
-            /* Já foi instanciado na primeira atividade, tão tu faz passar null ou this */
-            tv.setText(loggedAccount.getAccountID());
-            tv2.setText(loggedAccount.getAccountName());
-            tv3.setText(loggedAccount.getAccountEmail());
-            /* Posteriormente poderemos usar isso para a UI */
-            //tv4.setText(loggedAccount.getAccountPicURL());
+        // TextViews Retirados!
+        String type = getIntent().getExtras().getString("TYPE");
+        if(type != null) {
+            if (type.contains("GOOGLE")) {
+                loggedAccount = GoogleAccountConnection.getInstance(null);
+            } else if (type.contains("FACEBOOK")) {
+                loggedAccount = FacebookAccountConnection.getInstance(null);
+            }
         }
 
 
@@ -178,10 +154,8 @@ public class ResultActivity extends AppCompatActivity implements NavigationDrawe
 
     }
 
-    /*
-     * Botão Logout, só pra demonstrar
-     */
     public void logOut(View view){
+        // TODO: Implementar no Drawer!
         loggedAccount.disconnect(this);
         //loggedAccount.revoke(this);
     }

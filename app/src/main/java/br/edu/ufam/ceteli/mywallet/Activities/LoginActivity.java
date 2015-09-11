@@ -10,11 +10,11 @@ import com.facebook.appevents.AppEventsLogger;
 import java.util.Observable;
 import java.util.Observer;
 
-import br.edu.ufam.ceteli.mywallet.LoginClasses.FacebookAccountConnection;
-import br.edu.ufam.ceteli.mywallet.LoginClasses.GoogleAccountConnection;
-import br.edu.ufam.ceteli.mywallet.LoginClasses.ILoginConnection;
-import br.edu.ufam.ceteli.mywallet.LoginClasses.StatusFacebookConn;
-import br.edu.ufam.ceteli.mywallet.LoginClasses.StatusGoogleConn;
+import br.edu.ufam.ceteli.mywallet.Classes.Login.FacebookAccountConnection;
+import br.edu.ufam.ceteli.mywallet.Classes.Login.GoogleAccountConnection;
+import br.edu.ufam.ceteli.mywallet.Classes.Login.ILoginConnection;
+import br.edu.ufam.ceteli.mywallet.Classes.Login.StatusFacebookConn;
+import br.edu.ufam.ceteli.mywallet.Classes.Login.StatusGoogleConn;
 import br.edu.ufam.ceteli.mywallet.R;
 
 public class LoginActivity extends AppCompatActivity implements Observer {
@@ -37,11 +37,6 @@ public class LoginActivity extends AppCompatActivity implements Observer {
     protected void onStart() {
         super.onStart();
         if(!iFacebookConn.verifyLogin()) {
-            /*
-             * Se fizer login no facebook com estado CRIADO, é exibida a tela para login no GMAIL, não
-             * queremos isso!
-             * Se o estado está em CREATED, não conecte novamente ao entrar na atividade.
-             */
             if (iGoogleConn.getState().equals(StatusGoogleConn.DISCONNECTED)) {
                 iGoogleConn.connect();
             } else {
@@ -60,7 +55,6 @@ public class LoginActivity extends AppCompatActivity implements Observer {
     protected void onResume() {
         super.onResume();
         AppEventsLogger.activateApp(this);
-        // Quando voltar (ou iniciar), atualiza a referenciada
         iGoogleConn.updateWeakReference(this);
         iFacebookConn.updateWeakReference(this);
     }
@@ -87,9 +81,6 @@ public class LoginActivity extends AppCompatActivity implements Observer {
         }
     }
 
-    /*
-     * Observer
-     */
     @Override
     public synchronized void update(Observable observable, Object data) {
         if((observable != GoogleAccountConnection.getInstance(null)) && (observable != FacebookAccountConnection.getInstance(null))) {

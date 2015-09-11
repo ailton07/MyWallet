@@ -1,4 +1,4 @@
-package br.edu.ufam.ceteli.mywallet.LoginClasses;
+package br.edu.ufam.ceteli.mywallet.Classes.Login;
 
 import android.app.Activity;
 
@@ -40,7 +40,9 @@ public enum StatusGoogleConn {
         }
     };
 
-    void connect(GoogleAccountConnection googleAccountConnection){};
-    void disconnect(GoogleAccountConnection googleAccountConnection, Activity currentActivity){};
-    void revoke(GoogleAccountConnection googleAccountConnection, Activity currentActivity){};
+    void connect(GoogleAccountConnection googleAccountConnection){}
+
+    void disconnect(GoogleAccountConnection googleAccountConnection, Activity currentActivity){}
+
+    void revoke(GoogleAccountConnection googleAccountConnection, Activity currentActivity){}
 }

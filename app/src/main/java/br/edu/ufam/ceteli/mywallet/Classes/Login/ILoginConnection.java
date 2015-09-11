@@ -1,4 +1,4 @@
-package br.edu.ufam.ceteli.mywallet.LoginClasses;
+package br.edu.ufam.ceteli.mywallet.Classes.Login;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -28,7 +28,7 @@ public interface ILoginConnection {
     String getAccountPicURL();
 
     /*
-     * Talvez queiramos verificar algum login feito (caso do facebook)
+     * Talvez seja necessário verificar algum login feito (caso do facebook)
      */
     boolean verifyLogin();
 

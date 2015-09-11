@@ -1,4 +1,4 @@
-package br.edu.ufam.ceteli.mywallet.LoginClasses;
+package br.edu.ufam.ceteli.mywallet.Classes.Login;
 
 import android.app.Activity;
 import android.app.AlertDialog;

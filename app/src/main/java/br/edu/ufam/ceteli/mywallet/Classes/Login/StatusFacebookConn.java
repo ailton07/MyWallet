@@ -1,4 +1,4 @@
-package br.edu.ufam.ceteli.mywallet.LoginClasses;
+package br.edu.ufam.ceteli.mywallet.Classes.Login;
 
 import android.app.Activity;
 
@@ -28,7 +28,9 @@ public enum StatusFacebookConn {
 
     };
 
-    void connect(FacebookAccountConnection facebookAccountConnection){};
-    void disconnect(FacebookAccountConnection facebookAccountConnection, Activity currentActivity){};
-    void revoke(FacebookAccountConnection facebookAccountConnection, Activity currentActivity){};
+    void connect(FacebookAccountConnection facebookAccountConnection){}
+
+    void disconnect(FacebookAccountConnection facebookAccountConnection, Activity currentActivity){}
+
+    void revoke(FacebookAccountConnection facebookAccountConnection, Activity currentActivity){}
 }

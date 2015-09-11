@@ -10,46 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:id="@+id/tvEmail"
-            android:layout_below="@+id/ivLogin"
-            android:layout_centerHorizontal="true" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:id="@+id/textView"
-            android:layout_below="@+id/tvEmail"
-            android:layout_centerHorizontal="true" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:id="@+id/textView2"
-            android:layout_below="@+id/textView"
-            android:layout_centerHorizontal="true" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:id="@+id/textView3"
-            android:layout_below="@+id/textView2"
-            android:layout_centerHorizontal="true" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:id="@+id/textView4"
-            android:layout_below="@+id/textView3"
-            android:layout_centerHorizontal="true" />
-
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -58,8 +18,6 @@
             android:onClick="logOut"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true" />
-
-
 
         <ListView
             android:layout_width="wrap_content"
