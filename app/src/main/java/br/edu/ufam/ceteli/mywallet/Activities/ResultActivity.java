@@ -11,12 +11,16 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -29,12 +33,15 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
+import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -44,6 +51,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -54,19 +62,29 @@ import br.edu.ufam.ceteli.mywallet.Classes.Entrada;
 import br.edu.ufam.ceteli.mywallet.Classes.Login.FacebookAccountConnection;
 import br.edu.ufam.ceteli.mywallet.Classes.Login.GoogleAccountConnection;
 import br.edu.ufam.ceteli.mywallet.Classes.Login.ILoginConnection;
-import br.edu.ufam.ceteli.mywallet.Classes.NavigationDrawerFragment;
 import br.edu.ufam.ceteli.mywallet.Classes.OCR.CommsEngine;
 import br.edu.ufam.ceteli.mywallet.Classes.OCR.OCRResposta;
 import br.edu.ufam.ceteli.mywallet.Classes.OCR.OnServerRequestCompleteListener;
 import br.edu.ufam.ceteli.mywallet.R;
 
 
-public class ResultActivity extends AppCompatActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks, AdapterView.OnItemSelectedListener{
-    // Login (usem essa interface pra simplificar as treta)
+public class ResultActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, AdapterView.OnItemSelectedListener{
+    // Conta
     private ILoginConnection loggedAccount = null;
+    private Spinner spinnerLoginDetails = null;
+    private List<Map<String, String>> spinnerHeaderItem = null;
 
     // Drawer
-    private NavigationDrawerFragment mNavigationDrawerFragment;
+    private DrawerLayout drawerLayout = null;
+    private NavigationView resultFrameDrawer = null;
+    private NavigationView resultFrameDefaultOptionsDrawer = null;
+    private ActionBarDrawerToggle drawerToggle = null;
+    private Handler drawerHandler = new Handler();
+
+    // Nova entrada (Botão Flutuante)
+    private FloatingActionsMenu fabNewInput = null;
+    private FloatingActionButton fabPhotoInput = null;
+    private FloatingActionButton fabManualInput = null;
 
     private CharSequence mTitle;
     // 0 -> Entrada e 1 -> Saída
@@ -109,7 +127,6 @@ public class ResultActivity extends AppCompatActivity implements NavigationDrawe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result);
 
-        // TextViews Retirados!
         String type = getIntent().getExtras().getString("TYPE");
         if(type != null) {
             if (type.contains("GOOGLE")) {
@@ -119,6 +136,79 @@ public class ResultActivity extends AppCompatActivity implements NavigationDrawe
             }
         }
 
+        spinnerLoginDetails = (Spinner) findViewById(R.id.spinnerLoginDetails);
+        spinnerHeaderItem = new ArrayList<Map<String, String>>(2);
+
+        Map<String, String> loginDetails = new HashMap<String, String>(2);
+        loginDetails.put("Name", loggedAccount.getAccountName());
+        loginDetails.put("Email", loggedAccount.getAccountEmail());
+
+        spinnerHeaderItem.add(loginDetails);
+
+        SimpleAdapter adapter = new SimpleAdapter(this, spinnerHeaderItem, android.R.layout.simple_spinner_dropdown_item, new String[] {"Name", "Email"}, new int[] {android.R.id.text1, android.R.id.text2});
+
+        adapter.setDropDownViewResource(android.R.layout.simple_list_item_2);
+
+        spinnerLoginDetails.setAdapter(adapter);
+
+
+
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
+        drawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
+        resultFrameDrawer = (NavigationView) findViewById(R.id.resultFrameDrawer);
+        resultFrameDrawer.setNavigationItemSelectedListener(this);
+        resultFrameDefaultOptionsDrawer = (NavigationView) findViewById(R.id.resultFrameDefaultOptionsDrawer);
+        resultFrameDefaultOptionsDrawer.setNavigationItemSelectedListener(this);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close){
+
+        };
+
+        drawerLayout.setDrawerListener(drawerToggle);
+        drawerToggle.syncState();
+
+        // Quando for mecher na lista, fechar esse FAB
+        fabNewInput = (FloatingActionsMenu) findViewById(R.id.fabNewInput);
+
+        fabPhotoInput = (FloatingActionButton) findViewById(R.id.fabPhotoInput);
+        fabPhotoInput.setIcon(R.drawable.ic_camera_enhance_white_24dp);
+        fabPhotoInput.setSize(FloatingActionButton.SIZE_MINI);
+        fabPhotoInput.setOnClickListener(fabPhotoOnClick());
+
+        fabManualInput = (FloatingActionButton) findViewById(R.id.fabManualInput);
+        fabManualInput.setIcon(R.drawable.ic_mode_edit_white_24dp);
+        fabManualInput.setSize(FloatingActionButton.SIZE_MINI);
+        fabManualInput.setOnClickListener(fabManualOnClick());
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         List<Entrada> values = Entrada.getComments();
 
@@ -127,23 +217,18 @@ public class ResultActivity extends AppCompatActivity implements NavigationDrawe
         //    adapter = new ArrayAdapter<Entrada>(this,
         //           android.R.layout.simple_list_item_1, values);
 
-        adapter = new AdapterListView(this, values);
+        //adapter = new AdapterListView(this, values);
 
-        ListView lv = (ListView) findViewById(android.R.id.list);
+        //ListView lv = (ListView) findViewById(android.R.id.list);
         //setListAdapter(adapter);
         //lv.setAdapter(adapter);
-        lv.setAdapter(adapter);
+        //lv.setAdapter(adapter);
 
 
 
-        mNavigationDrawerFragment = (NavigationDrawerFragment)
-                getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
         mTitle = getTitle();
 
-        // Set up the drawer.
-        mNavigationDrawerFragment.setUp(
-                R.id.navigation_drawer,
-                (DrawerLayout) findViewById(R.id.drawer_layout));
+
 
 
         //***************************************************
@@ -154,10 +239,64 @@ public class ResultActivity extends AppCompatActivity implements NavigationDrawe
 
     }
 
+    private View.OnClickListener fabManualOnClick(){
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "Chamar atividade/dialogo Entrada Manual", Toast.LENGTH_LONG).show();
+                fabNewInput.collapse();
+            }
+        };
+    }
+
+    private View.OnClickListener fabPhotoOnClick(){
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "Chamar atividade/dialogo Foto", Toast.LENGTH_LONG).show();
+                fabNewInput.collapse();
+            }
+        };
+    }
+
     public void logOut(View view){
         // TODO: Implementar no Drawer!
         loggedAccount.disconnect(this);
         //loggedAccount.revoke(this);
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(final MenuItem menuItem) {
+        drawerLayout.closeDrawer(GravityCompat.START);
+
+        // Experiencia de usuário, por isso o delay
+        drawerHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                switch (menuItem.getItemId()) {
+                    case R.id.drawer_item_budget:
+                        Toast.makeText(getApplicationContext(), "Inflar layout Orçamento / Chamar activity Orçamento", Toast.LENGTH_LONG).show();
+                        break;
+
+                    case R.id.drawer_item_report:
+                        Toast.makeText(getApplicationContext(), "Inflar layout Relatório / Chamar activity Orçamento", Toast.LENGTH_LONG).show();
+                        break;
+
+                    case R.id.drawer_item_tips:
+                        Toast.makeText(getApplicationContext(), "Inflar layout Dicas / Chamar activity Dicas", Toast.LENGTH_LONG).show();
+                        break;
+
+                    case R.id.drawer_item_settings:
+                        Toast.makeText(getApplicationContext(), "Inflar layout Configurações / Chamar activity Configurações", Toast.LENGTH_LONG).show();
+                        break;
+
+                    case R.id.drawer_item_help:
+                        Toast.makeText(getApplicationContext(), "Inflar layout Ajuda / Chamar activity Ajuda", Toast.LENGTH_LONG).show();
+                        break;
+                }
+            }
+        }, 200);
+        return true;
     }
 
     @Override
@@ -167,15 +306,6 @@ public class ResultActivity extends AppCompatActivity implements NavigationDrawe
             return true;
         }
         return super.onKeyDown(keyCode, event);
-    }
-
-    @Override
-    public void onNavigationDrawerItemSelected(int position) {
-        // update the main content by replacing fragments
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
-                .commit();
     }
 
     public void onSectionAttached(int number) {
@@ -205,14 +335,6 @@ public class ResultActivity extends AppCompatActivity implements NavigationDrawe
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (!mNavigationDrawerFragment.isDrawerOpen()) {
-            // Only show items in the action bar relevant to this screen
-            // if the drawer is not showing. Otherwise, let the drawer
-            // decide what to show in the action bar.
-            getMenuInflater().inflate(R.menu.main, menu);
-            restoreActionBar();
-            return true;
-        }
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -785,8 +907,6 @@ public class ResultActivity extends AppCompatActivity implements NavigationDrawe
 
 
     }
-
-
 
 
     /**
