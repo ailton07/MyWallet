@@ -64,7 +64,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:headerLayout="@layout/activity_result_drawer_header"
-            app:menu="@menu/menu_drawer"
             android:layout_above="@+id/resultFrameDefaultOptionsDrawer"
             android:layout_alignParentTop="true">
         </android.support.design.widget.NavigationView>

@@ -8,6 +8,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
@@ -237,8 +238,13 @@ public class FacebookAccountConnection extends Observable implements FacebookCal
     }
 
     @Override
-    public String getAccountPicURL() {
-        return Profile.getCurrentProfile().getProfilePictureUri(128, 128).toString();
+    public void getAccountPicProfile(ImageView imageView){
+        //TODO
+    }
+
+    @Override
+    public void getAccountPicCover(ImageView imageView) {
+        //TODO
     }
 
     @Override

@@ -2,6 +2,7 @@ package br.edu.ufam.ceteli.mywallet.Classes.Login;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.widget.ImageView;
 
 import java.util.Observer;
 
@@ -25,7 +26,8 @@ public interface ILoginConnection {
     String getAccountID();
     String getAccountName();
     String getAccountEmail();
-    String getAccountPicURL();
+    void getAccountPicProfile(ImageView imageView);
+    void getAccountPicCover(ImageView imageView);
 
     /*
      * Talvez seja necessário verificar algum login feito (caso do facebook)

@@ -35,7 +35,6 @@ import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
-import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -51,7 +50,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -71,20 +69,14 @@ import br.edu.ufam.ceteli.mywallet.R;
 public class ResultActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, AdapterView.OnItemSelectedListener{
     // Conta
     private ILoginConnection loggedAccount = null;
-    private Spinner spinnerLoginDetails = null;
-    private List<Map<String, String>> spinnerHeaderItem = null;
 
     // Drawer
     private DrawerLayout drawerLayout = null;
     private NavigationView resultFrameDrawer = null;
-    private NavigationView resultFrameDefaultOptionsDrawer = null;
-    private ActionBarDrawerToggle drawerToggle = null;
     private Handler drawerHandler = new Handler();
 
     // Nova entrada (Botão Flutuante)
     private FloatingActionsMenu fabNewInput = null;
-    private FloatingActionButton fabPhotoInput = null;
-    private FloatingActionButton fabManualInput = null;
 
     private CharSequence mTitle;
     // 0 -> Entrada e 1 -> Saída
@@ -136,52 +128,50 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
             }
         }
 
-        spinnerLoginDetails = (Spinner) findViewById(R.id.spinnerLoginDetails);
-        spinnerHeaderItem = new ArrayList<Map<String, String>>(2);
-
-        Map<String, String> loginDetails = new HashMap<String, String>(2);
-        loginDetails.put("Name", loggedAccount.getAccountName());
-        loginDetails.put("Email", loggedAccount.getAccountEmail());
-
-        spinnerHeaderItem.add(loginDetails);
-
-        SimpleAdapter adapter = new SimpleAdapter(this, spinnerHeaderItem, android.R.layout.simple_spinner_dropdown_item, new String[] {"Name", "Email"}, new int[] {android.R.id.text1, android.R.id.text2});
-
-        adapter.setDropDownViewResource(android.R.layout.simple_list_item_2);
-
-        spinnerLoginDetails.setAdapter(adapter);
-
-
-
+        // Drawer e Toolbar
+        // TODO: Personalizar toolbar
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         drawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
         resultFrameDrawer = (NavigationView) findViewById(R.id.resultFrameDrawer);
+        resultFrameDrawer.inflateMenu(R.menu.menu_drawer);
         resultFrameDrawer.setNavigationItemSelectedListener(this);
-        resultFrameDefaultOptionsDrawer = (NavigationView) findViewById(R.id.resultFrameDefaultOptionsDrawer);
+        NavigationView resultFrameDefaultOptionsDrawer = (NavigationView) findViewById(R.id.resultFrameDefaultOptionsDrawer);
         resultFrameDefaultOptionsDrawer.setNavigationItemSelectedListener(this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close){
-
-        };
+        ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
 
         drawerLayout.setDrawerListener(drawerToggle);
         drawerToggle.syncState();
 
+        // IageView do Cabeçalho do Drawer
+        ImageView cover = (ImageView) findViewById(R.id.coverPhoto);
+        ImageView profile = (ImageView) findViewById(R.id.profileImage);
+
+        loggedAccount.getAccountPicCover(cover);
+        loggedAccount.getAccountPicProfile(profile);
+
+        // TextView do Cabeçalho do Drawer
+        TextView loggedName = (TextView) findViewById(R.id.tvHeaderName);
+        TextView loggedEmail = (TextView) findViewById(R.id.tvHeaderEmail);
+        loggedName.setText(loggedAccount.getAccountName());
+        loggedEmail.setText(loggedAccount.getAccountEmail());
+
         // Quando for mecher na lista, fechar esse FAB
         fabNewInput = (FloatingActionsMenu) findViewById(R.id.fabNewInput);
 
-        fabPhotoInput = (FloatingActionButton) findViewById(R.id.fabPhotoInput);
+        FloatingActionButton fabPhotoInput = (FloatingActionButton) findViewById(R.id.fabPhotoInput);
         fabPhotoInput.setIcon(R.drawable.ic_camera_enhance_white_24dp);
         fabPhotoInput.setSize(FloatingActionButton.SIZE_MINI);
         fabPhotoInput.setOnClickListener(fabPhotoOnClick());
 
-        fabManualInput = (FloatingActionButton) findViewById(R.id.fabManualInput);
+        FloatingActionButton fabManualInput = (FloatingActionButton) findViewById(R.id.fabManualInput);
         fabManualInput.setIcon(R.drawable.ic_mode_edit_white_24dp);
         fabManualInput.setSize(FloatingActionButton.SIZE_MINI);
         fabManualInput.setOnClickListener(fabManualOnClick());
+
 
 
 
@@ -239,6 +229,17 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
 
     }
 
+    public void loginOptions(View view){
+        // Se desconectar aparece é porque o menu inflado é o menu de login
+        if(resultFrameDrawer.getMenu().findItem(R.id.drawer_item_disconnect) == null){
+            resultFrameDrawer.getMenu().clear();
+            resultFrameDrawer.inflateMenu(R.menu.menu_drawer_login);
+        } else {
+            resultFrameDrawer.getMenu().clear();
+            resultFrameDrawer.inflateMenu(R.menu.menu_drawer);
+        }
+    }
+
     private View.OnClickListener fabManualOnClick(){
         return new View.OnClickListener() {
             @Override
@@ -292,6 +293,14 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
 
                     case R.id.drawer_item_help:
                         Toast.makeText(getApplicationContext(), "Inflar layout Ajuda / Chamar activity Ajuda", Toast.LENGTH_LONG).show();
+                        break;
+
+                    case R.id.drawer_item_disconnect:
+                        loggedAccount.disconnect(ResultActivity.this);
+                        break;
+
+                    case R.id.drawer_item_revoke:
+                        loggedAccount.revoke(ResultActivity.this);
                         break;
                 }
             }

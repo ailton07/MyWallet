@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#FFFFFF">
+    android:layout_height="wrap_content"
+    android:onClick="loginOptions">
 
     <ImageView
         android:id="@+id/coverPhoto"
         android:layout_width="match_parent"
-        android:layout_height="188dp"
+        android:layout_height="146dp"
         android:scaleType="centerCrop"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
@@ -19,7 +19,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="140dp"
+        android:layout_height="90dp"
         android:id="@+id/relativeLayout">
 
         <de.hdodenhof.circleimageview.CircleImageView
@@ -28,27 +28,40 @@
             android:layout_width="64dp"
             android:layout_height="64dp"
             app:border_color="#FFFFFF"
-            android:src="@drawable/ic_bg_login"
             android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_marginLeft="16dp"
             android:layout_marginStart="16dp" />
+
     </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="56dp"
         android:layout_below="@id/relativeLayout">
 
-        <Spinner
-            android:id="@+id/spinnerLoginDetails"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+        <TextView
+            android:id="@+id/tvHeaderName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="bold"
+            android:textSize="14sp"
+            android:textColor="#FFFFFF"
+            android:layout_marginTop="14dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"/>
 
+        <TextView
+            android:id="@+id/tvHeaderEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="#FFFF"
+            android:layout_marginTop="28dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"/>
     </RelativeLayout>
 
 </RelativeLayout>

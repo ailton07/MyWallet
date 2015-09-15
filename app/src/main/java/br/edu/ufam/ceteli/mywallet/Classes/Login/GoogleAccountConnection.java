@@ -6,17 +6,25 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ImageView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.plus.Plus;
+import com.google.android.gms.plus.model.people.Person;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.ref.WeakReference;
+import java.net.URL;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -214,8 +222,53 @@ public class GoogleAccountConnection extends Observable implements GoogleApiClie
     }
 
     @Override
-    public String getAccountPicURL() {
-        return Plus.PeopleApi.getCurrentPerson(googleApiClient).getImage().getUrl();
+    public void getAccountPicProfile(final ImageView imageView) {
+        if(Plus.PeopleApi.getCurrentPerson(googleApiClient).hasImage()) {
+            Person.Image image = Plus.PeopleApi.getCurrentPerson(googleApiClient).getImage();
+            new AsyncTask<String, Void, Bitmap>() {
+                @Override
+                protected Bitmap doInBackground(String... params) {
+                    try {
+                        URL url = new URL(params[0]);
+                        InputStream inputStream = url.openStream();
+                        return BitmapFactory.decodeStream(inputStream);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    return null;
+                }
+
+                @Override
+                protected void onPostExecute(Bitmap bitmap) {
+                    imageView.setImageBitmap(bitmap);
+                }
+            }.execute(image.getUrl());
+        }
+    }
+
+    @Override
+    public void getAccountPicCover(final ImageView imageView) {
+        if(Plus.PeopleApi.getCurrentPerson(googleApiClient).hasImage()) {
+            Person.Cover.CoverPhoto image = Plus.PeopleApi.getCurrentPerson(googleApiClient).getCover().getCoverPhoto();
+            new AsyncTask<String, Void, Bitmap>() {
+                @Override
+                protected Bitmap doInBackground(String... params) {
+                    try {
+                        URL url = new URL(params[0]);
+                        InputStream inputStream = url.openStream();
+                        return BitmapFactory.decodeStream(inputStream);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    return null;
+                }
+
+                @Override
+                protected void onPostExecute(Bitmap bitmap) {
+                    imageView.setImageBitmap(bitmap);
+                }
+            }.execute(image.getUrl());
+        }
     }
 
     @Override
