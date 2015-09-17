@@ -4,8 +4,11 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
@@ -27,7 +30,10 @@ import com.facebook.login.LoginResult;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.ref.WeakReference;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Observable;
@@ -238,13 +244,49 @@ public class FacebookAccountConnection extends Observable implements FacebookCal
     }
 
     @Override
-    public void getAccountPicProfile(ImageView imageView){
-        //TODO
+    public void getAccountPicProfile(final ImageView imageView){
+        new AsyncTask<String, Void, Bitmap>() {
+            @Override
+            protected Bitmap doInBackground(String... params) {
+                try {
+                    URL url = new URL(params[0]);
+                    InputStream inputStream = url.openStream();
+                    return BitmapFactory.decodeStream(inputStream);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Bitmap bitmap) {
+                if(bitmap != null)
+                    imageView.setImageBitmap(bitmap);
+            }
+        }; //TODO: execute();
     }
 
     @Override
-    public void getAccountPicCover(ImageView imageView) {
-        //TODO
+    public void getAccountPicCover(final ImageView imageView) {
+        new AsyncTask<String, Void, Bitmap>() {
+            @Override
+            protected Bitmap doInBackground(String... params) {
+                try {
+                    URL url = new URL(params[0]);
+                    InputStream inputStream = url.openStream();
+                    return BitmapFactory.decodeStream(inputStream);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Bitmap bitmap) {
+                if(bitmap != null)
+                    imageView.setImageBitmap(bitmap);
+            }
+        }; //TODO: execute();
     }
 
     @Override

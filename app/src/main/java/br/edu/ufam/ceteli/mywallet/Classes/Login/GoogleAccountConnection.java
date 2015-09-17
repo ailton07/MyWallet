@@ -240,7 +240,8 @@ public class GoogleAccountConnection extends Observable implements GoogleApiClie
 
                 @Override
                 protected void onPostExecute(Bitmap bitmap) {
-                    imageView.setImageBitmap(bitmap);
+                    if(bitmap != null)
+                        imageView.setImageBitmap(bitmap);
                 }
             }.execute(image.getUrl());
         }
@@ -265,7 +266,8 @@ public class GoogleAccountConnection extends Observable implements GoogleApiClie
 
                 @Override
                 protected void onPostExecute(Bitmap bitmap) {
-                    imageView.setImageBitmap(bitmap);
+                    if(bitmap != null)
+                        imageView.setImageBitmap(bitmap);
                 }
             }.execute(image.getUrl());
         }

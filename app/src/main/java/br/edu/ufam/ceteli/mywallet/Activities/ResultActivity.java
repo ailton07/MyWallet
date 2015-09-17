@@ -150,8 +150,8 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
         ImageView cover = (ImageView) findViewById(R.id.coverPhoto);
         ImageView profile = (ImageView) findViewById(R.id.profileImage);
 
-        loggedAccount.getAccountPicCover(cover);
-        loggedAccount.getAccountPicProfile(profile);
+        //loggedAccount.getAccountPicCover(cover);
+        //loggedAccount.getAccountPicProfile(profile);
 
         // TextView do Cabeçalho do Drawer
         TextView loggedName = (TextView) findViewById(R.id.tvHeaderName);
