@@ -61,6 +61,7 @@ import br.edu.ufam.ceteli.mywallet.Classes.Login.FacebookAccountConnection;
 import br.edu.ufam.ceteli.mywallet.Classes.Login.GoogleAccountConnection;
 import br.edu.ufam.ceteli.mywallet.Classes.Login.ILoginConnection;
 import br.edu.ufam.ceteli.mywallet.Classes.OCR.CommsEngine;
+import br.edu.ufam.ceteli.mywallet.Classes.OCR.OCRImp;
 import br.edu.ufam.ceteli.mywallet.Classes.OCR.OCRResposta;
 import br.edu.ufam.ceteli.mywallet.Classes.OCR.OnServerRequestCompleteListener;
 import br.edu.ufam.ceteli.mywallet.R;
@@ -78,26 +79,20 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
     // Nova entrada (Botão Flutuante)
     private FloatingActionsMenu fabNewInput = null;
 
-    private CharSequence mTitle;
     // 0 -> Entrada e 1 -> Saída
     private int radioClicado = 0;
     private String categoriaSpinnerSelecionado="";
 
     // private ArrayAdapter<Entrada> adapter;
     private AdapterListView adapter;
-    // ListView listView;
 
     // DialogIn
     TextView estabelecimento;
     TextView valor;
 
     // OCR
-    private final int RESPONSE_OK = 200;
-    private final int IMAGE_PICKER_REQUEST = 1;
+
     private TextView picNameText;
-    private String apiKey;
-    private String langCode;
-    private String fileName = "";
 
     CommsEngine commsEngine;
     private static final int SELECT_PICTURE = 1;
@@ -106,13 +101,10 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
     private String localImagePath = "";
     private static final int OPTIMIZED_LENGTH = 1024;
 
-    private  final  String idol_ocr_service = "https://api.idolondemand.com/1/api/async/ocrdocument/v1?";
-    private  final  String idol_ocr_job_result = "https://api.idolondemand.com/1/job/result/";
-    private String jobID = "";
-
     ProgressBar pbOCRReconizing;
     ImageView ivSelectedImg;
 
+    OCRImp ocrImp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -172,34 +164,6 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
         fabManualInput.setSize(FloatingActionButton.SIZE_MINI);
         fabManualInput.setOnClickListener(fabManualOnClick());
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         List<Entrada> values = Entrada.getComments();
 
 
@@ -215,16 +179,11 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
         lv.setAdapter(adapter);
 
 
-
-        mTitle = getTitle();
-
-
-
-
         //***************************************************
         // OCR
 
 
+        ocrImp = new OCRImp(commsEngine, estabelecimento, valor, mImageFullPathAndName, pbOCRReconizing);
         CreateLocalImageFolder();
 
     }
@@ -329,6 +288,7 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
         return super.onKeyDown(keyCode, event);
     }
 
+    //Verificar se pode ser excluído
     public void onSectionAttached(int number) {
         // Era utilizado pra mudar o nome do tittle quando uma opção do NavigationDrawer era escolhida
     /*    switch (number) {
@@ -374,9 +334,12 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
         Button pickButton = (Button) v.findViewById((R.id.picImagebutton));
         picNameText = (TextView) v.findViewById(R.id.imageName);
         estabelecimento = (TextView) v.findViewById(R.id.estabelecimento);
+        ocrImp.setEstabelecimento(estabelecimento);
         valor = (TextView) v.findViewById(R.id.valor);
+        ocrImp.setValor(valor);
 
         pbOCRReconizing = (ProgressBar) v.findViewById(R.id.pbocrrecognizing);
+        ocrImp.setPbOCRReconizing(pbOCRReconizing);
         ivSelectedImg = (ImageView) v.findViewById(R.id.imageView);
 
         pickButton.setOnClickListener(new View.OnClickListener() {
@@ -448,7 +411,6 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
                 Log.v("App123", String.valueOf(entrada.getValor()));
                 Log.v("App123", entrada.getEstabelecimento());
                 Log.v("App123", entrada.getCategoria());
-
                 Log.v("App123", entrada.getDataCompra());
 
 
@@ -491,10 +453,11 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
 
                 int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
                 mImageFullPathAndName = cursor.getString(columnIndex);
+                ocrImp.setmImageFullPathAndName(mImageFullPathAndName);
                 cursor.close();
-                jobID = "";
+                //jobID = "";
                 File file = new File(mImageFullPathAndName);
-                Bitmap mCurrentSelectedBitmap = decodeFile(file);
+                Bitmap mCurrentSelectedBitmap = ocrImp.decodeFile(file);
 
                 if (mCurrentSelectedBitmap != null) {
                     // display the full size image
@@ -518,16 +481,18 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
                             newH = OPTIMIZED_LENGTH;
                             newW = (int) (OPTIMIZED_LENGTH * ratio);
                         }
-                        mCurrentSelectedBitmap = rescaleBitmap(mCurrentSelectedBitmap, newW, newH);
+                        mCurrentSelectedBitmap = ocrImp.rescaleBitmap(mCurrentSelectedBitmap, newW, newH);
                     }
                     // let save the new image to our local folder
                     mImageFullPathAndName = SaveImage(mCurrentSelectedBitmap);
+                    ocrImp.setmImageFullPathAndName(mImageFullPathAndName);
                     picNameText.setText(mImageFullPathAndName);
                 }
             }
         }
         //*******************************
-        DoStartOCR();
+        //DoStartOCR();
+        ocrImp.DoStartOCR();
     }
 
     private void ParseSyncResponse(String response) {
@@ -599,110 +564,6 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
 
     //**************************
     // HP
-
-    public void DoStartOCR() {
-        pbOCRReconizing.setVisibility(View.VISIBLE);
-        if (jobID.length() > 0)
-            getResultByJobId();
-        else if (!mImageFullPathAndName.isEmpty()){
-            Map<String,String> map =  new HashMap<String,String>();
-            map.put("file", mImageFullPathAndName);
-            //map.put("file", (picNameText.getText().toString()));
-            String fileType = "image/jpeg";
-            map.put("mode", "document_photo");
-            commsEngine.ServicePostRequest(idol_ocr_service, fileType, map, new OnServerRequestCompleteListener() {
-                @Override
-                public void onServerRequestComplete(String response) {
-                    try {
-                        JSONObject mainObject = new JSONObject(response);
-                        if (!mainObject.isNull("jobID")) {
-                            jobID = mainObject.getString("jobID");
-                            getResultByJobId();
-                        } else
-                            ParseSyncResponse(response);
-                    } catch (Exception ex) {}
-                }
-                @Override
-                public void onErrorOccurred(String error) {
-                    // handle error
-                }
-            });
-        } else
-            Toast.makeText(this, "Please select an image.", Toast.LENGTH_LONG).show();
-    }
-
-    public void DoStartOCR(View v) {
-        pbOCRReconizing.setVisibility(View.VISIBLE);
-        if (jobID.length() > 0)
-            getResultByJobId();
-        else if (!mImageFullPathAndName.isEmpty()){
-            Map<String,String> map =  new HashMap<String,String>();
-            map.put("file", mImageFullPathAndName);
-            //map.put("file", (picNameText.getText().toString()));
-            String fileType = "image/jpeg";
-            map.put("mode", "document_photo");
-            commsEngine.ServicePostRequest(idol_ocr_service, fileType, map, new OnServerRequestCompleteListener() {
-                @Override
-                public void onServerRequestComplete(String response) {
-                    try {
-                        JSONObject mainObject = new JSONObject(response);
-                        if (!mainObject.isNull("jobID")) {
-                            jobID = mainObject.getString("jobID");
-                            getResultByJobId();
-                        } else
-                            ParseSyncResponse(response);
-                    } catch (Exception ex) {}
-                }
-                @Override
-                public void onErrorOccurred(String error) {
-                    // handle error
-                }
-            });
-        } else
-            Toast.makeText(this, "Please select an image.", Toast.LENGTH_LONG).show();
-    }
-
-    private void getResultByJobId() {
-        String param = idol_ocr_job_result + jobID + "?";
-        commsEngine.ServiceGetRequest(param, "", new
-                OnServerRequestCompleteListener() {
-                    @Override
-                    public void onServerRequestComplete(String response) {
-                        ParseAsyncResponse(response);
-                    }
-
-                    @Override
-                    public void onErrorOccurred(String error) {
-                        // handle error
-                    }
-                });
-    }
-
-    public Bitmap decodeFile(File file) {
-        final BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = false;
-        options.inSampleSize = 1;
-        int mImageRealWidth = options.outWidth;
-        int mImageRealHeight = options.outHeight;
-        Bitmap pic = null;
-        try {
-            pic = BitmapFactory.decodeFile(file.getPath(), options);
-        } catch (Exception ex) {
-            Log.e("MainActivity", ex.getMessage());
-        }
-        return pic;
-    }
-
-    public Bitmap rescaleBitmap(Bitmap bm, int newWidth, int newHeight) {
-        int width = bm.getWidth();
-        int height = bm.getHeight();
-        float scaleWidth = ((float) newWidth) / width;
-        float scaleHeight = ((float) newHeight) / height;
-        Matrix matrix = new Matrix();
-        matrix.postScale(scaleWidth, scaleHeight);
-        Bitmap resizedBitmap = Bitmap.createBitmap(bm, 0, 0, width, height, matrix, false);
-        return resizedBitmap;
-    }
 
     private String SaveImage(Bitmap image)
     {
@@ -822,8 +683,10 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
     protected void onResume() {
         super.onResume();
         restartArryaListAdapter();
-        if (commsEngine == null)
+        if (commsEngine == null){
             commsEngine = new CommsEngine();
+            ocrImp.setCommsEngine(commsEngine);
+        }
     }
 
 }
