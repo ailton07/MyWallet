@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Na verdade poderia ser relative layour, porem tem algumas funções do NavigationView
+     como elevação que pode ser interessante em APIs maiores ou iguais a 21 -->
+<android.support.design.widget.NavigationView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:layout_gravity="start"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.design.widget.NavigationView
+            android:id="@+id/resultFrameDrawer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:headerLayout="@layout/drawer_header"
+            android:layout_above="@+id/resultFrameDefaultOptionsDrawer"
+            android:layout_alignParentTop="true">
+        </android.support.design.widget.NavigationView>
+
+        <android.support.design.widget.NavigationView
+            android:id="@+id/resultFrameDefaultOptionsDrawer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:menu="@menu/menu_drawer_default"
+            android:layout_alignParentBottom="true">
+        </android.support.design.widget.NavigationView>
+
+    </RelativeLayout>
+
+</android.support.design.widget.NavigationView>

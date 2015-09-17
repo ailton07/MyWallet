@@ -20,6 +20,12 @@
             android:background="?attr/colorPrimary"
             android:minHeight="?attr/actionBarSize" />
 
+        <ListView
+            android:id="@android:id/list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </ListView>
+
         <com.getbase.floatingactionbutton.FloatingActionsMenu
             android:id="@+id/fabNewInput"
             android:layout_width="wrap_content"
@@ -43,40 +49,9 @@
                 app:fab_title="Tirar foto da nota"/>
 
         </com.getbase.floatingactionbutton.FloatingActionsMenu>
-
-        <!-- Substituto do listview, talvez tenhamos que usar isso mais na frente devido ao FAB -->
-        <android.support.v7.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@android:id/list">
-        </android.support.v7.widget.RecyclerView>
-
     </FrameLayout>
 
     <!-- O segundo frame sempre é o drawer, aqui vai o conteúdo da barra lateral -->
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start">
-
-        <android.support.design.widget.NavigationView
-            android:id="@+id/resultFrameDrawer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:headerLayout="@layout/activity_result_drawer_header"
-            android:layout_above="@+id/resultFrameDefaultOptionsDrawer"
-            android:layout_alignParentTop="true">
-        </android.support.design.widget.NavigationView>
-
-        <android.support.design.widget.NavigationView
-            android:id="@+id/resultFrameDefaultOptionsDrawer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="#BDBDBD"
-            app:menu="@menu/menu_drawer_default"
-            android:layout_alignParentBottom="true">
-        </android.support.design.widget.NavigationView>
-
-    </RelativeLayout>
+    <include layout="@layout/drawer" />
 
 </android.support.v4.widget.DrawerLayout>

@@ -21,8 +21,7 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true">
 
-        <include
-            layout="@layout/activity_login_child"/>
+        <include layout="@layout/activity_login_child"/>
     </FrameLayout>
 
 </RelativeLayout>

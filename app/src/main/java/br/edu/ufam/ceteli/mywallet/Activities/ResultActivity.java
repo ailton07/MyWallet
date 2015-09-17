@@ -17,14 +17,12 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +31,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.Spinner;
@@ -207,12 +206,12 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
         //    adapter = new ArrayAdapter<Entrada>(this,
         //           android.R.layout.simple_list_item_1, values);
 
-        //adapter = new AdapterListView(this, values);
+        adapter = new AdapterListView(this, values);
 
-        //ListView lv = (ListView) findViewById(android.R.id.list);
+        ListView lv = (ListView) findViewById(android.R.id.list);
         //setListAdapter(adapter);
-        //lv.setAdapter(adapter);
-        //lv.setAdapter(adapter);
+        lv.setAdapter(adapter);
+        lv.setAdapter(adapter);
 
 
 
@@ -229,22 +228,12 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
 
     }
 
-    public void loginOptions(View view){
-        // Se a opçao desconectar não aparece, infle o menu login, senão volte
-        if(resultFrameDrawer.getMenu().findItem(R.id.drawer_item_disconnect) == null){
-            resultFrameDrawer.getMenu().clear();
-            resultFrameDrawer.inflateMenu(R.menu.menu_drawer_login);
-        } else {
-            resultFrameDrawer.getMenu().clear();
-            resultFrameDrawer.inflateMenu(R.menu.menu_drawer);
-        }
-    }
-
     private View.OnClickListener fabManualOnClick(){
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "Chamar atividade/dialogo Entrada Manual", Toast.LENGTH_LONG).show();
+                AlertDialog dialog = (AlertDialog) onCreateDialog();
+                dialog.show();
                 fabNewInput.collapse();
             }
         };
@@ -254,7 +243,9 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "Chamar atividade/dialogo Foto", Toast.LENGTH_LONG).show();
+                // Chamar a camera aqui, não seria?
+                AlertDialog dialog = (AlertDialog) onCreateDialogFoto();
+                dialog.show();
                 fabNewInput.collapse();
             }
         };
@@ -302,6 +293,17 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
         return true;
     }
 
+    public void loginOptions(View view){
+        // Se a opçao desconectar não aparece, infle o menu login, senão volte
+        if(resultFrameDrawer.getMenu().findItem(R.id.drawer_item_disconnect) == null){
+            resultFrameDrawer.getMenu().clear();
+            resultFrameDrawer.inflateMenu(R.menu.menu_drawer_login);
+        } else {
+            resultFrameDrawer.getMenu().clear();
+            resultFrameDrawer.inflateMenu(R.menu.menu_drawer);
+        }
+    }
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if ( keyCode == KeyEvent.KEYCODE_MENU ) {
@@ -325,69 +327,9 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
         }
     }
 
-    public void restoreActionBar() {
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-        actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setTitle(mTitle);
-    }
-
-
-
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-
-        //if (id == R.id.action_settings) {
-        if (id == R.id.action_example) {
-            // 1. Instantiate an AlertDialog.Builder with its constructor
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-            // 2. Chain together various setter methods to set the dialog characteristics
-            //builder.setMessage(R.string.dialog_message)
-            //        .setTitle(R.string.dialog_title);
-
-            // 3. Get the AlertDialog from create()
-            //AlertDialog dialog = builder.create();
-            AlertDialog dialog = (AlertDialog) onCreateDialog();
-            dialog.show();
-            return true;
-        }
-        else if(id == R.id.action_foto){
-            // 1. Instantiate an AlertDialog.Builder with its constructor
-
-
-            // 2. Chain together various setter methods to set the dialog characteristics
-            //builder.setMessage(R.string.dialog_message)
-            //        .setTitle(R.string.dialog_title);
-
-            // 3. Get the AlertDialog from create()
-            //AlertDialog dialog = builder.create();
-            AlertDialog dialog = (AlertDialog) onCreateDialogFoto();
-            dialog.show();
-            return true;
-
-
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
     // Dialog de Entrada customizado
     // View é a dialog_layout.xml
-    public Dialog onCreateDialog() {
+    private Dialog onCreateDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         // Get the layout inflater
         LayoutInflater inflater = this.getLayoutInflater();
@@ -489,7 +431,7 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
         return builder.create();
     }
 
-    public Dialog onCreateDialogFoto() {
+    private Dialog onCreateDialogFoto() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         // Get the layout inflater
         LayoutInflater inflater = this.getLayoutInflater();
