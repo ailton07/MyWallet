@@ -230,7 +230,7 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
     }
 
     public void loginOptions(View view){
-        // Se desconectar aparece é porque o menu inflado é o menu de login
+        // Se a opçao desconectar não aparece, infle o menu login, senão volte
         if(resultFrameDrawer.getMenu().findItem(R.id.drawer_item_disconnect) == null){
             resultFrameDrawer.getMenu().clear();
             resultFrameDrawer.inflateMenu(R.menu.menu_drawer_login);
@@ -260,17 +260,11 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
         };
     }
 
-    public void logOut(View view){
-        // TODO: Implementar no Drawer!
-        loggedAccount.disconnect(this);
-        //loggedAccount.revoke(this);
-    }
-
     @Override
     public boolean onNavigationItemSelected(final MenuItem menuItem) {
         drawerLayout.closeDrawer(GravityCompat.START);
 
-        // Experiencia de usuário, por isso o delay
+        // Experiencia de usuário, por isso o delay (e a thread)
         drawerHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
