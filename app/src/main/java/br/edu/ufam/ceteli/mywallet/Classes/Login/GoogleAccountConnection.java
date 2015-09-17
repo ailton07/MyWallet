@@ -249,7 +249,7 @@ public class GoogleAccountConnection extends Observable implements GoogleApiClie
 
     @Override
     public void getAccountPicCover(final ImageView imageView) {
-        if(Plus.PeopleApi.getCurrentPerson(googleApiClient).hasImage()) {
+        if(Plus.PeopleApi.getCurrentPerson(googleApiClient).hasCover()) {
             Person.Cover.CoverPhoto image = Plus.PeopleApi.getCurrentPerson(googleApiClient).getCover().getCoverPhoto();
             new AsyncTask<String, Void, Bitmap>() {
                 @Override

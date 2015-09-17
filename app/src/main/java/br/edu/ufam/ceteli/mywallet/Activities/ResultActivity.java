@@ -146,20 +146,20 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
         drawerLayout.setDrawerListener(drawerToggle);
         drawerToggle.syncState();
 
-        // IageView do Cabeçalho do Drawer
-        ImageView cover = (ImageView) findViewById(R.id.coverPhoto);
-        ImageView profile = (ImageView) findViewById(R.id.profileImage);
-
-        //loggedAccount.getAccountPicCover(cover);
-        //loggedAccount.getAccountPicProfile(profile);
-
         // TextView do Cabeçalho do Drawer
         TextView loggedName = (TextView) findViewById(R.id.tvHeaderName);
         TextView loggedEmail = (TextView) findViewById(R.id.tvHeaderEmail);
         loggedName.setText(loggedAccount.getAccountName());
         loggedEmail.setText(loggedAccount.getAccountEmail());
 
-        // Quando for mecher na lista, fechar esse FAB
+        // ImageView do Cabeçalho do Drawer
+        ImageView cover = (ImageView) findViewById(R.id.coverPhoto);
+        ImageView profile = (ImageView) findViewById(R.id.profileImage);
+
+        loggedAccount.getAccountPicCover(cover);
+        loggedAccount.getAccountPicProfile(profile);
+
+        // Quando for mexer na lista, fechar esse FAB
         fabNewInput = (FloatingActionsMenu) findViewById(R.id.fabNewInput);
 
         FloatingActionButton fabPhotoInput = (FloatingActionButton) findViewById(R.id.fabPhotoInput);
