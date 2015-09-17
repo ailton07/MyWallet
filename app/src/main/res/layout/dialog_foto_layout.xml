@@ -16,7 +16,9 @@
 
             <Button android:layout_alignParentTop="true" android:layout_height="wrap_content" android:id="@+id/picImagebutton"
                 android:layout_width="fill_parent" android:layout_alignParentLeft="true" android:layout_marginLeft="1dp"
-                android:layout_marginRight="1dp" android:layout_marginTop="1dp" android:text="Selecione uma imagem"/>
+                android:layout_marginRight="1dp" android:layout_marginTop="1dp"
+                android:onClick="onClick"
+                android:text="Selecione uma imagem"/>
            <!--
             <Button
                 android:layout_width="wrap_content"

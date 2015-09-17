@@ -54,6 +54,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import br.edu.ufam.ceteli.mywallet.Activities.Dialogs.DialogIn;
 import br.edu.ufam.ceteli.mywallet.Classes.AdapterListView;
 import br.edu.ufam.ceteli.mywallet.Classes.Entrada;
 import br.edu.ufam.ceteli.mywallet.Classes.Login.FacebookAccountConnection;
@@ -86,7 +87,7 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
     private AdapterListView adapter;
     // ListView listView;
 
-    // Dialog
+    // DialogIn
     TextView estabelecimento;
     TextView valor;
 
@@ -284,7 +285,7 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
                         break;
 
                     case R.id.drawer_item_settings:
-                        Toast.makeText(getApplicationContext(), "Inflar layout Configurações / Chamar activity Configurações", Toast.LENGTH_LONG).show();
+                        //Toast.makeText(getApplicationContext(), "Inflar layout Configurações / Chamar activity Configurações", Toast.LENGTH_LONG).show();
                         Intent it = new Intent(ResultActivity.this, SettingsActivity.class);
                         TextView loggedEmail = (TextView) findViewById(R.id.tvHeaderEmail);
                         it.putExtra("email", loggedEmail.getText().toString());
@@ -329,7 +330,8 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
     }
 
     public void onSectionAttached(int number) {
-        switch (number) {
+        // Era utilizado pra mudar o nome do tittle quando uma opção do NavigationDrawer era escolhida
+    /*    switch (number) {
             case 1:
                 mTitle = getString(R.string.title_section1);
                 break;
@@ -340,9 +342,10 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
                 mTitle = getString(R.string.title_section3);
                 break;
         }
+        */
     }
 
-    // Dialog de Entrada customizado
+    // DialogIn de Entrada customizado
     // View é a dialog_layout.xml
     private Dialog onCreateDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -351,101 +354,11 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
 
         builder.setTitle(R.string.dialog_title);
 
-        // Inflate and set the layout for the dialog
-        // Pass null as the parent view because its going in the dialog layout
-        // Referencias:  http://stackoverflow.com/questions/30032005/access-buttons-in-custom-alert-dialog
-        final View v = inflater.inflate(R.layout.dialog_layout, null);
-        builder.setView(v)
-                // Add action buttons
-                .setPositiveButton("Adicionar ", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        Entrada entrada = new Entrada();
-
-                        //Tipo
-                        entrada.setTipo(radioClicado);
-
-                        //Descrição
-                        //TextView descricao = (TextView) findViewById(R.id.descricao);
-                        TextView descricao = (TextView) v.findViewById(R.id.descricao);
-                        entrada.setDescricao(descricao.getText().toString());
-
-                        //Valor
-                        TextView valor = (TextView) v.findViewById(R.id.valor);
-                        entrada.setValor(Float.parseFloat(valor.getText().toString()));
-
-                        //Estabelecimento
-                        TextView estabelecimento = (TextView) v.findViewById(R.id.estabelecimento);
-                        entrada.setEstabelecimento(estabelecimento.getText().toString());
-
-                        //Categoria
-                        //TextView categoria = (TextView) v.findViewById(R.id.categoria);
-                        //entrada.setCategoria(categoria.getText().toString());
-                        Spinner categoria = (Spinner) v.findViewById(R.id.categoria);
-                        entrada.setCategoria(categoriaSpinnerSelecionado);
-
-                        //Data de Inserção
-                        //SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
-                        Date date = new Date();
-
-                        //entrada.setDataInsercao(dateFormat.format(date).toString());
-
-                        //Data de Compra
-
-                        DatePicker dataCompra = (DatePicker) v.findViewById(R.id.datePicker);
-                        dataCompra.setCalendarViewShown(false);
-
-                        Date dateDataCompra = new Date();
-                        dateDataCompra.setDate(dataCompra.getDayOfMonth());
-                        dateDataCompra.setMonth(dataCompra.getMonth());
-                        dateDataCompra.setYear(dataCompra.getYear()-1900); // http://stackoverflow.com/questions/9751050/simpledateformat-subclass-adds-1900-to-the-year
-
-
-                        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-                        entrada.setDataCompra(dateFormat.format(dateDataCompra).toString());
-
-                        entrada.save();
-
-
-
-
-                        adapter.add(entrada);
-                        adapter.notifyDataSetChanged();
-
-                        //Log
-                        Log.v("App123", descricao.getText().toString());
-                        Log.v("App123", String.valueOf(entrada.getTipo()));
-                        Log.v("App123", entrada.getDescricao());
-                        Log.v("App123", String.valueOf(entrada.getValor()));
-                        Log.v("App123", entrada.getEstabelecimento());
-                        Log.v("App123", entrada.getCategoria());
-                        //Log.v("App123", entrada.getDataInsercaoFormatada().toString());
-                        Log.v("App123", entrada.getDataCompra());
-
-                    }
-                })
-                .setNegativeButton("Cancelar ", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        //  LoginDialogFragment.this.getDialog().cancel();
-                        dialog.cancel();
-                    }
-                });
-
-
-        // Spinner configuration
-        Spinner spinner = (Spinner) v.findViewById(R.id.categoria);
-        ArrayAdapter<CharSequence> adapterS = ArrayAdapter.createFromResource(this,
-                R.array.categoria_array, android.R.layout.simple_spinner_item);
-        adapterS.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapterS);
-        spinner.setOnItemSelectedListener(this);
-
-        DatePicker dataCompra = (DatePicker) v.findViewById(R.id.datePicker);
-        dataCompra.setCalendarViewShown(false);
-
-        return builder.create();
+        DialogIn dialog = new DialogIn(this, radioClicado, categoriaSpinnerSelecionado, builder, inflater, adapter);
+        return dialog.gera();
     }
 
+    // Não foi possível limpar
     private Dialog onCreateDialogFoto() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         // Get the layout inflater
@@ -562,10 +475,6 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
 
     //***************************
     // OCR
-
-    public void trabalhaImagem(){
-
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
