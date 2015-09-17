@@ -228,6 +228,17 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
 
     }
 
+    public void restartArryaListAdapter(){
+
+        List<Entrada> values = Entrada.getComments();
+
+        adapter = new AdapterListView(this, values);
+
+        ListView lv = (ListView) findViewById(android.R.id.list);
+        lv.setAdapter(adapter);
+
+    }
+
     private View.OnClickListener fabManualOnClick(){
         return new View.OnClickListener() {
             @Override
@@ -274,6 +285,10 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
 
                     case R.id.drawer_item_settings:
                         Toast.makeText(getApplicationContext(), "Inflar layout Configurações / Chamar activity Configurações", Toast.LENGTH_LONG).show();
+                        Intent it = new Intent(ResultActivity.this, SettingsActivity.class);
+                        TextView loggedEmail = (TextView) findViewById(R.id.tvHeaderEmail);
+                        it.putExtra("email", loggedEmail.getText().toString());
+                        startActivity(it);
                         break;
 
                     case R.id.drawer_item_help:
@@ -897,6 +912,7 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
     @Override
     protected void onResume() {
         super.onResume();
+        restartArryaListAdapter();
         if (commsEngine == null)
             commsEngine = new CommsEngine();
     }

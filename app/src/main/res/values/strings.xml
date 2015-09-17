@@ -38,6 +38,10 @@
         <item>Ocasional</item>
 
     </string-array>
+    <string name="title_activity_settings">Configurações</string>
+    <string name="backup">Backup</string>
+    <string name="backupBt1">Criar Backup</string>
+    <string name="backupBt2">Restaurar Backup</string>
 
 
 </resources>
