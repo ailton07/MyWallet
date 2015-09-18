@@ -237,6 +237,10 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
 
                     case R.id.drawer_item_report:
                         Toast.makeText(getApplicationContext(), "Inflar layout Relatório / Chamar activity Orçamento", Toast.LENGTH_LONG).show();
+                        Intent it0 = new Intent(ResultActivity.this, RelatoriosActivity.class);
+                        //TextView loggedEmail = (TextView) findViewById(R.id.tvHeaderEmail);
+                        //it.putExtra("email", loggedEmail.getText().toString());
+                        startActivity(it0);
                         break;
 
                     case R.id.drawer_item_tips:

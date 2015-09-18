@@ -42,6 +42,7 @@
     <string name="backup">Backup</string>
     <string name="backupBt1">Criar Backup</string>
     <string name="backupBt2">Restaurar Backup</string>
+    <string name="title_activity_relatorios">Relatorios</string>
 
 
 </resources>
