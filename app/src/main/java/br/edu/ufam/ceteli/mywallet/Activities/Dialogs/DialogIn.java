@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
+import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -23,7 +24,6 @@ import br.edu.ufam.ceteli.mywallet.R;
  */
 public class DialogIn {
     Context context;
-    int radioClicado;
     String categoriaSpinnerSelecionado="";
     AlertDialog.Builder builder;
     // Get the layout inflater
@@ -31,9 +31,8 @@ public class DialogIn {
     AdapterListView adapter;
 
 
-    public DialogIn(Context context, int radio, String categoriaSpinnerSelecionado, AlertDialog.Builder builder, LayoutInflater inflater, AdapterListView adapter){
+    public DialogIn(Context context, String categoriaSpinnerSelecionado, AlertDialog.Builder builder, LayoutInflater inflater, AdapterListView adapter){
         this.context = context;
-        this.radioClicado = radio;
         this.categoriaSpinnerSelecionado = categoriaSpinnerSelecionado;
         this.builder = builder;
         this.inflater = inflater;
@@ -42,7 +41,45 @@ public class DialogIn {
 
     }
 
+    public Context getContext() {
+        return context;
+    }
 
+    public void setContext(Context context) {
+        this.context = context;
+    }
+
+    public String getCategoriaSpinnerSelecionado() {
+        return categoriaSpinnerSelecionado;
+    }
+
+    public void setCategoriaSpinnerSelecionado(String categoriaSpinnerSelecionado) {
+        this.categoriaSpinnerSelecionado = categoriaSpinnerSelecionado;
+    }
+
+    public AlertDialog.Builder getBuilder() {
+        return builder;
+    }
+
+    public void setBuilder(AlertDialog.Builder builder) {
+        this.builder = builder;
+    }
+
+    public LayoutInflater getInflater() {
+        return inflater;
+    }
+
+    public void setInflater(LayoutInflater inflater) {
+        this.inflater = inflater;
+    }
+
+    public AdapterListView getAdapter() {
+        return adapter;
+    }
+
+    public void setAdapter(AdapterListView adapter) {
+        this.adapter = adapter;
+    }
 
     public AlertDialog gera(){
 
@@ -59,7 +96,15 @@ public class DialogIn {
                         Entrada entrada = new Entrada();
 
                         //Tipo
-                        entrada.setTipo(radioClicado);
+                        //entrada.setTipo(radioClicado);
+                        RadioButton radio1 = (RadioButton) v.findViewById(R.id.radio_opcao1);
+                        RadioButton radio2 = (RadioButton) v.findViewById(R.id.radio_opcao2);
+                        if (radio1.isChecked()){
+                            entrada.setTipo(0);
+                        }
+                        else if (radio2.isChecked()){
+                            entrada.setTipo(1);
+                        }
 
                         //Descrição
                         //TextView descricao = (TextView) findViewById(R.id.descricao);

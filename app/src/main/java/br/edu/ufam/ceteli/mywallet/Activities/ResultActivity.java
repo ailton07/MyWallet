@@ -80,13 +80,13 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
     private FloatingActionsMenu fabNewInput = null;
 
     // 0 -> Entrada e 1 -> Saída
-    private int radioClicado = 0;
     private String categoriaSpinnerSelecionado="";
 
     // private ArrayAdapter<Entrada> adapter;
     private AdapterListView adapter;
 
     // DialogIn
+    DialogIn dialogIn;
     TextView estabelecimento;
     TextView valor;
 
@@ -318,8 +318,8 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
 
         builder.setTitle(R.string.dialog_title);
 
-        DialogIn dialog = new DialogIn(this, radioClicado, categoriaSpinnerSelecionado, builder, inflater, adapter);
-        return dialog.gera();
+        dialogIn = new DialogIn(this, categoriaSpinnerSelecionado, builder, inflater, adapter);
+        return dialogIn.gera();
     }
 
     // Não foi possível limpar
@@ -615,32 +615,15 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
         // parent.getItemAtPosition(pos)
         //categoriaSpinnerSelecionado = getResources().getStringArray(R.array.categoria_array)[1];
         categoriaSpinnerSelecionado = parent.getItemAtPosition(pos).toString();
+        dialogIn.setCategoriaSpinnerSelecionado(categoriaSpinnerSelecionado);
     }
 
     public void onNothingSelected(AdapterView<?> parent) {
         // Another interface callback
         categoriaSpinnerSelecionado = parent.getItemAtPosition(0).toString();
+        dialogIn.setCategoriaSpinnerSelecionado(categoriaSpinnerSelecionado);
     }
 
-
-    public void onRadioButtonClicked(View view){
-        boolean checked = ((RadioButton) view).isChecked();
-        //if (id == R.id.action_settings) {
-        // Check which radio button was clicked
-        switch(view.getId()) {
-            case R.id.radio_opcao1:
-                if (checked)
-                    radioClicado = 0;
-                break;
-            case R.id.radio_opcao2:
-                if (checked)
-                    radioClicado = 1;
-                break;
-        }
-
-
-
-    }
 
 
     /**
