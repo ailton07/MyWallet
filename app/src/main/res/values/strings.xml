@@ -43,6 +43,13 @@
     <string name="backupBt1">Criar Backup</string>
     <string name="backupBt2">Restaurar Backup</string>
     <string name="title_activity_relatorios">Relatorios</string>
+    <string name="title_activity_relatorio_geral">RelatorioGeral</string>
+    <string name="title_activity_relatorio_entradas">RelatorioEntrada</string>
+    <string name="title_activity_relatorio_saida">RelatorioSaida</string>
+    <string name="title_activity_relatorio_casa">RelatorioCasa</string>
+    <string name="title_activity_relatorio_restaurante">RelatorioRestaurante</string>
+    <string name="title_activity_relatorio_lazer">RelatorioLazer</string>
+    <string name="title_activity_relatorio_ocasional">RelatorioOcasional</string>
 
 
 </resources>

@@ -26,7 +26,7 @@ public class Entrada extends Model {
     private String estabelecimento;
 
     @Column(name="Categoria")
-    private String categoria;
+    private int categoria;
 
     @Column(name="DataInsercao")
     private Date dataInsercao;
@@ -55,10 +55,10 @@ public class Entrada extends Model {
     public void setEstabelecimento(String estabelecimento) {
         this.estabelecimento = estabelecimento;
     }
-    public String getCategoria() {
+    public int getCategoria() {
         return categoria;
     }
-    public void setCategoria(String categoria) {
+    public void setCategoria(int categoria) {
         this.categoria = categoria;
     }
     public Date getDataInsercao() {
@@ -103,10 +103,45 @@ public class Entrada extends Model {
     }
 
     // Will be used by the ArrayAdapter in the ListView
+
     @Override
     public String toString() {
 
+        String comb1 = "";
 
-        return getDataCompra()+" "+ descricao  + " " + valor;
+        if(categoria == 1){
+            comb1 = "Casa";
+        }else if(categoria == 2){
+            comb1 = "Restaurante";
+        }else if(categoria == 3){
+            comb1 = "Lazer";
+        }else if(categoria == 4){
+            comb1 = "Ocasional";
+        }else{
+            comb1 = "Mensal";
+        }
+
+
+        return getDataCompra()+  "       " +  comb1  + " \n "+ "Estebelecimento: "+ estabelecimento  + "\n" + "Valor: " + valor
+                + "\n" +  "Descricao: " + descricao;
+    }
+
+    public static ArrayList<Entrada> getEntrada(){
+        return new Select().from(Entrada.class).where("Tipo = 0").execute();
+    }
+    public static ArrayList<Entrada> getSaida(){
+        return new Select().from(Entrada.class).where("Tipo = 1").execute();
+    }
+    public static ArrayList<Entrada> getCategoriaCasa(){
+        return new Select().from(Entrada.class).where("Categoria = 1").execute();
+    }
+    public static ArrayList<Entrada> getCategoriaRestaurante(){
+        return new Select().from(Entrada.class).where("Categoria = 2").execute();
+    }
+    public static ArrayList<Entrada> getCategoriaLazer(){
+        return new Select().from(Entrada.class).where("Categoria = 3").execute();
+    }
+    public static ArrayList<Entrada> getCategoriaOcasional(){
+        return new Select().from(Entrada.class).where("Categoria = 4").execute();
     }
 }

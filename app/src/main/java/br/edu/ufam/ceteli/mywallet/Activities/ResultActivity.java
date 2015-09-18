@@ -80,7 +80,7 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
     private FloatingActionsMenu fabNewInput = null;
 
     // 0 -> Entrada e 1 -> Saída
-    private String categoriaSpinnerSelecionado="";
+    private int categoriaSpinnerSelecionado;
 
     // private ArrayAdapter<Entrada> adapter;
     private AdapterListView adapter;
@@ -414,7 +414,7 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
                 Log.v("App123", entrada.getDescricao());
                 Log.v("App123", String.valueOf(entrada.getValor()));
                 Log.v("App123", entrada.getEstabelecimento());
-                Log.v("App123", entrada.getCategoria());
+                //Log.v("App123", entrada.getCategoria());
                 Log.v("App123", entrada.getDataCompra());
 
 
@@ -614,13 +614,13 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
         // An item was selected. You can retrieve the selected item using
         // parent.getItemAtPosition(pos)
         //categoriaSpinnerSelecionado = getResources().getStringArray(R.array.categoria_array)[1];
-        categoriaSpinnerSelecionado = parent.getItemAtPosition(pos).toString();
+        categoriaSpinnerSelecionado = parent.getSelectedItemPosition();
         dialogIn.setCategoriaSpinnerSelecionado(categoriaSpinnerSelecionado);
     }
 
     public void onNothingSelected(AdapterView<?> parent) {
         // Another interface callback
-        categoriaSpinnerSelecionado = parent.getItemAtPosition(0).toString();
+        categoriaSpinnerSelecionado = parent.getSelectedItemPosition();
         dialogIn.setCategoriaSpinnerSelecionado(categoriaSpinnerSelecionado);
     }
 

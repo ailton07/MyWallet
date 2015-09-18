@@ -24,14 +24,14 @@ import br.edu.ufam.ceteli.mywallet.R;
  */
 public class DialogIn {
     Context context;
-    String categoriaSpinnerSelecionado="";
+    int categoriaSpinnerSelecionado;
     AlertDialog.Builder builder;
     // Get the layout inflater
     LayoutInflater inflater;
     AdapterListView adapter;
 
 
-    public DialogIn(Context context, String categoriaSpinnerSelecionado, AlertDialog.Builder builder, LayoutInflater inflater, AdapterListView adapter){
+    public DialogIn(Context context, int categoriaSpinnerSelecionado, AlertDialog.Builder builder, LayoutInflater inflater, AdapterListView adapter){
         this.context = context;
         this.categoriaSpinnerSelecionado = categoriaSpinnerSelecionado;
         this.builder = builder;
@@ -49,11 +49,11 @@ public class DialogIn {
         this.context = context;
     }
 
-    public String getCategoriaSpinnerSelecionado() {
+    public int getCategoriaSpinnerSelecionado() {
         return categoriaSpinnerSelecionado;
     }
 
-    public void setCategoriaSpinnerSelecionado(String categoriaSpinnerSelecionado) {
+    public void setCategoriaSpinnerSelecionado(int categoriaSpinnerSelecionado) {
         this.categoriaSpinnerSelecionado = categoriaSpinnerSelecionado;
     }
 
