@@ -615,13 +615,17 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
         // parent.getItemAtPosition(pos)
         //categoriaSpinnerSelecionado = getResources().getStringArray(R.array.categoria_array)[1];
         categoriaSpinnerSelecionado = parent.getSelectedItemPosition();
-        dialogIn.setCategoriaSpinnerSelecionado(categoriaSpinnerSelecionado);
+        if(dialogIn!=null) {
+            dialogIn.setCategoriaSpinnerSelecionado(categoriaSpinnerSelecionado);
+        }
     }
 
     public void onNothingSelected(AdapterView<?> parent) {
         // Another interface callback
         categoriaSpinnerSelecionado = parent.getSelectedItemPosition();
-        dialogIn.setCategoriaSpinnerSelecionado(categoriaSpinnerSelecionado);
+        if(dialogIn!=null) {
+            dialogIn.setCategoriaSpinnerSelecionado(categoriaSpinnerSelecionado);
+        }
     }
 
 
