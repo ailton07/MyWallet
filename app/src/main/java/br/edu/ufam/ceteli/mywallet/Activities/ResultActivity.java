@@ -7,8 +7,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -33,7 +31,6 @@ import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -50,9 +47,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import br.edu.ufam.ceteli.mywallet.Activities.Dialogs.DialogIn;
 import br.edu.ufam.ceteli.mywallet.Classes.AdapterListView;
@@ -63,7 +58,6 @@ import br.edu.ufam.ceteli.mywallet.Classes.Login.ILoginConnection;
 import br.edu.ufam.ceteli.mywallet.Classes.OCR.CommsEngine;
 import br.edu.ufam.ceteli.mywallet.Classes.OCR.OCRImp;
 import br.edu.ufam.ceteli.mywallet.Classes.OCR.OCRResposta;
-import br.edu.ufam.ceteli.mywallet.Classes.OCR.OnServerRequestCompleteListener;
 import br.edu.ufam.ceteli.mywallet.R;
 
 
