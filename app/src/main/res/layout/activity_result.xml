@@ -18,12 +18,13 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/abc_action_bar_default_height_material"
             android:background="?attr/colorPrimary"
-            android:minHeight="?attr/actionBarSize" />
+            android:minHeight="?attr/actionBarSize"/>
 
         <ListView
             android:id="@android:id/list"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_marginTop="?attr/actionBarSize">
         </ListView>
 
         <com.getbase.floatingactionbutton.FloatingActionsMenu
