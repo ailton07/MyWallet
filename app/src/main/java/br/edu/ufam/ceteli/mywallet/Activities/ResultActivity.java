@@ -105,6 +105,8 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result);
 
+        setTitle("MyWallet");
+
         String type = getIntent().getExtras().getString("TYPE");
         if(type != null) {
             if (type.contains("GOOGLE")) {
@@ -230,7 +232,7 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
                         break;
 
                     case R.id.drawer_item_report:
-                        Toast.makeText(getApplicationContext(), "Inflar layout Relatório / Chamar activity Orçamento", Toast.LENGTH_LONG).show();
+                        //Toast.makeText(getApplicationContext(), "Inflar layout Relatório / Chamar activity Orçamento", Toast.LENGTH_LONG).show();
                         Intent it0 = new Intent(ResultActivity.this, RelatoriosActivity.class);
                         //TextView loggedEmail = (TextView) findViewById(R.id.tvHeaderEmail);
                         //it.putExtra("email", loggedEmail.getText().toString());
@@ -362,7 +364,7 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
                 //Descrição
                 //TextView descricao = (TextView) findViewById(R.id.descricao);
                 TextView descricao = (TextView) v.findViewById(R.id.descricao);
-                entrada.setDescricao(estabelecimento.getText().toString());
+                entrada.setDescricao(descricao.getText().toString());
 
                 //Valor
                 valor = (TextView) v.findViewById(R.id.valor);
