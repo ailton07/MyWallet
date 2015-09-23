@@ -14,9 +14,6 @@ public class OperacoesData {
     static String getDia(String data){
 
         if(data!=null){
-            if(data.length()<9){
-                Log.d("Data", "Data menor que 8 "+data);
-            }
             return(data.substring(6,8));
         }
 
