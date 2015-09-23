@@ -10,6 +10,9 @@ import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Select;
 
+//Data
+import static br.edu.ufam.ceteli.mywallet.Classes.OperacoesData.getDataFormatada;
+
 @Table(name = "Entrada")
 public class Entrada extends Model {
     @Column(name="Tipo")
@@ -29,11 +32,11 @@ public class Entrada extends Model {
     private int categoria;
 
     @Column(name="DataInsercao")
-    private Date dataInsercao;
-    //private String dataInsercao;
+    private String dataInsercao;
+    //private Date dataInsercao;
 
     @Column(name="DataCompra")
-    private String dataCompra;
+    private int dataCompra;
 
     // Getter e Setter
     public int getTipo() {
@@ -61,28 +64,26 @@ public class Entrada extends Model {
     public void setCategoria(int categoria) {
         this.categoria = categoria;
     }
-    public Date getDataInsercao() {
-        return dataInsercao;
+    public String getDataInsercao() {
+        return getDataFormatada(dataInsercao);
     }
 
     public String getDataInsercaoFormatada() {
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-
-        //FIX
-
-//        return (String.valueOf(dateFormat.format(dataInsercao)));
-        return null;
+        return getDataFormatada(dataInsercao);
     }
 
-    public void setDataInsercao(Date dataInsercao) {
-        this.dataInsercao = dataInsercao;
+    public void setDataInsercao(String dataInsercao) {
+        this.dataInsercao = (dataInsercao);
     }
     public String getDataCompra() {
-        return dataCompra;
+
+        return getDataFormatada(dataCompra);
+        //return dataCompra;
     }
     public void setDataCompra(String dataCompra) {
-        this.dataCompra = dataCompra;
+
+        this.dataCompra = Integer.valueOf(dataCompra);
     }
     public String getDescricao() {
         return descricao;

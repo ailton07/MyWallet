@@ -3,6 +3,7 @@ package br.edu.ufam.ceteli.mywallet.Activities.Dialogs;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -99,10 +100,9 @@ public class DialogIn {
                         //entrada.setTipo(radioClicado);
                         RadioButton radio1 = (RadioButton) v.findViewById(R.id.radio_opcao1);
                         RadioButton radio2 = (RadioButton) v.findViewById(R.id.radio_opcao2);
-                        if (radio1.isChecked()){
+                        if (radio1.isChecked()) {
                             entrada.setTipo(0);
-                        }
-                        else if (radio2.isChecked()){
+                        } else if (radio2.isChecked()) {
                             entrada.setTipo(1);
                         }
 
@@ -127,9 +127,11 @@ public class DialogIn {
 
                         //Data de Inserção
                         //SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd HH:mm:ss");
                         Date date = new Date();
 
-                        //entrada.setDataInsercao(dateFormat.format(date).toString());
+                        entrada.setDataInsercao(dateFormat.format(date).toString());
+
 
                         //Data de Compra
 
@@ -139,11 +141,12 @@ public class DialogIn {
                         Date dateDataCompra = new Date();
                         dateDataCompra.setDate(dataCompra.getDayOfMonth());
                         dateDataCompra.setMonth(dataCompra.getMonth());
-                        dateDataCompra.setYear(dataCompra.getYear()-1900); // http://stackoverflow.com/questions/9751050/simpledateformat-subclass-adds-1900-to-the-year
+                        dateDataCompra.setYear(dataCompra.getYear() - 1900); // http://stackoverflow.com/questions/9751050/simpledateformat-subclass-adds-1900-to-the-year
 
 
-                        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-                        entrada.setDataCompra(dateFormat.format(dateDataCompra).toString());
+                        SimpleDateFormat dateFormat0 = new SimpleDateFormat("yyyyMMdd");
+                        entrada.setDataCompra(dateFormat0.format(dateDataCompra).toString());
+                        //entrada.setDataCompra(String.valueOf(dataCompra.getYear() - 1900) + String.valueOf(dataCompra.getMonth()) + String.valueOf(dataCompra.getDayOfMonth()));
 
                         entrada.save();
 

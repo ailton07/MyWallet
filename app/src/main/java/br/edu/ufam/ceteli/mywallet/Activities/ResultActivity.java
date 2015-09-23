@@ -381,11 +381,12 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
                 entrada.setCategoria(categoriaSpinnerSelecionado);
 
                 //Data de Inserção
-//                SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
+                //SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd HH:mm:ss");
                 Date date = new Date();
 
-                //entrada.setDataInsercao(dateFormat.format(date).toString());
-                entrada.setDataInsercao(date);
+                entrada.setDataInsercao(dateFormat.format(date).toString());
+                //entrada.setDataInsercao(date);
 
                 //Data de Compra
 
@@ -394,10 +395,14 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
                 Date dateDataCompra = new Date();
                 dateDataCompra.setDate(dataCompra.getDayOfMonth());
                 dateDataCompra.setMonth(dataCompra.getMonth());
-                dateDataCompra.setYear(dataCompra.getYear());
+                dateDataCompra.setYear(dataCompra.getYear()-1900);
 
-                SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-                entrada.setDataCompra(dateFormat.format(dateDataCompra).toString());
+                SimpleDateFormat dateFormat0 = new SimpleDateFormat("yyyyMMdd");
+                //Log.d("Data", dateFormat0.format(dateDataCompra).toString());
+                entrada.setDataCompra(dateFormat0.format(dateDataCompra).toString());
+
+                //Nova Implementação da Entrada de data
+                //entrada.setDataCompra(String.valueOf(dataCompra.getYear()-1900)+String.valueOf(dataCompra.getMonth())+String.valueOf(dataCompra.getDayOfMonth()));
 
                 entrada.save();
 
