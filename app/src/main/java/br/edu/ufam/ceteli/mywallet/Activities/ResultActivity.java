@@ -171,7 +171,7 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
 
         ListView lv = (ListView) findViewById(android.R.id.list);
         //setListAdapter(adapter);
-        lv.setAdapter(adapter);
+        //lv.setAdapter(adapter);
         lv.setAdapter(adapter);
 
 

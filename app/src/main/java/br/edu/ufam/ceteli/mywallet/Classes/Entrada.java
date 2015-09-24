@@ -100,7 +100,7 @@ public class Entrada extends Model {
     }
 
     public static ArrayList<Entrada> getComments() {
-        return new Select().from(Entrada.class).execute();
+        return new Select().from(Entrada.class).orderBy("DataCompra DESC").execute();
     }
 
     // Will be used by the ArrayAdapter in the ListView
@@ -128,21 +128,21 @@ public class Entrada extends Model {
     }
 
     public static ArrayList<Entrada> getEntrada(){
-        return new Select().from(Entrada.class).where("Tipo = 0").execute();
+        return new Select().from(Entrada.class).where("Tipo = 0").orderBy("DataCompra DESC").execute();
     }
     public static ArrayList<Entrada> getSaida(){
-        return new Select().from(Entrada.class).where("Tipo = 1").execute();
+        return new Select().from(Entrada.class).where("Tipo = 1").orderBy("DataCompra DESC").execute();
     }
     public static ArrayList<Entrada> getCategoriaCasa(){
-        return new Select().from(Entrada.class).where("Categoria = 1").execute();
+        return new Select().from(Entrada.class).where("Categoria = 1").orderBy("DataCompra DESC").execute();
     }
     public static ArrayList<Entrada> getCategoriaRestaurante(){
-        return new Select().from(Entrada.class).where("Categoria = 2").execute();
+        return new Select().from(Entrada.class).where("Categoria = 2").orderBy("DataCompra DESC").execute();
     }
     public static ArrayList<Entrada> getCategoriaLazer(){
-        return new Select().from(Entrada.class).where("Categoria = 3").execute();
+        return new Select().from(Entrada.class).where("Categoria = 3").orderBy("DataCompra DESC").execute();
     }
     public static ArrayList<Entrada> getCategoriaOcasional(){
-        return new Select().from(Entrada.class).where("Categoria = 4").execute();
+        return new Select().from(Entrada.class).where("Categoria = 4").orderBy("DataCompra DESC").execute();
     }
 }
