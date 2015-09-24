@@ -335,6 +335,7 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
         final View v = inflater.inflate(R.layout.dialog_foto_layout, null);
 
         Button pickButton = (Button) v.findViewById((R.id.picImagebutton));
+        Button takePic = (Button) v.findViewById((R.id.takePic));
         picNameText = (TextView) v.findViewById(R.id.imageName);
         estabelecimento = (TextView) v.findViewById(R.id.estabelecimento);
         ocrImp.setEstabelecimento(estabelecimento);
@@ -353,6 +354,16 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
                 Intent i = new Intent(
                         Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(i, SELECT_PICTURE);
+            }
+        });
+
+        takePic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                // Starting image picker activity
+//                startActivityForResult(new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI), IMAGE_PICKER_REQUEST);
+                Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
+                startActivityForResult(intent, TAKE_PICTURE);
             }
         });
 

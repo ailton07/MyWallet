@@ -1,5 +1,7 @@
 package br.edu.ufam.ceteli.mywallet.Classes.OCR;
 
+import android.util.Log;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -14,6 +16,8 @@ public class OCRResposta {
     public OCRResposta(String res){
         resposta = res;
         vetorResposta = resposta.split("\n");
+
+        Log.d("OCR", res);
     }
 
     public String getEmpresa(){
