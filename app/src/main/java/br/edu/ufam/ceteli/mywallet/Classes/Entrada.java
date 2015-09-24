@@ -92,15 +92,8 @@ public class Entrada extends Model {
         this.descricao = descricao;
     }
 
-
-
-
     public Entrada() {
         super();
-    }
-
-    public static ArrayList<Entrada> getComments() {
-        return new Select().from(Entrada.class).orderBy("DataCompra DESC").execute();
     }
 
     // Will be used by the ArrayAdapter in the ListView
@@ -127,6 +120,9 @@ public class Entrada extends Model {
                 + "\n" +  "Descricao: " + descricao;
     }
 
+    public static ArrayList<Entrada> getComments() {
+        return new Select().from(Entrada.class).orderBy("DataCompra DESC").execute();
+    }
     public static ArrayList<Entrada> getEntrada(){
         return new Select().from(Entrada.class).where("Tipo = 0").orderBy("DataCompra DESC").execute();
     }
