@@ -501,6 +501,9 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
                             newW = (int) (OPTIMIZED_LENGTH * ratio);
                         }
                         mCurrentSelectedBitmap = ocrImp.rescaleBitmap(mCurrentSelectedBitmap, newW, newH);
+
+                        //Checar se mCurrentSelectedBitmap precisa ser destruído com reycle
+                        // Como em :  http://stackoverflow.com/questions/20441644/java-lang-outofmemoryerror-bitmapfactory-decodestrpath
                     }
                     // let save the new image to our local folder
                     mImageFullPathAndName = SaveImage(mCurrentSelectedBitmap);
