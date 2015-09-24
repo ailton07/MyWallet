@@ -689,6 +689,8 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
     protected void onResume() {
         super.onResume();
         restartArryaListAdapter();
+        //Teste
+        ocrImp = new OCRImp(commsEngine, estabelecimento, valor, mImageFullPathAndName, pbOCRReconizing);
         if (commsEngine == null){
             commsEngine = new CommsEngine();
             ocrImp.setCommsEngine(commsEngine);

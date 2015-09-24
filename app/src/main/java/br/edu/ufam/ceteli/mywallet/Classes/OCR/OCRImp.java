@@ -148,6 +148,7 @@ public class OCRImp {
         final BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = false;
         options.inSampleSize = 1;
+       //options.inSampleSize = 2;
         int mImageRealWidth = options.outWidth;
         int mImageRealHeight = options.outHeight;
         Bitmap pic = null;
