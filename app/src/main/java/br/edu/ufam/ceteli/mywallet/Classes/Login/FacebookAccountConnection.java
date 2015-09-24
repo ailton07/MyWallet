@@ -69,25 +69,33 @@ public class FacebookAccountConnection extends Observable implements FacebookCal
         notifyObservers(state);
     }
 
-    private void getProfileEmail(){
+    private void getUserInfo(){
+        Bundle parameters = new Bundle();
+        final AlertDialog alertDialog = new AlertDialog.Builder(activityWeakReference.get()).setMessage("Baixando informações do usuário...").setCancelable(false).show();
+
         GraphRequest graphRequest = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
             @Override
             public void onCompleted(JSONObject jsonObject, GraphResponse graphResponse) {
+                alertDialog.dismiss();
                 changeCurrentState(StatusFacebookConn.CONNECTED);
-                activityWeakReference.get().getSharedPreferences("FacebookSession", Context.MODE_PRIVATE).edit().putBoolean("FacebookLogged", true).commit();
-                Log.i(TAGINFO, "Getting user email completed/Connected");
+                Log.i(TAGINFO, "Getting user info completed/Connected");
+                try {
+                    activityWeakReference.get().getSharedPreferences("FacebookSession", Context.MODE_PRIVATE).edit().putString("FacebookEmail", jsonObject.getString("email")).commit();
+                    activityWeakReference.get().getSharedPreferences("FacebookSession", Context.MODE_PRIVATE).edit().putBoolean("FacebookLogged", true).commit();
+
+                    //TODO: pegar foto
+                    Log.i(TAGINFO, jsonObject.getString("picture"));
+                } catch (JSONException e) {
+                    Log.e(TAGERROR, e.getMessage() + " - " + e.getCause());
+                    e.printStackTrace();
+                }
+
             }
         });
-        Bundle parameters = new Bundle();
-        parameters.putString("fields", "email");
+        parameters.putString("fields", "email,picture");
         graphRequest.setParameters(parameters);
-        try {
-            String facebookEmail = graphRequest.executeAsync().get().get(0).getJSONObject().getString("email");
-            Log.i(TAGINFO, "Requesting user email");
-            activityWeakReference.get().getSharedPreferences("FacebookSession", Context.MODE_PRIVATE).edit().putString("FacebookEmail", facebookEmail).commit();
-        } catch (JSONException | InterruptedException | ExecutionException e) {
-            Log.i(TAGERROR, e.toString());
-        }
+        graphRequest.executeAsync();
+        Log.i(TAGINFO, "Requesting user info");
     }
 
     private boolean noConnAlertDialog(){
@@ -174,12 +182,12 @@ public class FacebookAccountConnection extends Observable implements FacebookCal
                 protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
                     Profile.setCurrentProfile(currentProfile);
                     if(currentState.equals(StatusFacebookConn.CONNECTING)) {
-                        getProfileEmail();
+                        getUserInfo();
                     }
                 }
             };
         } else {
-            getProfileEmail();
+            getUserInfo();
         }
     }
 

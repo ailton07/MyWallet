@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -107,12 +108,18 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
 
         setTitle("MyWallet");
 
+        // ImageView do Cabeçalho do Drawer
+        ImageView cover = (ImageView) findViewById(R.id.coverPhoto);
+        ImageView profile = (ImageView) findViewById(R.id.profileImage);
+
         String type = getIntent().getExtras().getString("TYPE");
         if(type != null) {
             if (type.contains("GOOGLE")) {
                 loggedAccount = GoogleAccountConnection.getInstance(null);
+                cover.setBackgroundColor(Color.parseColor("#607D8B"));
             } else if (type.contains("FACEBOOK")) {
                 loggedAccount = FacebookAccountConnection.getInstance(null);
+                cover.setBackgroundColor(Color.parseColor("#3F51B5"));
             }
         }
 
@@ -139,10 +146,6 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
         TextView loggedEmail = (TextView) findViewById(R.id.tvHeaderEmail);
         loggedName.setText(loggedAccount.getAccountName());
         loggedEmail.setText(loggedAccount.getAccountEmail());
-
-        // ImageView do Cabeçalho do Drawer
-        ImageView cover = (ImageView) findViewById(R.id.coverPhoto);
-        ImageView profile = (ImageView) findViewById(R.id.profileImage);
 
         loggedAccount.getAccountPicCover(cover);
         loggedAccount.getAccountPicProfile(profile);
@@ -395,7 +398,7 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
                 Date dateDataCompra = new Date();
                 dateDataCompra.setDate(dataCompra.getDayOfMonth());
                 dateDataCompra.setMonth(dataCompra.getMonth());
-                dateDataCompra.setYear(dataCompra.getYear()-1900);
+                dateDataCompra.setYear(dataCompra.getYear() - 1900);
 
                 SimpleDateFormat dateFormat0 = new SimpleDateFormat("yyyyMMdd");
                 //Log.d("Data", dateFormat0.format(dateDataCompra).toString());
