@@ -50,6 +50,7 @@
     <string name="title_activity_relatorio_restaurante">RelatorioRestaurante</string>
     <string name="title_activity_relatorio_lazer">RelatorioLazer</string>
     <string name="title_activity_relatorio_ocasional">RelatorioOcasional</string>
+    <string name="title_activity_orcamento">OrcamentoActivity</string>
 
 
 </resources>
