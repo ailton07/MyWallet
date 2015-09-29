@@ -101,7 +101,7 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
 
     OCRImp ocrImp;
 
-    @Override
+    @Override  
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result);
@@ -231,7 +231,9 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
             public void run() {
                 switch (menuItem.getItemId()) {
                     case R.id.drawer_item_budget:
-                        Toast.makeText(getApplicationContext(), "Inflar layout Orçamento / Chamar activity Orçamento", Toast.LENGTH_LONG).show();
+                        //Toast.makeText(getApplicationContext(), "Inflar layout Orçamento / Chamar activity Orçamento", Toast.LENGTH_LONG).show();
+                        Intent i = new Intent(ResultActivity.this, OrcamentoActivity.class);
+                        startActivity(i);
                         break;
 
                     case R.id.drawer_item_report:
