@@ -24,9 +24,9 @@ public class FoodReport extends Fragment {
         List<Entrada> valores = Entrada.getCategoriaRestaurante();
 
         adapter = new AdapterListView(getActivity(), valores);
-        ListView lista = (ListView) getActivity().findViewById(R.id.listView5);
-        //TODO: Resolver o null pointer aqui
-        //lista.setAdapter(adapter);
+        ListView lista = (ListView) view.findViewById(R.id.listView5);
+        lista.setAdapter(adapter);
+
         return view;
     }
 }

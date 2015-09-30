@@ -24,9 +24,9 @@ public class HomeReport extends Fragment {
         List<Entrada> valores = Entrada.getCategoriaCasa();
 
         adapter = new AdapterListView(getActivity(), valores);
-        ListView lista = (ListView) getActivity().findViewById(R.id.listView4);
-        //TODO: Resolver o null pointer aqui
-        //lista.setAdapter(adapter);
+        ListView lista = (ListView) view.findViewById(R.id.listView4);
+        lista.setAdapter(adapter);
+
         return view;
     }
 }

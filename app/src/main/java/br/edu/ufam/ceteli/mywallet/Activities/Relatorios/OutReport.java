@@ -24,9 +24,9 @@ public class OutReport extends Fragment {
         List<Entrada> valores = Entrada.getSaida();
 
         adapter = new AdapterListView(getActivity(), valores);
-        ListView lista = (ListView) getActivity().findViewById(R.id.listView3);
-        //TODO: Resolver o null pointer aqui
-        //lista.setAdapter(adapter);
+        ListView lista = (ListView) view.findViewById(R.id.listView3);
+        lista.setAdapter(adapter);
+
         return view;
     }
 }
