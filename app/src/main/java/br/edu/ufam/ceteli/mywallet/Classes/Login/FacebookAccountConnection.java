@@ -82,17 +82,13 @@ public class FacebookAccountConnection extends Observable implements FacebookCal
                 try {
                     activityWeakReference.get().getSharedPreferences("FacebookSession", Context.MODE_PRIVATE).edit().putString("FacebookEmail", jsonObject.getString("email")).commit();
                     activityWeakReference.get().getSharedPreferences("FacebookSession", Context.MODE_PRIVATE).edit().putBoolean("FacebookLogged", true).commit();
-
-                    //TODO: pegar foto
-                    Log.i(TAGINFO, jsonObject.getString("picture"));
                 } catch (JSONException e) {
                     Log.e(TAGERROR, e.getMessage() + " - " + e.getCause());
-                    e.printStackTrace();
                 }
 
             }
         });
-        parameters.putString("fields", "email,picture");
+        parameters.putString("fields", "email");
         graphRequest.setParameters(parameters);
         graphRequest.executeAsync();
         Log.i(TAGINFO, "Requesting user info");
@@ -268,10 +264,10 @@ public class FacebookAccountConnection extends Observable implements FacebookCal
 
             @Override
             protected void onPostExecute(Bitmap bitmap) {
-                if(bitmap != null)
-                    imageView.setImageBitmap(bitmap);
+                if(bitmap != null);
+                imageView.setImageBitmap(bitmap);
             }
-        }; //TODO: execute();
+        }.execute(Profile.getCurrentProfile().getProfilePictureUri(100,100).toString());
     }
 
     @Override

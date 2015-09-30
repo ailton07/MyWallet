@@ -60,39 +60,13 @@
         </activity>
         <activity
             android:name=".Activities.SettingsActivity"
-            android:label="@string/title_activity_settings" >
+            android:label="@string/title_activity_settings"
+            android:theme="@style/AppTheme.NoActionBar" >
         </activity>
         <activity
-            android:name=".Activities.RelatoriosActivity"
-            android:label="@string/title_activity_relatorios" >
-        </activity>
-        <activity
-            android:name=".Activities.Relatorios.RelatorioGeral"
-            android:label="@string/title_activity_relatorio_geral" >
-        </activity>
-        <activity
-            android:name=".Activities.Relatorios.RelatorioEntradas"
-            android:label="@string/title_activity_relatorio_entradas" >
-        </activity>
-        <activity
-            android:name=".Activities.Relatorios.RelatorioSaida"
-            android:label="@string/title_activity_relatorio_saida" >
-        </activity>
-        <activity
-            android:name=".Activities.Relatorios.RelatorioCasa"
-            android:label="@string/title_activity_relatorio_casa" >
-        </activity>
-        <activity
-            android:name=".Activities.Relatorios.RelatorioRestaurante"
-            android:label="@string/title_activity_relatorio_restaurante" >
-        </activity>
-        <activity
-            android:name=".Activities.Relatorios.RelatorioLazer"
-            android:label="@string/title_activity_relatorio_lazer" >
-        </activity>
-        <activity
-            android:name=".Activities.Relatorios.RelatorioOcasional"
-            android:label="@string/title_activity_relatorio_ocasional" >
+            android:name=".Activities.ReportsActivity"
+            android:label="@string/title_activity_relatorios"
+            android:theme="@style/AppTheme.NoActionBar" >
         </activity>
     </application>
 

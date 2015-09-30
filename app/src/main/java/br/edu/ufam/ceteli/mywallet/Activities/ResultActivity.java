@@ -70,6 +70,7 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
     private DrawerLayout drawerLayout = null;
     private NavigationView resultFrameDrawer = null;
     private Handler drawerHandler = new Handler();
+    private ImageView toggleArrow = null;
 
     // Nova entrada (Botão Flutuante)
     private FloatingActionsMenu fabNewInput = null;
@@ -130,6 +131,8 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
         resultFrameDrawer = (NavigationView) findViewById(R.id.resultFrameDrawer);
         resultFrameDrawer.inflateMenu(R.menu.menu_drawer);
         resultFrameDrawer.setNavigationItemSelectedListener(this);
+        toggleArrow = (ImageView) findViewById(R.id.toggleArrow);
+        toggleArrow.setImageDrawable(getResources().getDrawable(R.drawable.ic_keyboard_arrow_down_white_24dp));
         NavigationView resultFrameDefaultOptionsDrawer = (NavigationView) findViewById(R.id.resultFrameDefaultOptionsDrawer);
         resultFrameDefaultOptionsDrawer.setNavigationItemSelectedListener(this);
 
@@ -230,15 +233,8 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
             @Override
             public void run() {
                 switch (menuItem.getItemId()) {
-                    case R.id.drawer_item_budget:
-                        Toast.makeText(getApplicationContext(), "Inflar layout Orçamento / Chamar activity Orçamento", Toast.LENGTH_LONG).show();
-                        break;
-
                     case R.id.drawer_item_report:
-                        //Toast.makeText(getApplicationContext(), "Inflar layout Relatório / Chamar activity Orçamento", Toast.LENGTH_LONG).show();
-                        Intent it0 = new Intent(ResultActivity.this, RelatoriosActivity.class);
-                        //TextView loggedEmail = (TextView) findViewById(R.id.tvHeaderEmail);
-                        //it.putExtra("email", loggedEmail.getText().toString());
+                        Intent it0 = new Intent(ResultActivity.this, ReportsActivity.class);
                         startActivity(it0);
                         break;
 
@@ -247,10 +243,8 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
                         break;
 
                     case R.id.drawer_item_settings:
-                        //Toast.makeText(getApplicationContext(), "Inflar layout Configurações / Chamar activity Configurações", Toast.LENGTH_LONG).show();
                         Intent it = new Intent(ResultActivity.this, SettingsActivity.class);
-                        TextView loggedEmail = (TextView) findViewById(R.id.tvHeaderEmail);
-                        it.putExtra("email", loggedEmail.getText().toString());
+                        it.putExtra("email", loggedAccount.getAccountEmail());
                         startActivity(it);
                         break;
 
@@ -273,12 +267,14 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
 
     public void loginOptions(View view){
         // Se a opçao desconectar não aparece, infle o menu login, senão volte
-        if(resultFrameDrawer.getMenu().findItem(R.id.drawer_item_disconnect) == null){
+        if(resultFrameDrawer.getMenu().findItem(R.id.drawer_item_revoke) == null){
             resultFrameDrawer.getMenu().clear();
             resultFrameDrawer.inflateMenu(R.menu.menu_drawer_login);
+            toggleArrow.setImageDrawable(getResources().getDrawable(R.drawable.ic_keyboard_arrow_up_white_24dp));
         } else {
             resultFrameDrawer.getMenu().clear();
             resultFrameDrawer.inflateMenu(R.menu.menu_drawer);
+            toggleArrow.setImageDrawable(getResources().getDrawable(R.drawable.ic_keyboard_arrow_down_white_24dp));
         }
     }
 

@@ -41,6 +41,16 @@
         android:layout_height="56dp"
         android:layout_below="@id/relativeLayout">
 
+        <ImageView
+            android:id="@+id/toggleArrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="16dp"
+            android:layout_marginEnd="16dp"/>
+
         <TextView
             android:id="@+id/tvHeaderName"
             android:layout_width="wrap_content"
