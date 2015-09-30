@@ -106,7 +106,6 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result);
-
         setTitle("MyWallet");
 
         // ImageView do Cabeçalho do Drawer
@@ -125,7 +124,6 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
         }
 
         // Drawer e Toolbar
-        // TODO: Personalizar toolbar
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         drawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
         resultFrameDrawer = (NavigationView) findViewById(R.id.resultFrameDrawer);

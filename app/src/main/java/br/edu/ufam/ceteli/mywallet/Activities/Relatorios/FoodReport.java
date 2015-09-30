@@ -20,13 +20,17 @@ public class FoodReport extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_relatorio_restaurante, container, false);
+        return inflater.inflate(R.layout.activity_relatorio_restaurante, container, false);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
         List<Entrada> valores = Entrada.getCategoriaRestaurante();
 
         adapter = new AdapterListView(getActivity(), valores);
         ListView lista = (ListView) getActivity().findViewById(R.id.listView5);
-        //TODO: Resolver o null pointer aqui
-        //lista.setAdapter(adapter);
-        return view;
+        lista.setAdapter(adapter);
     }
 }
