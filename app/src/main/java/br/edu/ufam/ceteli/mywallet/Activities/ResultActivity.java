@@ -225,46 +225,39 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
     @Override
     public boolean onNavigationItemSelected(final MenuItem menuItem) {
         drawerLayout.closeDrawer(GravityCompat.START);
+        switch (menuItem.getItemId()) {
+            case R.id.drawer_item_budget:
+                /*
+                 * Inserir intent aqui
+                 */
+                break;
+            case R.id.drawer_item_report:
+                Intent it0 = new Intent(ResultActivity.this, ReportsActivity.class);
+                startActivity(it0);
+                break;
 
-        // Experiencia de usuário, por isso o delay (e a thread)
-        drawerHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                switch (menuItem.getItemId()) {
-                    case R.id.drawer_item_budget:
-                        /*
-                         * Inserir intent aqui
-                         */
-                        break;
-                    case R.id.drawer_item_report:
-                        Intent it0 = new Intent(ResultActivity.this, ReportsActivity.class);
-                        startActivity(it0);
-                        break;
+            case R.id.drawer_item_tips:
+                Toast.makeText(getApplicationContext(), "Inflar layout Dicas / Chamar activity Dicas", Toast.LENGTH_LONG).show();
+                break;
 
-                    case R.id.drawer_item_tips:
-                        Toast.makeText(getApplicationContext(), "Inflar layout Dicas / Chamar activity Dicas", Toast.LENGTH_LONG).show();
-                        break;
+            case R.id.drawer_item_settings:
+                Intent it = new Intent(ResultActivity.this, SettingsActivity.class);
+                it.putExtra("email", loggedAccount.getAccountEmail());
+                startActivity(it);
+                break;
 
-                    case R.id.drawer_item_settings:
-                        Intent it = new Intent(ResultActivity.this, SettingsActivity.class);
-                        it.putExtra("email", loggedAccount.getAccountEmail());
-                        startActivity(it);
-                        break;
+            case R.id.drawer_item_help:
+                Toast.makeText(getApplicationContext(), "Inflar layout Ajuda / Chamar activity Ajuda", Toast.LENGTH_LONG).show();
+                break;
 
-                    case R.id.drawer_item_help:
-                        Toast.makeText(getApplicationContext(), "Inflar layout Ajuda / Chamar activity Ajuda", Toast.LENGTH_LONG).show();
-                        break;
+            case R.id.drawer_item_disconnect:
+                loggedAccount.disconnect(ResultActivity.this);
+                break;
 
-                    case R.id.drawer_item_disconnect:
-                        loggedAccount.disconnect(ResultActivity.this);
-                        break;
-
-                    case R.id.drawer_item_revoke:
-                        loggedAccount.revoke(ResultActivity.this);
-                        break;
-                }
-            }
-        }, 200);
+            case R.id.drawer_item_revoke:
+                loggedAccount.revoke(ResultActivity.this);
+                break;
+        }
         return true;
     }
 

@@ -10,7 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/abc_action_bar_default_height_material"
         android:background="#009688"
-        android:navigationIcon="@style/Base.Widget.AppCompat.Toolbar.Button.Navigation"
         android:minHeight="?attr/actionBarSize" />
 
     <FrameLayout

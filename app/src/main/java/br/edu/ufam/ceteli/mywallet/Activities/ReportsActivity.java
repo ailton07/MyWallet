@@ -35,6 +35,7 @@ public class ReportsActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarReports);
         setSupportActionBar(toolbar);
+        getDelegate().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
         viewPager.setAdapter(fragmentPagerAdapter);

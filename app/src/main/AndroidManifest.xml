@@ -56,17 +56,20 @@
         <activity
             android:name=".Activities.ResultActivity"
             android:label="@string/title_activity_result"
+            android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
         <activity
             android:name=".Activities.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:theme="@style/AppTheme.NoActionBar" >
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".Activities.ResultActivity" >
         </activity>
         <activity
             android:name=".Activities.ReportsActivity"
             android:label="@string/title_activity_relatorios"
-            android:theme="@style/AppTheme.NoActionBar" >
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".Activities.ResultActivity" >
         </activity>
     </application>
 
