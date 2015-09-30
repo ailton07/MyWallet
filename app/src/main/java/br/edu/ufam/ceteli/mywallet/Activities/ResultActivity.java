@@ -231,6 +231,11 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
             @Override
             public void run() {
                 switch (menuItem.getItemId()) {
+                    case R.id.drawer_item_budget:
+                        /*
+                         * Inserir intent aqui
+                         */
+                        break;
                     case R.id.drawer_item_report:
                         Intent it0 = new Intent(ResultActivity.this, ReportsActivity.class);
                         startActivity(it0);

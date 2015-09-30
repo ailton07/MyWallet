@@ -3,6 +3,10 @@
 
     <group android:checkableBehavior="none">
         <item
+            android:id="@+id/drawer_item_budget"
+            android:title="Orçamento"
+            android:icon="@drawable/ic_trending_up_black_24dp"/>
+        <item
             android:id="@+id/drawer_item_report"
             android:title="Relatório"
             android:icon="@drawable/ic_description_black_24dp"/>
