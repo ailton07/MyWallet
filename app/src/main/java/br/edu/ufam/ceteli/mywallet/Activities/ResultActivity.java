@@ -227,9 +227,8 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
         drawerLayout.closeDrawer(GravityCompat.START);
         switch (menuItem.getItemId()) {
             case R.id.drawer_item_budget:
-                /*
-                 * Inserir intent aqui
-                 */
+                Intent i = new Intent(ResultActivity.this, BudgetActivity.class);
+                startActivity(i);
                 break;
             case R.id.drawer_item_report:
                 Intent it0 = new Intent(ResultActivity.this, ReportsActivity.class);
