@@ -38,6 +38,7 @@
         <item>Ocasional</item>
 
     </string-array>
+
     <string name="title_activity_settings">Configurações</string>
     <string name="backup">Backup</string>
     <string name="backupBt1">Criar Backup</string>
@@ -51,6 +52,70 @@
     <string name="title_activity_relatorio_lazer">RelatorioLazer</string>
     <string name="title_activity_relatorio_ocasional">RelatorioOcasional</string>
     <string name="title_activity_budget">BudgetActivity</string>
+
+    <string-array name="dicas">
+        <item>1- Faça um planejamento financeiro.</item>
+
+        <item>2- Faça 3 perguntas quanto ganho, quanto gasto e quanto poupo no mês?</item>
+
+        <item>3- Liste primeiramente as despesas fixas.</item>
+
+        <item>4- Anote todos os seus gastos diariamente.</item>
+
+        <item>5- Tenha objetivos a serem alcançados.</item>
+
+        <item>6- Estabeleça metas para alcançar um objetivo.</item>
+
+        <item>7- Analise mensalmente os seus objetivos.</item>
+
+        <item>8- Viva de acordo com seu padrão de vida.</item>
+
+        <item>9- Escolha o melhor momento para comprar e a melhor opção de pagar.</item>
+
+        <item>10- Pague sempre a vista e evite o uso de cartão de crédito.</item>
+
+        <item>11- Utilize o cartão de crédito apenas quando for benéfico.</item>
+
+        <item>12- Verifique sempre se as metas estão sendo cumpridas.</item>
+
+        <item>13- Pesquise preços antes de qualquer compra.</item>
+
+        <item>14- Fazer lista de compras diminui gastos no supermercado.</item>
+
+        <item>15- Adote a prática da economia como um princípio de vida.</item>
+
+        <item>16- Use sua renda de maneira absolutamente disciplinada.</item>
+
+        <item>17- Fuja do cartão de crédito e do crédito especial.</item>
+
+        <item>18- Não gaste sem necessidade, compre somente o necessário.</item>
+
+        <item>19- Tenha um fundo de emergência.</item>
+
+        <item>20- Esteja preparado para os imprevistos.</item>
+
+        <item>21- Pense antes de comprar. Leve em conta seu planejamento financeiro.</item>
+
+        <item>22- Controle seus gastos impulsivos.</item>
+
+        <item>23- Avalie suas despesas e saiba poupar.</item>
+
+        <item>24- Elabore um plano para eliminar as dívidas.</item>
+
+        <item>25- Não deixe as dividas se acumularem.</item>
+
+        <item>26- Pague as dívidas antes da data de vencimento.</item>
+
+        <item>27- Nunca gaste mais do que você ganha.</item>
+
+        <item>28- Evite compras a prazo.</item>
+
+        <item>29- Use o cartão de crédito com Inteligência.</item>
+
+        <item>30- Nunca pague o mínimo da fatura do cartão de crédito.</item>
+
+        <item>31- Antes de fazer qualquer negócio financeiro procure orientação.</item>
+    </string-array>
 
 
 </resources>

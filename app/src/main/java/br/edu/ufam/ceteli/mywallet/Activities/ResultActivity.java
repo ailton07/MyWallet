@@ -3,11 +3,15 @@ package br.edu.ufam.ceteli.mywallet.Activities;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Point;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -20,6 +24,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -30,7 +35,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -47,8 +54,10 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 import br.edu.ufam.ceteli.mywallet.Activities.Dialogs.DialogIn;
 import br.edu.ufam.ceteli.mywallet.Classes.AdapterListView;
@@ -60,6 +69,8 @@ import br.edu.ufam.ceteli.mywallet.Classes.OCR.CommsEngine;
 import br.edu.ufam.ceteli.mywallet.Classes.OCR.OCRImp;
 import br.edu.ufam.ceteli.mywallet.Classes.OCR.OCRResposta;
 import br.edu.ufam.ceteli.mywallet.R;
+
+
 
 
 public class ResultActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, AdapterView.OnItemSelectedListener{
@@ -85,6 +96,10 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
     DialogIn dialogIn;
     TextView estabelecimento;
     TextView valor;
+
+    // Show popup
+    Point p;
+
 
     // OCR
 
@@ -187,6 +202,7 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
         CreateLocalImageFolder();
 
     }
+
 
     public void restartArryaListAdapter(){
 
@@ -618,6 +634,82 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
 
     //******************************************************
 
+    //***********************************
+    // POPUP
+
+    // Get the x and y position after the button is draw on screen
+    // (It's important to note that we can't get the position in the onCreate(),
+    // because at that stage most probably the view isn't drawn yet, so it will return (0, 0))
+
+    public void popup() {
+
+        int[] location = new int[2];
+        Toolbar button = (Toolbar) findViewById(R.id.toolbar);
+
+        // Get the x, y location and store it in the location[] array
+        // location[0] = x, location[1] = y.
+        button.getLocationOnScreen(location);
+
+        //Initialize the Point with x, and y positions
+        p = new Point();
+        p.x = location[0];
+        p.y = location[1];
+
+        showPopup(ResultActivity.this, p);
+
+    }
+
+
+    // The method that displays the popup.
+    private void showPopup(final Activity context, Point p) {
+        int popupWidth = 250;
+        int popupHeight = 225;
+
+        // Inflate the popup_layout_up.xmlxml
+        LinearLayout viewGroup = (LinearLayout) context.findViewById(R.id.popup);
+        LayoutInflater layoutInflater = (LayoutInflater) context
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View layout = layoutInflater.inflate(R.layout.popup_layout_up, viewGroup);
+
+        // Creating the PopupWindow
+        final PopupWindow popup = new PopupWindow(context);
+        popup.setContentView(layout);
+        popup.setWidth(popupWidth);
+        popup.setHeight(popupHeight);
+        popup.setFocusable(true);
+
+
+        // Some offset to align the popup a bit to the right, and a bit down, relative to button's position.
+        int OFFSET_X = 30;
+        int OFFSET_Y = 30;
+
+        // Clear the default translucent background
+        popup.setBackgroundDrawable(new BitmapDrawable());
+
+        // Displaying the popup at the specified location, + offsets.
+        popup.showAtLocation(layout, Gravity.NO_GRAVITY, p.x + OFFSET_X, p.y + OFFSET_Y);
+
+        // Getting a reference to Close button, and close the popup when clicked.
+        Button close = (Button) layout.findViewById(R.id.close);
+
+        Resources res = getResources();
+        String[] dicasArray = res.getStringArray(R.array.dicas);
+        TextView textoPopup = (TextView) layout.findViewById(R.id.textViewDicas);
+        Random gerador = new Random();
+        textoPopup.setText(dicasArray[gerador.nextInt(31)]);
+
+
+
+        close.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                popup.dismiss();
+            }
+        });
+    }
+
+    //Spinner
     public void onItemSelected(AdapterView<?> parent, View view,
                                int pos, long id) {
         // An item was selected. You can retrieve the selected item using
@@ -689,6 +781,27 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
             commsEngine = new CommsEngine();
             ocrImp.setCommsEngine(commsEngine);
         }
+
+
+        Calendar c = Calendar.getInstance();
+        int seconds = c.get(Calendar.SECOND);
+        //FIX crash se a Activity nao estiver ativa
+        if(((seconds%2) == 0) & ((getWindow().getDecorView().getWindowVisibility() == View.GONE) )) {
+            //if((seconds%2) == 0){
+            //if() {
+            new Handler().postDelayed(new Runnable() {
+                public void run() {
+                    popup();
+                }
+            }, 100);
+            //}
+
+        }
+
+
+        Log.d("Popup", Integer.toString(seconds));
+
+
     }
 
 }
