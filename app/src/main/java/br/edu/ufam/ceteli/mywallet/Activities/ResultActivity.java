@@ -70,7 +70,7 @@ import br.edu.ufam.ceteli.mywallet.Classes.OCR.OCRImp;
 import br.edu.ufam.ceteli.mywallet.Classes.OCR.OCRResposta;
 import br.edu.ufam.ceteli.mywallet.R;
 
-
+import static br.edu.ufam.ceteli.mywallet.Classes.OCR.Utils.getSaldoMes;
 
 
 public class ResultActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, AdapterView.OnItemSelectedListener{
@@ -181,7 +181,6 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
 
         List<Entrada> values = Entrada.getComments();
 
-
         //  Adapter Original
         //    adapter = new ArrayAdapter<Entrada>(this,
         //           android.R.layout.simple_list_item_1, values);
@@ -200,6 +199,10 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
 
         ocrImp = new OCRImp(commsEngine, estabelecimento, valor, mImageFullPathAndName, pbOCRReconizing);
         CreateLocalImageFolder();
+
+
+        //List<Entrada> valuesDoMes = Entrada.getEntradasMesAno(10,2015);
+        Log.d("Saldo", String.valueOf(getSaldoMes(10,2015)));
 
     }
 

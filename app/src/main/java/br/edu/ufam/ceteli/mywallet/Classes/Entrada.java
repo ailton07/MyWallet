@@ -1,5 +1,7 @@
 package br.edu.ufam.ceteli.mywallet.Classes;
 
+import android.util.Log;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -16,7 +18,7 @@ import static br.edu.ufam.ceteli.mywallet.Classes.OperacoesData.getDataFormatada
 @Table(name = "Entrada")
 public class Entrada extends Model {
     @Column(name="Tipo")
-    private int tipo;
+    private int tipo; // 0 -> Entrada e 1 -> Saída
 
     @Column(name="Descricao")
     private String descricao;
@@ -140,5 +142,14 @@ public class Entrada extends Model {
     }
     public static ArrayList<Entrada> getCategoriaOcasional(){
         return new Select().from(Entrada.class).where("Categoria = 4").orderBy("DataCompra DESC").execute();
+    }
+
+    // Pega todas as entradas de determinado mês e de determinado ano.
+    // DataCompra => YYYYmmDD
+    public static ArrayList<Entrada> getEntradasMesAno(int mes, int ano){
+        String mesS = String.valueOf(mes);
+        String anoS = String.valueOf(ano);
+
+        return new Select().from(Entrada.class).where("DataCompra > ? and DataCompra < ?", (anoS + mesS +"00"), (anoS+ mesS + "32") ).execute();
     }
 }
