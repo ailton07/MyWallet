@@ -1,5 +1,6 @@
 package br.edu.ufam.ceteli.mywallet.Activities;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -11,20 +12,44 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+
+import br.edu.ufam.ceteli.mywallet.Classes.AdapterOrcamento;
 import br.edu.ufam.ceteli.mywallet.Classes.Entry;
+import br.edu.ufam.ceteli.mywallet.Classes.OCR.Utils;
 import br.edu.ufam.ceteli.mywallet.R;
 
 public class BudgetActivity extends AppCompatActivity {
 
-    float orcamento, bonus, total, valor, valor1;
+    float orcamento, bonus, total;
+    int dia, mes, ano;
+    private AdapterOrcamento adapter1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_budget);
+
+        TextView a = (TextView) findViewById(R.id.textView8);
+        a.setText(String.valueOf(Utils.getSaldoTotal(10, 2015)));
+
+        TextView t = (TextView) findViewById(R.id.textView4);
+        t.setText(String.valueOf(Utils.getSaldoOrcamento(10, 2015)));
+
+        TextView te = (TextView) findViewById(R.id.textView7);
+        te.setText(String.valueOf(Utils.getSaldoBonus(10, 2015)));
+
+        List<Entry> valores = Entry.getGeralOrcamento();
+        adapter1 = new AdapterOrcamento(this, valores);
+        ListView l = (ListView) findViewById(R.id.listView8);
+        l.setAdapter(adapter1);
 
         final Button button = (Button) findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener() {
@@ -32,8 +57,6 @@ public class BudgetActivity extends AppCompatActivity {
 
                 AlertDialog dialog = (AlertDialog) OnCreateOrcamento();
                 dialog.show();
-
-
             }
         });
 
@@ -77,43 +100,66 @@ public class BudgetActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int id) {
                 Entry entry = new Entry();
 
-                EditText orc = (EditText) v.findViewById(R.id.editText2);
-                valor = Float.parseFloat(orc.getText().toString());
+                EditText orc = (EditText) v.findViewById(R.id.editText);
+                entry.setOrcamento(Float.parseFloat(orc.getText().toString()));
 
-                EditText orc1 = (EditText) v.findViewById(R.id.editText);
-                valor1 = Float.parseFloat(orc1.getText().toString());
+                EditText bon = (EditText) v.findViewById(R.id.editText2);
+                entry.setBonus(Float.parseFloat(bon.getText().toString()));
 
-                orcamento = orcamento + valor;
-                bonus = bonus + valor1;
+                orcamento = Float.parseFloat(orc.getText().toString());
+                bonus = Float.parseFloat(bon.getText().toString());
                 total = orcamento + bonus;
-
-                Log.i("App123", String.valueOf(orcamento));
-                Log.i("App123", String.valueOf(bonus));
-                Log.i("App123", String.valueOf(total));
-
-                entry.setOrcamento(valor);
-                entry.setBonus(valor1);
                 entry.setTotal(total);
+
+                Date data = new Date();
+                dia = data.getDay();
+                mes = data.getMonth();
+                ano = data.getYear();
+
+                SimpleDateFormat dateFormat0 = new SimpleDateFormat("yyyyMMdd");
+                entry.setDataOrcamento(dateFormat0.format(data).toString());
+                //Log.d("Data", dateFormat0.format(dateDataCompra).toString());
+
+                Log.i("App123", "orcamento: " + orcamento);
+                //Log.i("App123", "bonus: " + bonus);
+                //Log.i("App123", "total: " + total);
+
+                //Log.i("App123", String.valueOf(orcamento));
+                //Log.i("App123", String.valueOf(bonus));
+                //Log.i("App123", String.valueOf(total));
+
+                //entry.setOrcamento(orcamento);
+                //entry.setBonus(bonus);
+                //entry.setTotal(total);
+
+                //Log.i("App123", "Data: " + dateFormat0.format(data).toString());
 
                 //Toast.makeText(getApplicationContext(), orc.getText().toString(), Toast.LENGTH_SHORT).show();
                 //Toast.makeText(getApplicationContext(), orc1.getText().toString(), Toast.LENGTH_SHORT).show();
 
                 entry.save();
 
-                //adapter.add(entry);
-                //adapter.notifyDataSetChanged();
+                adapter1.adiciona(entry);
+                adapter1.notifyDataSetChanged();
 
-
-                Log.i("App123", "Inserido no bd com sucesso");
-
-                TextView t = (TextView) findViewById(R.id.textView4);
-                t.setText(String.valueOf(orcamento));
-
-                TextView te = (TextView) findViewById(R.id.textView7);
-                te.setText(String.valueOf(bonus));
+                //float saldoTot = Utils.getSaldoOrcamento(10, 2015);
+                //float saldoOrc = Utils.getOrcamento(10, 2015);
+                //float saldoBonus = Utils.getBonus(10, 2105);
 
                 TextView a = (TextView) findViewById(R.id.textView8);
-                a.setText(String.valueOf(total));
+                a.setText(String.valueOf(Utils.getSaldoTotal(10, 2015)));
+
+                TextView t = (TextView) findViewById(R.id.textView4);
+                t.setText(String.valueOf(Utils.getSaldoOrcamento(10, 2015)));
+
+                TextView te = (TextView) findViewById(R.id.textView7);
+                te.setText(String.valueOf(Utils.getSaldoBonus(10, 2015)));
+
+                //Log.i("App123", "Saldo Total: " + String.valueOf(Utils.getSaldoOrcamento(10, 2015)));
+                //Log.i("App123", "Saldo Orcamento: " + String.valueOf(Utils.getSaldoOrcamento(10, 2015)));
+                //Log.i("App123", "Saldo Bonus: " + String.valueOf(Utils.getSaldoBonus(10, 2105)));
+
+                //Log.i("App123", "Inserido no bd com sucesso");
 
                 //Toast.makeText(getApplicationContext(), "inserido no bd com sucesso", Toast.LENGTH_SHORT).show();
                 //adapter.add(entry);

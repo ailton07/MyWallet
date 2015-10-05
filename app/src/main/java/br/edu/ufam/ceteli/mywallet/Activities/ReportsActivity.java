@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import br.edu.ufam.ceteli.mywallet.Activities.Relatorios.EntryReport;
 import br.edu.ufam.ceteli.mywallet.Activities.Relatorios.FoodReport;
 import br.edu.ufam.ceteli.mywallet.Activities.Relatorios.GeneralReport;
+import br.edu.ufam.ceteli.mywallet.Activities.Relatorios.GraphicReport;
 import br.edu.ufam.ceteli.mywallet.Activities.Relatorios.HomeReport;
 import br.edu.ufam.ceteli.mywallet.Activities.Relatorios.LoungeReport;
 import br.edu.ufam.ceteli.mywallet.Activities.Relatorios.OthersReport;
@@ -25,6 +26,7 @@ public class ReportsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_relatorios);
 
         fragmentPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+        fragmentPagerAdapter.addTab("Grafico", new GraphicReport());
         fragmentPagerAdapter.addTab("Geral", new GeneralReport());
         fragmentPagerAdapter.addTab("Entrada", new EntryReport());
         fragmentPagerAdapter.addTab("Saída", new OutReport());

@@ -40,7 +40,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Large Text"
+        android:text="0.0"
         android:id="@+id/textView4"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
@@ -50,7 +50,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Large Text"
+        android:text="0.0"
         android:id="@+id/textView7"
         android:layout_below="@+id/textView4"
         android:layout_alignParentRight="true"
@@ -60,7 +60,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Large Text"
+        android:text="0.0"
         android:id="@+id/textView8"
         android:layout_below="@+id/textView7"
         android:layout_alignParentRight="true"
@@ -71,9 +71,8 @@
         android:layout_height="wrap_content"
         android:text="Orcamento"
         android:id="@+id/button"
-        android:layout_below="@+id/textView8"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp" />
+        android:layout_below="@+id/textView3"
+        android:layout_centerHorizontal="true" />
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -84,7 +83,7 @@
 
         <ListView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="362dp"
             android:id="@+id/listView8"
             android:layout_gravity="left|top" />
     </FrameLayout>

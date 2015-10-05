@@ -7,17 +7,22 @@ import com.activeandroid.query.Select;
 
 import java.util.ArrayList;
 
+import static br.edu.ufam.ceteli.mywallet.Classes.OperacoesData.getDataFormatada;
+
 @Table(name = "Entry")
 public class Entry extends Model {
 
     @Column(name = "Orcamento")
-    private static float orcamento;
+    private float orcamento;
 
     @Column(name = "Bonus")
-    private static float bonus;
+    private float bonus;
 
     @Column(name = "Total")
-    private static float total;
+    private float total;
+
+    @Column(name="DataOrcamento")
+    private int dataOrcamento;
 
     public float getOrcamento() {
         return orcamento;
@@ -43,6 +48,16 @@ public class Entry extends Model {
         this.total = total;
     }
 
+    public String getDataOrcamento() {
+
+        return getDataFormatada(dataOrcamento);
+        //return dataCompra;
+    }
+    public void setDataOrcamento(String dataOrcamento) {
+
+        this.dataOrcamento = Integer.valueOf(dataOrcamento);
+    }
+
     public Entry() {
         super();
     }
@@ -55,5 +70,12 @@ public class Entry extends Model {
 
     public static ArrayList<Entry> getGeralOrcamento() {
         return new Select().from(Entry.class).execute();
+    }
+
+    public static ArrayList<Entry> getOrcamento(int mes, int ano){
+        String mes1 = String.valueOf(mes);
+        String ano1 = String.valueOf(ano);
+
+        return new Select().from(Entry.class).where("DataOrcamento > ? and DataOrcamento < ?", (ano1 + mes1 + "00"), (ano1 + mes1 + "32")).execute();
     }
 }
