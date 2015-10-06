@@ -72,8 +72,29 @@ import br.edu.ufam.ceteli.mywallet.R;
 
 import static br.edu.ufam.ceteli.mywallet.Classes.OCR.Utils.getSaldoMes;
 
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.Legend.LegendForm;
+import com.github.mikephil.charting.components.Legend.LegendPosition;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.components.YAxis.AxisDependency;
+import com.github.mikephil.charting.data.DataSet;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.data.filter.Approximator;
+import com.github.mikephil.charting.data.filter.Approximator.ApproximatorType;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+import com.github.mikephil.charting.utils.ColorTemplate;
+import com.github.mikephil.charting.highlight.Highlight;
 
-public class ResultActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, AdapterView.OnItemSelectedListener{
+
+import java.util.ArrayList;
+
+
+
+public class ResultActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, AdapterView.OnItemSelectedListener, OnChartValueSelectedListener{
     // Conta
     private ILoginConnection loggedAccount = null;
 
@@ -111,6 +132,12 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
     private String mImageFullPathAndName = "";
     private String localImagePath = "";
     private static final int OPTIMIZED_LENGTH = 1024;
+
+    private List<String> mesano=new ArrayList<String>();
+
+
+    private LineChart mChart;
+
 
     ProgressBar pbOCRReconizing;
     ImageView ivSelectedImg;
@@ -202,9 +229,128 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
 
 
         //List<Entrada> valuesDoMes = Entrada.getEntradasMesAno(10,2015);
-        Log.d("Saldo", String.valueOf(getSaldoMes(10,2015)));
+        Log.d("Saldo", String.valueOf(getSaldoMes(10, 2015)));
+
+        mChart = (LineChart) findViewById(R.id.chart1);
+        mChart.setOnChartValueSelectedListener(this);
+
+        // no description text
+        mChart.setDescription("");
+        mChart.setNoDataTextDescription("You need to provide data for the chart.");
+
+        // enable value highlighting
+        mChart.setHighlightEnabled(true);
+
+        // enable touch gestures
+        mChart.setTouchEnabled(true);
+
+        mChart.setDragDecelerationFrictionCoef(0.9f);
+
+        // enable scaling and dragging
+        mChart.setDragEnabled(true);
+        mChart.setScaleEnabled(true);
+        mChart.setDrawGridBackground(false);
+        mChart.setHighlightPerDragEnabled(true);
+
+        // if disabled, scaling can be done on x- and y-axis separately
+        mChart.setPinchZoom(true);
+
+        // set an alternative background color
+        mChart.setBackgroundColor(Color.LTGRAY);
+
+        mChart.animateX(2500);
+
+        // get the legend (only possible after setting data)
+        Legend l = mChart.getLegend();
+
+        // modify the legend ...
+        // l.setPosition(LegendPosition.LEFT_OF_CHART);
+        l.setForm(LegendForm.LINE);
+        l.setTextSize(11f);
+        l.setTextColor(Color.WHITE);
+        l.setPosition(LegendPosition.BELOW_CHART_LEFT);
+//        l.setYOffset(11f);
+
+        XAxis xAxis = mChart.getXAxis();
+        xAxis.setTextSize(12f);
+        xAxis.setTextColor(Color.WHITE);
+        xAxis.setDrawGridLines(false);
+        xAxis.setDrawAxisLine(false);
+        xAxis.setSpaceBetweenLabels(1);
+
+        mesano.add("Jan/15");
+        mesano.add("Fev/15");
+        mesano.add("Mar/15");
+        mesano.add("Abr/15");
+        mesano.add("Mai/15");
+        mesano.add("Jun/15");
+        mesano.add("Jul/15");
+        mesano.add("Ago/15");
+        mesano.add("Set/15");
+        mesano.add("Out/15");
+        mesano.add("Nov/15");
+        mesano.add("Dez/15");
+
+        setData(12, 20.0f);
+
 
     }
+
+    private void setData(int count,float range) {
+        ArrayList<String> xVals = new ArrayList<String>();
+        for (int i = 0; i < count; i++) {
+            xVals.add(mesano.get(i));
+        }
+
+        ArrayList<Entry> yVals1 = new ArrayList<Entry>();
+
+        for (int i = 0; i < count; i++) {
+            float mult = range / 2f;
+            float val = (float) (Math.random() * mult) + 50;// + (float)
+            // ((mult *
+            // 0.1) / 10);
+            yVals1.add(new Entry(val, i));
+        }
+
+        // create a dataset and give it a type
+        LineDataSet set1 = new LineDataSet(yVals1, "Gastos mensais");
+        set1.setAxisDependency(AxisDependency.LEFT);
+        set1.setColor(ColorTemplate.getHoloBlue());
+        set1.setCircleColor(Color.WHITE);
+        set1.setLineWidth(2f);
+        set1.setCircleSize(3f);
+        set1.setFillAlpha(65);
+        set1.setFillColor(ColorTemplate.getHoloBlue());
+        set1.setHighLightColor(Color.rgb(244, 117, 117));
+        set1.setDrawCircles(false);
+        set1.setDrawFilled(true);
+        //set1.setFillFormatter(new MyFillFormatter(0f));
+//        set1.setDrawHorizontalHighlightIndicator(false);
+//        set1.setVisible(false);
+//        set1.setCircleHoleColor(Color.WHITE);
+
+        ArrayList<LineDataSet> dataSets = new ArrayList<LineDataSet>();
+        dataSets.add(set1); // add the datasets
+
+        // create a data object with the datasets
+        LineData data = new LineData(xVals, dataSets);
+        data.setValueTextColor(Color.WHITE);
+        data.setValueTextSize(9f);
+
+        // set data
+        mChart.setData(data);
+    }
+
+    @Override
+    public void onValueSelected(Entry e, int dataSetIndex, Highlight h) {
+        Log.i("Entry selected", e.toString());
+    }
+
+    @Override
+    public void onNothingSelected() {
+        Log.i("Nothing selected", "Nothing selected.");
+    }
+
 
 
     public void restartArryaListAdapter(){
