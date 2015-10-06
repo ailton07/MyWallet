@@ -24,7 +24,7 @@
         <ListView
             android:id="@android:id/list"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="200dp"
             android:layout_marginTop="?attr/actionBarSize">
         </ListView>
 
@@ -57,6 +57,12 @@
                 app:fab_colorPressed="#616161"/>
 
         </com.getbase.floatingactionbutton.FloatingActionsMenu>
+
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/chart1"
+            android:layout_width="match_parent"
+            android:layout_height="309dp"
+            android:layout_gravity="center_horizontal|bottom" />
     </FrameLayout>
 
     <!-- O segundo frame sempre é o drawer, aqui vai o conteúdo da barra lateral -->
