@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        style="?android:borderlessButtonStyle"
+        android:layout_width="350sp"
+        android:layout_height="wrap_content"
+        android:paddingStart="0sp"
+        android:background="#dd4b39"
+        android:drawableStart="@drawable/ic_google_button"
+        android:gravity="start|center_vertical"
+        android:textAllCaps="false"
+        android:textSize="17sp"
+        android:drawablePadding="10sp"
+        android:textColor="#FFFFFF"
+        android:text="Iniciar sessão com o Google"
+        android:id="@+id/btnGoogleLogin"
+        android:onClick="googleLogin"
+        android:layout_marginTop="120sp"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        style="?android:borderlessButtonStyle"
+        android:layout_width="350sp"
+        android:layout_height="wrap_content"
+        android:paddingStart="0sp"
+        android:background="#3c5082"
+        android:drawableStart="@drawable/ic_facebook_button"
+        android:gravity="start|center_vertical"
+        android:textAllCaps="false"
+        android:textSize="17sp"
+        android:drawablePadding="10sp"
+        android:textColor="#FFFFFF"
+        android:text="Iniciar sessão com Facebook"
+        android:id="@+id/btnFacebookLogin"
+        android:layout_below="@+id/btnGoogleLogin"
+        android:layout_alignStart="@+id/tvAdvice"
+        android:layout_marginTop="20dp"
+        android:onClick="facebookLogin"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="350sp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="45sp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#FFFFFF"
+        android:textSize="19sp"
+        android:gravity="center"
+        android:text="O MyWallet não publicará nada em sua conta."
+        android:id="@+id/tvAdvice"
+        android:layout_below="@+id/btnFacebookLogin"
+        android:layout_centerHorizontal="true" />
+
+</RelativeLayout>

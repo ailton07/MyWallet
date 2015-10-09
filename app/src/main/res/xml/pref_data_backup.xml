@@ -1,0 +1,13 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:title="Backup">
+        <Preference
+            android:title="Criar backup"
+            android:key="createBackup"
+            android:summary="Cria um backup em nosso servidor"/>
+        <Preference
+            android:title="Restaurar backup"
+            android:key="restoreBackup"
+            android:summary="Restaura um backup salvo em nosso servidor"/>
+    </PreferenceCategory>
+</PreferenceScreen>
