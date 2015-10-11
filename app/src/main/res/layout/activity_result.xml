@@ -9,24 +9,34 @@
 
     <!-- O primeiro frame sempre é a tela principal, aqui vai o conteúdo da tela principal -->
     <FrameLayout
-        android:id="@+id/resultFrameMain"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent">
-
-        <!-- Toolbar customizada, para ficar como os aplicativos google -->
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+        <LinearLayout
+            android:id="@+id/resultFrameMain"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/abc_action_bar_default_height_material"
-            android:background="#009688"
-            android:minHeight="?attr/actionBarSize" />
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <ListView
-            android:id="@android:id/list"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_marginTop="?attr/actionBarSize">
-        </ListView>
+            <!-- Toolbar customizada, para ficar como os aplicativos google -->
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/abc_action_bar_default_height_material"
+                android:background="#009688"
+                android:minHeight="?attr/actionBarSize" />
+
+            <ListView
+                android:id="@android:id/list"
+                android:layout_width="match_parent"
+                android:layout_height="200dp">
+            </ListView>
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/chart1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal|bottom" />
+        </LinearLayout>
 
         <com.getbase.floatingactionbutton.FloatingActionsMenu
             android:id="@+id/fabNewInput"
@@ -44,7 +54,7 @@
                 android:id="@+id/fabManualInput"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:fab_title="Digitar dados manualmente"
+                app:fab_title="Digitar dados de nota"
                 app:fab_colorNormal="#757575"
                 app:fab_colorPressed="#616161"/>
 
@@ -52,17 +62,10 @@
                 android:id="@+id/fabPhotoInput"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:fab_title="Tirar foto da nota"
+                app:fab_title="Usar imagem de nota"
                 app:fab_colorNormal="#757575"
                 app:fab_colorPressed="#616161"/>
-
         </com.getbase.floatingactionbutton.FloatingActionsMenu>
-
-        <com.github.mikephil.charting.charts.LineChart
-            android:id="@+id/chart1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal|bottom" />
     </FrameLayout>
 
     <!-- O segundo frame sempre é o drawer, aqui vai o conteúdo da barra lateral -->

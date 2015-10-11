@@ -11,8 +11,8 @@
             android:title="Relatório"
             android:icon="@drawable/ic_description_black_24dp"/>
         <item
-            android:id="@+id/drawer_item_tips"
-            android:title="Dicas"
+            android:id="@+id/drawer_item_planning"
+            android:title="Planejamento"
             android:icon="@drawable/ic_info_black_24dp"/>
     </group>
 </menu>

@@ -15,12 +15,12 @@ import br.edu.ufam.ceteli.mywallet.classes.Upload;
 public class BackupPreferences extends PreferenceFragment {
     private ProgressDialog dialog = null;
     private Upload upload = null;
-    private String email = null;
+    private String dbKey = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        addPreferencesFromResource(R.xml.pref_data_backup);
+        addPreferencesFromResource(R.xml.preferences_options);
 
         Preference createBackup = findPreference("createBackup");
         Preference restoreBackup = findPreference("restoreBackup");
@@ -28,7 +28,7 @@ public class BackupPreferences extends PreferenceFragment {
         createBackup.setOnPreferenceClickListener(createBackupListener());
         restoreBackup.setOnPreferenceClickListener(restoreBackupListener());
 
-        email = getActivity().getIntent().getExtras().getString("email");
+        dbKey = getActivity().getIntent().getExtras().getString("DBKey");
     }
 
     private Preference.OnPreferenceClickListener createBackupListener(){
@@ -52,7 +52,7 @@ public class BackupPreferences extends PreferenceFragment {
     }
 
     private void criarBackup(){
-        upload = new Upload(email);
+        upload = new Upload(dbKey);
         final String pathDb = "//data//data//br.edu.ufam.ceteli.mywallet//databases////teste.db";
 
         //String db = "teste.db";
@@ -75,6 +75,6 @@ public class BackupPreferences extends PreferenceFragment {
     private void restaurarBackup(){
         //Download
         Download download = new Download(getActivity());
-        download.baixa(email);
+        download.baixa(dbKey);
     }
 }

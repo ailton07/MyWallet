@@ -28,8 +28,8 @@ public class ReportsActivity extends AppCompatActivity {
         fragmentPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         fragmentPagerAdapter.addTab("Grafico", new GraphicReport());
         fragmentPagerAdapter.addTab("Geral", new GeneralReport());
-        fragmentPagerAdapter.addTab("Entrada", new EarningReport());
-        fragmentPagerAdapter.addTab("Saída", new SpedingReport());
+        fragmentPagerAdapter.addTab("Ganhos", new EarningReport());
+        fragmentPagerAdapter.addTab("Gastos", new SpedingReport());
         fragmentPagerAdapter.addTab("Casa", new HomeReport());
         fragmentPagerAdapter.addTab("Alimentícios", new FoodReport());
         fragmentPagerAdapter.addTab("Entreterimento", new LoungeReport());

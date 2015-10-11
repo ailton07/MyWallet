@@ -6,9 +6,5 @@
             android:id="@+id/drawer_item_settings"
             android:title="Configurações"
             android:icon="@drawable/ic_settings_black_24dp"/>
-        <item
-            android:id="@+id/drawer_item_help"
-            android:title="Ajuda"
-            android:icon="@drawable/ic_help_black_24dp"/>
     </group>
 </menu>

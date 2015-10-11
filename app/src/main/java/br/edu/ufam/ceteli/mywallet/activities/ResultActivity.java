@@ -401,26 +401,18 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
         drawerLayout.closeDrawer(GravityCompat.START);
         switch (menuItem.getItemId()) {
             case R.id.drawer_item_budget:
-                Intent i = new Intent(ResultActivity.this, BudgetActivity.class);
-                startActivity(i);
+                startActivity(new Intent(ResultActivity.this, BudgetActivity.class));
                 break;
             case R.id.drawer_item_report:
-                Intent it0 = new Intent(ResultActivity.this, ReportsActivity.class);
-                startActivity(it0);
+                startActivity(new Intent(ResultActivity.this, ReportsActivity.class));
                 break;
 
-            case R.id.drawer_item_tips:
-                Toast.makeText(getApplicationContext(), "Inflar layout Dicas / Chamar activity Dicas", Toast.LENGTH_LONG).show();
+            case R.id.drawer_item_planning:
                 break;
 
             case R.id.drawer_item_settings:
                 Intent it = new Intent(ResultActivity.this, SettingsActivity.class);
-                it.putExtra("email", loggedAccount.getAccountEmail());
-                startActivity(it);
-                break;
-
-            case R.id.drawer_item_help:
-                Toast.makeText(getApplicationContext(), "Inflar layout Ajuda / Chamar activity Ajuda", Toast.LENGTH_LONG).show();
+                startActivity(new Intent(ResultActivity.this, SettingsActivity.class).putExtra("DBKey", loggedAccount.getAccountEmail()));
                 break;
 
             case R.id.drawer_item_disconnect:
