@@ -6,6 +6,7 @@ import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Select;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static br.edu.ufam.ceteli.mywallet.Classes.OperacoesData.getDataFormatada;
 
@@ -68,11 +69,11 @@ public class Entry extends Model {
 
     }
 
-    public static ArrayList<Entry> getGeralOrcamento() {
+    public static List<Entry> getGeralOrcamento() {
         return new Select().from(Entry.class).execute();
     }
 
-    public static ArrayList<Entry> getOrcamento(int mes, int ano){
+    public static List<Entry> getOrcamento(int mes, int ano){
         String mes1 = String.valueOf(mes);
         String ano1 = String.valueOf(ano);
 

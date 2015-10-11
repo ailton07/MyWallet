@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -43,6 +44,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.activeandroid.ActiveAndroid;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
@@ -150,6 +152,9 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
         setContentView(R.layout.activity_result);
         setTitle("MyWallet");
 
+
+
+
         // ImageView do Cabeçalho do Drawer
         ImageView cover = (ImageView) findViewById(R.id.coverPhoto);
         ImageView profile = (ImageView) findViewById(R.id.profileImage);
@@ -205,6 +210,9 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
         fabManualInput.setIcon(R.drawable.ic_mode_edit_white_24dp);
         fabManualInput.setSize(FloatingActionButton.SIZE_MINI);
         fabManualInput.setOnClickListener(fabManualOnClick());
+
+        initializeDB();
+
 
         List<Entrada> values = Entrada.getComments();
 
@@ -296,7 +304,16 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
 
     }
 
-    private void setData(int count,float range) {
+    protected void initializeDB() {
+        com.activeandroid.Configuration.Builder configurationBuilder = new com.activeandroid.Configuration.Builder(this);
+        configurationBuilder.addModelClasses(Entrada.class);
+        configurationBuilder.addModelClasses(br.edu.ufam.ceteli.mywallet.Classes.Entry.class);
+
+
+        ActiveAndroid.initialize(configurationBuilder.create());
+    }
+
+        private void setData(int count,float range) {
         ArrayList<String> xVals = new ArrayList<String>();
         for (int i = 0; i < count; i++) {
             xVals.add(mesano.get(i));

@@ -5,6 +5,7 @@ import android.util.Log;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 
 import com.activeandroid.Model;
@@ -122,31 +123,31 @@ public class Entrada extends Model {
                 + "\n" +  "Descricao: " + descricao;
     }
 
-    public static ArrayList<Entrada> getComments() {
+    public static List<Entrada> getComments() {
         return new Select().from(Entrada.class).orderBy("DataCompra DESC").execute();
     }
-    public static ArrayList<Entrada> getEntrada(){
+    public static List<Entrada> getEntrada(){
         return new Select().from(Entrada.class).where("Tipo = 0").orderBy("DataCompra DESC").execute();
     }
-    public static ArrayList<Entrada> getSaida(){
+    public static List<Entrada> getSaida(){
         return new Select().from(Entrada.class).where("Tipo = 1").orderBy("DataCompra DESC").execute();
     }
-    public static ArrayList<Entrada> getCategoriaCasa(){
+    public static List<Entrada> getCategoriaCasa(){
         return new Select().from(Entrada.class).where("Categoria = 1").orderBy("DataCompra DESC").execute();
     }
-    public static ArrayList<Entrada> getCategoriaRestaurante(){
+    public static List<Entrada> getCategoriaRestaurante(){
         return new Select().from(Entrada.class).where("Categoria = 2").orderBy("DataCompra DESC").execute();
     }
-    public static ArrayList<Entrada> getCategoriaLazer(){
+    public static List<Entrada> getCategoriaLazer(){
         return new Select().from(Entrada.class).where("Categoria = 3").orderBy("DataCompra DESC").execute();
     }
-    public static ArrayList<Entrada> getCategoriaOcasional(){
+    public static List<Entrada> getCategoriaOcasional(){
         return new Select().from(Entrada.class).where("Categoria = 4").orderBy("DataCompra DESC").execute();
     }
 
     // Pega todas as entradas de determinado mês e de determinado ano.
     // DataCompra => YYYYmmDD
-    public static ArrayList<Entrada> getEntradasMesAno(int mes, int ano){
+    public static List<Entrada> getEntradasMesAno(int mes, int ano){
         String mesS = String.valueOf(mes);
         String anoS = String.valueOf(ano);
 

@@ -5,11 +5,13 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import com.activeandroid.ActiveAndroid;
 import com.facebook.appevents.AppEventsLogger;
 
 import java.util.Observable;
 import java.util.Observer;
 
+import br.edu.ufam.ceteli.mywallet.Classes.Entrada;
 import br.edu.ufam.ceteli.mywallet.Classes.Login.FacebookAccountConnection;
 import br.edu.ufam.ceteli.mywallet.Classes.Login.GoogleAccountConnection;
 import br.edu.ufam.ceteli.mywallet.Classes.Login.ILoginConnection;
@@ -26,11 +28,21 @@ public class LoginActivity extends AppCompatActivity implements Observer {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initializeDB();
         iGoogleConn = GoogleAccountConnection.getInstance(this);
         iGoogleConn.addObserverClass(this);
         iFacebookConn = FacebookAccountConnection.getInstance(this);
         iFacebookConn.addObserverClass(this);
         setContentView(R.layout.activity_login_wait);
+    }
+
+    protected void initializeDB() {
+        com.activeandroid.Configuration.Builder configurationBuilder = new com.activeandroid.Configuration.Builder(this).setDatabaseName("teste.db");
+        configurationBuilder.addModelClasses(Entrada.class);
+        configurationBuilder.addModelClasses(br.edu.ufam.ceteli.mywallet.Classes.Entry.class);
+
+
+        ActiveAndroid.initialize(configurationBuilder.create());
     }
 
     @Override
