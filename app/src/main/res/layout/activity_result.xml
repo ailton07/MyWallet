@@ -5,7 +5,7 @@
     android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="br.edu.ufam.ceteli.mywallet.Activities.ResultActivity">
+    tools:context="br.edu.ufam.ceteli.mywallet.activities.ResultActivity">
 
     <!-- O primeiro frame sempre é a tela principal, aqui vai o conteúdo da tela principal -->
     <FrameLayout
@@ -60,8 +60,8 @@
 
         <com.github.mikephil.charting.charts.LineChart
             android:id="@+id/chart1"
-            android:layout_width="match_parent"
-            android:layout_height="309dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal|bottom" />
     </FrameLayout>
 
