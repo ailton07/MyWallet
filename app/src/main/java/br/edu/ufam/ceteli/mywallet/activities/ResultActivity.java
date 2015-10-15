@@ -1,6 +1,8 @@
 package br.edu.ufam.ceteli.mywallet.activities;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -49,6 +51,7 @@ import java.util.List;
 import java.util.Random;
 
 import br.edu.ufam.ceteli.mywallet.R;
+import br.edu.ufam.ceteli.mywallet.activities.dialogs.DialogIn;
 import br.edu.ufam.ceteli.mywallet.activities.dialogs.DialogPhoto;
 import br.edu.ufam.ceteli.mywallet.classes.AdapterListView;
 import br.edu.ufam.ceteli.mywallet.classes.Entrada;
@@ -306,6 +309,7 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //DialogIn dialogin = new DialogIn();
                 //AlertDialog dialog = (AlertDialog) onCreateDialog();
                 //dialog.show();
                 fabNewInput.collapse();

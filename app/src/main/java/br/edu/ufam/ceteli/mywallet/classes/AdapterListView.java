@@ -81,7 +81,12 @@ public class AdapterListView extends BaseAdapter
 
         //atravez do layout pego pelo LayoutInflater, pegamos cada id relacionado
         //ao item e definimos as informações.
-        ((TextView) view.findViewById(R.id.text)).setText(item.toString());
+
+        if(item.getTipo() == 0) {
+            ((TextView) view.findViewById(R.id.text)).setText(item.toString1());
+        }else{
+            ((TextView) view.findViewById(R.id.text)).setText(item.toString());
+        }
         if(item.getTipo()==0) {
             ((ImageView) view.findViewById(R.id.imagemview)).setImageResource(R.drawable.mais_small);
         }

@@ -35,6 +35,7 @@
         <item>Casa</item>
         <item>Restaurante</item>
         <item>Lazer</item>
+        <item>Transporte</item>
         <item>Ocasional</item>
 
     </string-array>

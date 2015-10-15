@@ -13,6 +13,7 @@ import br.edu.ufam.ceteli.mywallet.activities.reports.GeneralReport;
 import br.edu.ufam.ceteli.mywallet.activities.reports.GraphicReport;
 import br.edu.ufam.ceteli.mywallet.activities.reports.HomeReport;
 import br.edu.ufam.ceteli.mywallet.activities.reports.LoungeReport;
+import br.edu.ufam.ceteli.mywallet.activities.reports.MoveReport;
 import br.edu.ufam.ceteli.mywallet.activities.reports.OthersReport;
 import br.edu.ufam.ceteli.mywallet.activities.reports.SpedingReport;
 import br.edu.ufam.ceteli.mywallet.classes.ViewPagerAdapter;
@@ -30,9 +31,10 @@ public class ReportsActivity extends AppCompatActivity {
         fragmentPagerAdapter.addTab("Geral", new GeneralReport());
         fragmentPagerAdapter.addTab("Ganhos", new EarningReport());
         fragmentPagerAdapter.addTab("Gastos", new SpedingReport());
-        fragmentPagerAdapter.addTab("Casa", new HomeReport());
+        fragmentPagerAdapter.addTab("Residencia", new HomeReport());
         fragmentPagerAdapter.addTab("Alimentícios", new FoodReport());
-        fragmentPagerAdapter.addTab("Entreterimento", new LoungeReport());
+        fragmentPagerAdapter.addTab("Entretenimento", new LoungeReport());
+        fragmentPagerAdapter.addTab("Transporte", new MoveReport());
         fragmentPagerAdapter.addTab("Outros gastos", new OthersReport());
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarReports);
