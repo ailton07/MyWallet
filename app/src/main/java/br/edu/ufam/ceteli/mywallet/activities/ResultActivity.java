@@ -340,6 +340,7 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
                 break;
 
             case R.id.drawer_item_planning:
+                startActivity(new Intent(ResultActivity.this, GoalActivity.class));
                 break;
 
             case R.id.drawer_item_settings:

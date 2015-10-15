@@ -36,7 +36,7 @@ public class BudgetActivity extends AppCompatActivity {
         setContentView(R.layout.activity_budget);
 
         TextView a = (TextView) findViewById(R.id.textView8);
-        a.setText(String.valueOf(Utils.getSaldoTotal(10, 2015)));
+        a.setText(String.valueOf(Utils.getSaldoOrcamentoTotal(10, 2015)));
 
         TextView t = (TextView) findViewById(R.id.textView4);
         t.setText(String.valueOf(Utils.getSaldoOrcamento(10, 2015)));
@@ -145,7 +145,7 @@ public class BudgetActivity extends AppCompatActivity {
                 //float saldoBonus = Utils.getBonus(10, 2105);
 
                 TextView a = (TextView) findViewById(R.id.textView8);
-                a.setText(String.valueOf(Utils.getSaldoTotal(10, 2015)));
+                a.setText(String.valueOf(Utils.getSaldoOrcamentoTotal(10, 2015)));
 
                 TextView t = (TextView) findViewById(R.id.textView4);
                 t.setText(String.valueOf(Utils.getSaldoOrcamento(10, 2015)));

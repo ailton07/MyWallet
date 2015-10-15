@@ -117,6 +117,7 @@
 
         <item>31- Antes de fazer qualquer negócio financeiro procure orientação.</item>
     </string-array>
+    <string name="title_activity_goal">GoalActivity</string>
 
 
 </resources>

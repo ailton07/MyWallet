@@ -48,6 +48,7 @@
             android:theme="@style/AppTheme.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -73,6 +74,10 @@
             android:name=".activities.BudgetActivity"
             android:label="@string/title_activity_budget"
             android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity
+            android:name=".activities.GoalActivity"
+            android:label="@string/title_activity_goal" >
         </activity>
     </application>
 

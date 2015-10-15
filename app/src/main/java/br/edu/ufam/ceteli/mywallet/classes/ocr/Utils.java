@@ -16,20 +16,30 @@ public class Utils {
     static public float getSaldoMes(int mes, int ano){
         // 0 -> Entrada e 1 -> Saída
         float saldo = 0;
+        float saldo1 = 0;
+        float saldo2 = 0;
+        float saldoTot = 0;
         List<Entrada> values = Entrada.getEntradasMesAno(mes, ano);
+        List<Entry> valores = Entry.getOrcamento(mes, ano);
 
         for (Entrada in:
                 values) {
-            if(in.getTipo() == 0){
+            if (in.getTipo() == 0) {
                 saldo += in.getValor();
-            }
-            else{
+            } else {
                 saldo = saldo - in.getValor();
             }
-
         }
 
-        return saldo;
+        for (Entry x: valores){
+            saldo1 += x.getOrcamento();
+            saldo2 += x.getBonus();
+        }
+
+        saldoTot = saldo + saldo1 + saldo2;
+
+
+        return saldoTot;
 
     }
 
@@ -68,7 +78,7 @@ public class Utils {
     }
 
 
-    static public float getSaldoTotal(int mes, int ano){
+    static public float getSaldoOrcamentoTotal(int mes, int ano){
 
         float saldo1 = 0;
         List<Entry> valores = Entry.getOrcamento(mes, ano);
@@ -85,12 +95,9 @@ public class Utils {
 
         float orcamento = 0;
         List<Entry> valOrc = Entry.getOrcamento(mes, ano);
-        Log.i("App123", "orcamento0: " + String.valueOf(orcamento));
 
         for(Entry y : valOrc){
-            Log.i("App123", "orcamento1: " + String.valueOf(orcamento));
             orcamento += y.getOrcamento();
-            Log.i("App123", "orcamento1: " + String.valueOf(orcamento));
         }
         return orcamento;
     }
@@ -106,5 +113,73 @@ public class Utils {
         }
         return bonus;
     }
+
+    static public float getGastosCasa(int mes, int ano){
+        float Scasa=0;
+        List<Entrada> Lcasa = Entrada.getEntradasMesAno(mes, ano);
+
+        for(Entrada y : Lcasa){
+            if(y.getTipo()==1) {
+                if (y.getCategoria() == 1) {
+                    Scasa += y.getValor();
+                }
+            }
+        }
+        return Scasa;
+    }
+
+    static public float getGastosAlimenticios(int mes, int ano){
+        float Salimentos=0;
+        List<Entrada> Lalimenticios = Entrada.getEntradasMesAno(mes, ano);
+
+        for(Entrada y : Lalimenticios){
+            if(y.getTipo()==1) {
+                if (y.getCategoria() == 2)
+                    Salimentos += y.getValor();
+            }
+        }
+        return Salimentos;
+    }
+
+    static public float getGastosEntrentenimento(int mes, int ano){
+        float Sent=0;
+        List<Entrada> Lent = Entrada.getEntradasMesAno(mes, ano);
+
+        for(Entrada y : Lent){
+            if(y.getTipo()==1) {
+                if (y.getCategoria() == 3)
+                    Sent += y.getValor();
+            }
+        }
+        return Sent;
+    }
+
+    static public float getOutrosGastos(int mes, int ano){
+        float Soutros=0;
+        List<Entrada> Loutros = Entrada.getEntradasMesAno(mes, ano);
+
+        for(Entrada y : Loutros){
+            if(y.getTipo()==1) {
+                if (y.getCategoria() == 5)
+                    Soutros += y.getValor();
+            }
+        }
+        return Soutros;
+    }
+
+    static public float getGastosTransporte(int mes, int ano){
+        float Stransporte=0;
+        List<Entrada> Ltransporte = Entrada.getEntradasMesAno(mes, ano);
+
+        for(Entrada y : Ltransporte){
+            if(y.getTipo()==1) {
+                if (y.getCategoria() == 4)
+                    Stransporte += y.getValor();
+            }
+        }
+        return Stransporte;
+    }
+
+
 
 }
