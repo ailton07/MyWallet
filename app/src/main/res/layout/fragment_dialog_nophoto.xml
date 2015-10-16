@@ -7,7 +7,7 @@
     android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/dialogPhotoToolbar"
+        android:id="@+id/dialogNoPhotoToolbar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/abc_action_bar_default_height_material"
         android:elevation="8dp"
@@ -32,21 +32,33 @@
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp">
 
-                <ImageView
-                    android:id="@+id/dialogPhotoSelectedPhoto"
-                    android:layout_width="125dp"
-                    android:layout_height="125dp"
-                    android:src="@drawable/ic_insert_photo_white_48dp"
-                    android:background="#DDDDDD"/>
+                <TextView
+                    android:id="@+id/tvNoUse5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceListItem"
+                    android:text="Tipo:"/>
 
-                <ProgressBar
-                    style="?android:attr/progressBarStyleLarge"
-                    android:layout_width="125dp"
-                    android:layout_height="125dp"
-                    android:id="@+id/pbocrrecognizing"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:visibility="gone"/>
+                <RadioGroup
+                    android:id="@+id/typeRadioGroup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_below="@id/tvNoUse5">
+
+                    <RadioButton
+                        android:id="@+id/radioEarning"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Ganhos" />
+
+                    <RadioButton
+                        android:id="@+id/radioSpending"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Gastos" />
+                </RadioGroup>
 
                 <TextView
                     android:id="@+id/tvNoUse4"
@@ -55,20 +67,18 @@
                     android:textAppearance="?android:attr/textAppearanceListItem"
                     android:text="Categoria:"
                     android:layout_alignParentTop="true"
-                    android:layout_toRightOf="@id/dialogPhotoSelectedPhoto"
-                    android:layout_toEndOf="@id/dialogPhotoSelectedPhoto"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginStart="16dp"/>
+                    android:layout_toRightOf="@+id/typeRadioGroup"
+                    android:layout_toEndOf="@+id/typeRadioGroup"
+                    android:layout_marginLeft="16dp"/>
 
                 <Spinner
-                    android:id="@+id/spinnerCategory"
+                    android:id="@+id/spinnerCategoryNoPhoto"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
                     android:layout_below="@id/tvNoUse4"
-                    android:layout_toRightOf="@id/dialogPhotoSelectedPhoto"
-                    android:layout_toEndOf="@id/dialogPhotoSelectedPhoto"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginStart="16dp">
+                    android:layout_alignLeft="@+id/tvNoUse4"
+                    android:layout_alignStart="@+id/tvNoUse4">
                 </Spinner>
             </RelativeLayout>
 
@@ -89,7 +99,7 @@
                     android:text="Descrição:" />
 
                 <EditText
-                    android:id="@+id/etDescription"
+                    android:id="@+id/etDescriptionNoPhoto"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_below="@id/tvNoUse1"/>
@@ -99,12 +109,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    android:layout_below="@id/etDescription"
+                    android:layout_below="@id/etDescriptionNoPhoto"
                     android:textAppearance="?android:attr/textAppearanceListItem"
                     android:text="Valor:"/>
 
                 <EditText
-                    android:id="@+id/etValue"
+                    android:id="@+id/etValueNoPhoto"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_below="@id/tvNoUse2"/>
@@ -114,12 +124,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    android:layout_below="@id/etValue"
+                    android:layout_below="@id/etValueNoPhoto"
                     android:textAppearance="?android:attr/textAppearanceListItem"
                     android:text="Estabelecimento:"/>
 
                 <EditText
-                    android:id="@+id/etPlace"
+                    android:id="@+id/etPlaceNoPhoto"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_below="@id/tvNoUse3"/>
@@ -136,7 +146,7 @@
                 android:layout_marginRight="16dp">
 
                 <ListView
-                    android:id="@+id/datePicker"
+                    android:id="@+id/datePickerNoPhoto"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="-16dp"
