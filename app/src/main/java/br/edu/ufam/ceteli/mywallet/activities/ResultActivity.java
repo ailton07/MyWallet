@@ -57,6 +57,7 @@ import br.edu.ufam.ceteli.mywallet.classes.IUpdateListView;
 import br.edu.ufam.ceteli.mywallet.classes.login.FacebookAccountConnection;
 import br.edu.ufam.ceteli.mywallet.classes.login.GoogleAccountConnection;
 import br.edu.ufam.ceteli.mywallet.classes.login.ILoginConnection;
+import br.edu.ufam.ceteli.mywallet.classes.ocr.Utils;
 
 import static br.edu.ufam.ceteli.mywallet.classes.ocr.Utils.getSaldoMes;
 
@@ -76,6 +77,8 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
 
     // private ArrayAdapter<Entrada> adapter;
     private AdapterListView adapter;
+    TextView orcamento, gastos, saldo, renda;
+    Calendar c = Calendar.getInstance();
 
     // Show popup
     Point p;
@@ -153,10 +156,10 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
 
         adapter = new AdapterListView(this, values);
 
-        ListView lv = (ListView) findViewById(android.R.id.list);
+        //ListView lv = (ListView) findViewById(android.R.id.list);
         //setListAdapter(adapter);
         //lv.setAdapter(adapter);
-        lv.setAdapter(adapter);
+        //lv.setAdapter(adapter);
 
         //List<Entrada> valuesDoMes = Entrada.getEntradasMesAno(10,2015);
         Log.d("Saldo", String.valueOf(getSaldoMes(10, 2015)));
@@ -222,6 +225,17 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
         mesano.add("Dez/15");
 
         setData(12, 20.0f);
+
+
+        orcamento = (TextView) findViewById(R.id.textView23);
+        renda = (TextView) findViewById(R.id.textView24);
+        gastos = (TextView) findViewById(R.id.textView25);
+        saldo = (TextView) findViewById(R.id.textView27);
+
+        orcamento.setText(String.valueOf(Utils.getOrcamentoTotalMes(c.get(Calendar.MONTH) + 1, c.get(Calendar.YEAR))));
+        renda.setText(String.valueOf(Utils.getSaldoOrcamentoTotal(c.get(Calendar.MONTH) + 1, c.get(Calendar.YEAR))));
+        gastos.setText(String.valueOf(Utils.getgastosMes(c.get(Calendar.MONTH) + 1, c.get(Calendar.YEAR))));
+        saldo.setText(String.valueOf(Utils.getSaldoMes(c.get(Calendar.MONTH) + 1, c.get(Calendar.YEAR))));
 
 
     }
@@ -447,7 +461,7 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
     @Override
     protected void onResume() {
         super.onResume();
-        restartArryaListAdapter();
+        //restartArryaListAdapter();
 
         Calendar c = Calendar.getInstance();
         int seconds = c.get(Calendar.SECOND);

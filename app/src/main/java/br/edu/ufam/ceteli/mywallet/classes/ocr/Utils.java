@@ -43,6 +43,34 @@ public class Utils {
 
     }
 
+    static public float getOrcamentoTotalMes(int mes, int ano){
+        // 0 -> Entrada e 1 -> Saída
+        float saldo = 0;
+        float saldo1 = 0;
+        float saldo2 = 0;
+        float saldoTot = 0;
+        List<Entrada> values = Entrada.getEntradasMesAno(mes, ano);
+        List<Entry> valores = Entry.getOrcamento(mes, ano);
+
+        for (Entrada in:
+                values) {
+            if (in.getTipo() == 0) {
+                saldo += in.getValor();
+            }
+        }
+
+        for (Entry x: valores){
+            saldo1 += x.getOrcamento();
+            saldo2 += x.getBonus();
+        }
+
+        saldoTot = saldo + saldo1 + saldo2;
+
+
+        return saldoTot;
+
+    }
+
     static public float getEntradaMes(int mes, int ano){
         // 0 -> Entrada e 1 -> Saída
         float entrada = 0;
@@ -180,6 +208,22 @@ public class Utils {
         return Stransporte;
     }
 
+    static public float getgastosMes(int mes, int ano){
+        // 0 -> Entrada e 1 -> Saída
+        float saldo = 0;
+        List<Entrada> values = Entrada.getEntradasMesAno(mes, ano);
+
+        for (Entrada in:
+                values) {
+            if (in.getTipo() == 1) {
+                saldo += in.getValor();
+            }
+        }
+
+        return saldo;
+
+    }
 
 
-}
+
+    }
