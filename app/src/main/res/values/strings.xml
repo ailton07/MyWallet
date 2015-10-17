@@ -32,9 +32,9 @@
 
     <string-array name="categoria_array">
         <item>Mensais</item>
-        <item>Casa</item>
-        <item>Restaurante</item>
-        <item>Lazer</item>
+        <item>Residencia</item>
+        <item>Alimenticios</item>
+        <item>Entretenimento</item>
         <item>Transporte</item>
         <item>Ocasional</item>
 
