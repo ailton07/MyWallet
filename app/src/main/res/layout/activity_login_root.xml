@@ -3,24 +3,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginActivity">
+    tools:context=".LoginActivity"
+    android:background="#000000">
 
     <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/imgBGLogin"
-        android:scaleType="centerCrop"
-        android:layout_alignParentTop="true"
+        android:id="@+id/ivIcMyWallet"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:src="@drawable/ic_splash_mywallet"
         android:layout_centerHorizontal="true"
-        android:src="@drawable/ic_bg_login"
-        tools:ignore="ContentDescription" />
+        android:layout_marginTop="32dp"/>
 
     <FrameLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true">
-
+        android:layout_below="@id/ivIcMyWallet"
+        android:layout_marginTop="64dp"
+        android:layout_marginBottom="32dp">
         <include layout="@layout/activity_login_child"/>
     </FrameLayout>
 

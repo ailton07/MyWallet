@@ -15,13 +15,15 @@
             android:id="@+id/toolbarReports"
             android:layout_width="match_parent"
             android:layout_height="@dimen/abc_action_bar_default_height_material"
-            android:background="#009688"
             app:layout_scrollFlags="scroll|enterAlways" />
 
         <android.support.design.widget.TabLayout
             android:id="@+id/tabReports"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
+            app:tabTextColor="@color/title"
+            app:tabSelectedTextColor="@color/secondary"
+            app:tabIndicatorColor="@color/secondary"
             app:tabMode="scrollable"
             app:tabGravity="fill"/>
     </android.support.design.widget.AppBarLayout>
@@ -33,3 +35,5 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
 </android.support.design.widget.CoordinatorLayout>
+
+

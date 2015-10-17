@@ -99,21 +99,19 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
         if(type != null) {
             if (type.contains("GOOGLE")) {
                 loggedAccount = GoogleAccountConnection.getInstance(null);
-                cover.setBackgroundColor(Color.parseColor("#607D8B"));
             } else if (type.contains("FACEBOOK")) {
                 loggedAccount = FacebookAccountConnection.getInstance(null);
-                cover.setBackgroundColor(Color.parseColor("#3F51B5"));
             }
         }
 
         // Drawer e Toolbar
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
-        drawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
+        //drawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
         resultFrameDrawer = (NavigationView) findViewById(R.id.resultFrameDrawer);
         resultFrameDrawer.inflateMenu(R.menu.menu_drawer);
         resultFrameDrawer.setNavigationItemSelectedListener(this);
         toggleArrow = (ImageView) findViewById(R.id.toggleArrow);
-        toggleArrow.setImageDrawable(getResources().getDrawable(R.drawable.ic_keyboard_arrow_down_white_24dp));
+        toggleArrow.setImageDrawable(getResources().getDrawable(R.drawable.ic_arrow_down));
         NavigationView resultFrameDefaultOptionsDrawer = (NavigationView) findViewById(R.id.resultFrameDefaultOptionsDrawer);
         resultFrameDefaultOptionsDrawer.setNavigationItemSelectedListener(this);
 
@@ -138,12 +136,12 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
         fabNewInput = (FloatingActionsMenu) findViewById(R.id.fabNewInput);
 
         FloatingActionButton fabPhotoInput = (FloatingActionButton) findViewById(R.id.fabPhotoInput);
-        fabPhotoInput.setIcon(R.drawable.ic_camera_enhance_white_24dp);
+        fabPhotoInput.setIcon(R.drawable.ic_photo_fab);
         fabPhotoInput.setSize(FloatingActionButton.SIZE_MINI);
         fabPhotoInput.setOnClickListener(fabPhotoOnClick());
 
         FloatingActionButton fabManualInput = (FloatingActionButton) findViewById(R.id.fabManualInput);
-        fabManualInput.setIcon(R.drawable.ic_mode_edit_white_24dp);
+        fabManualInput.setIcon(R.drawable.ic_manual_fab);
         fabManualInput.setSize(FloatingActionButton.SIZE_MINI);
         fabManualInput.setOnClickListener(fabManualOnClick());
 
@@ -359,11 +357,11 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
         if(resultFrameDrawer.getMenu().findItem(R.id.drawer_item_revoke) == null){
             resultFrameDrawer.getMenu().clear();
             resultFrameDrawer.inflateMenu(R.menu.menu_drawer_login);
-            toggleArrow.setImageDrawable(getResources().getDrawable(R.drawable.ic_keyboard_arrow_up_white_24dp));
+            toggleArrow.setImageDrawable(getResources().getDrawable(R.drawable.ic_arrow_up));
         } else {
             resultFrameDrawer.getMenu().clear();
             resultFrameDrawer.inflateMenu(R.menu.menu_drawer);
-            toggleArrow.setImageDrawable(getResources().getDrawable(R.drawable.ic_keyboard_arrow_down_white_24dp));
+            toggleArrow.setImageDrawable(getResources().getDrawable(R.drawable.ic_arrow_down));
         }
     }
 

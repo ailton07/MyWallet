@@ -4,11 +4,11 @@
     <group>
         <item
             android:id="@+id/drawer_item_revoke"
-            android:title="Revogar Acesso"
-            android:icon="@drawable/ic_remove_circle_black_24dp"/>
+            android:title="Remover Conta"
+            android:icon="@drawable/ic_remove_account" />
         <item
             android:id="@+id/drawer_item_disconnect"
             android:title="Sair"
-            android:icon="@drawable/ic_keyboard_backspace_black_24dp"/>
+            android:icon="@drawable/ic_exit" />
     </group>
 </menu>

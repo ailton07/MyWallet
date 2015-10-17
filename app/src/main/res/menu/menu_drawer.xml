@@ -5,14 +5,14 @@
         <item
             android:id="@+id/drawer_item_budget"
             android:title="Orçamento"
-            android:icon="@drawable/ic_trending_up_black_24dp"/>
+            android:icon="@drawable/ic_budget"/>
         <item
             android:id="@+id/drawer_item_report"
             android:title="Relatório"
-            android:icon="@drawable/ic_description_black_24dp"/>
+            android:icon="@drawable/ic_report"/>
         <item
             android:id="@+id/drawer_item_planning"
             android:title="Planejamento"
-            android:icon="@drawable/ic_info_black_24dp"/>
+            android:icon="@drawable/ic_panning"/>
     </group>
 </menu>

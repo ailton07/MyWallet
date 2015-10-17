@@ -14,7 +14,7 @@
         android:scaleType="centerCrop"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-
+        android:src="@drawable/bg_mywallet"
         tools:ignore="ContentDescription" />
 
     <RelativeLayout
@@ -49,29 +49,40 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             android:layout_marginRight="16dp"
-            android:layout_marginEnd="16dp"/>
+            android:layout_marginEnd="16dp"
+            tools:ignore="ContentDescription"/>
 
         <TextView
             android:id="@+id/tvHeaderName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_toLeftOf="@+id/toggleArrow"
+            android:layout_toStartOf="@+id/toggleArrow"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:gravity="start|center"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textStyle="bold"
             android:textSize="14sp"
-            android:textColor="#FFFFFF"
-            android:layout_marginTop="14dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"/>
+            android:textColor="#FFFFFF" />
 
         <TextView
             android:id="@+id/tvHeaderEmail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:textColor="#FFFF"
             android:layout_marginTop="28dp"
             android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"/>
+            android:layout_marginLeft="16dp"
+            android:layout_toLeftOf="@+id/toggleArrow"
+            android:layout_toStartOf="@+id/toggleArrow"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:gravity="start|center"
+            android:textSize="14sp"
+            android:textColor="#FFFF" />
     </RelativeLayout>
 
 </RelativeLayout>

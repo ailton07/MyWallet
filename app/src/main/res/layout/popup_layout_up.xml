@@ -3,7 +3,7 @@
     android:layout_width="250dp"
     android:id="@+id/popup"
     android:layout_height="wrap_content"
-    android:background="@drawable/popup_bg_up"
+    android:background="@drawable/bg_popup_up"
     android:paddingLeft="22dp"
     android:orientation="vertical" >
 

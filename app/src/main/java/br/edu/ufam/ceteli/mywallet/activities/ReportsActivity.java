@@ -39,6 +39,7 @@ public class ReportsActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarReports);
         setSupportActionBar(toolbar);
+        getDelegate().getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back);
         getDelegate().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);

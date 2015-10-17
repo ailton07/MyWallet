@@ -40,8 +40,6 @@ public class LoginActivity extends AppCompatActivity implements Observer {
         com.activeandroid.Configuration.Builder configurationBuilder = new com.activeandroid.Configuration.Builder(this).setDatabaseName("teste.db");
         configurationBuilder.addModelClasses(Entrada.class);
         configurationBuilder.addModelClasses(br.edu.ufam.ceteli.mywallet.classes.Entry.class);
-
-
         ActiveAndroid.initialize(configurationBuilder.create());
     }
 

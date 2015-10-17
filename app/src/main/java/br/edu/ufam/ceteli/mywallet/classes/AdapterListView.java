@@ -88,10 +88,10 @@ public class AdapterListView extends BaseAdapter
             ((TextView) view.findViewById(R.id.text)).setText(item.toString());
         }
         if(item.getTipo()==0) {
-            ((ImageView) view.findViewById(R.id.imagemview)).setImageResource(R.drawable.mais_small);
+            ((ImageView) view.findViewById(R.id.imagemview)).setImageResource(R.drawable.ic_earning);
         }
         else{
-            ((ImageView) view.findViewById(R.id.imagemview)).setImageResource(R.drawable.menos_small);
+            ((ImageView) view.findViewById(R.id.imagemview)).setImageResource(R.drawable.ic_spending);
         }
 
         return view;

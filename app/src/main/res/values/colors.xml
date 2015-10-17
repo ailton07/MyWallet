@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <item name="primary" type="color">#00BFA5</item>
+    <item name="secondary" type="color">#FFEE58</item>
+    <item name="title" type="color">#BBFFFFFF</item>
+
+    <item name="google_login_button" type="color">@color/common_signin_btn_default_background</item>
+    <item name="google_login_button_text" type="color">@color/common_signin_btn_dark_text_default</item>
+    <item name="facebook_login_button" type="color">@color/com_facebook_button_background_color</item>
+    <item name="facebook_login_button_text" type="color">@color/com_facebook_share_button_text_color</item>
+
+    <item name="earning" type="color">#00C853</item>
+    <item name="spending" type="color">#D50000</item>
+
+</resources>
