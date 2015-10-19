@@ -1,6 +1,5 @@
 package br.edu.ufam.ceteli.mywallet.activities;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -110,7 +109,6 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
         }
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     public boolean onNavigationItemSelected(final MenuItem menuItem) {
         switch (menuItem.getItemId()) {
@@ -133,7 +131,6 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
                 if(getSupportFragmentManager().findFragmentByTag("Reports") == null) {
                     if (getSupportFragmentManager().getBackStackEntryCount() < 1) {
                         getSupportFragmentManager().beginTransaction().replace(R.id.frameFragment, new ReportsActivity(), "Reports").addToBackStack(null).commit();
-                        Log.e("Fragment", "<1");
                     } else {
                         getSupportFragmentManager().beginTransaction().replace(R.id.frameFragment, new ReportsActivity(), "Reports").commit();
                     }
