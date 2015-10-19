@@ -115,7 +115,6 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
             case R.id.drawer_item_home:
                 if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
                     getSupportFragmentManager().popBackStack();
-                    Log.e("Fragment", "Poped");
                 }
 
                 if(getSupportFragmentManager().findFragmentByTag("Main") == null) {
