@@ -13,4 +13,11 @@
     <item name="earning" type="color">#00C853</item>
     <item name="spending" type="color">#D50000</item>
 
+    <item name="bt_default_os_pressed_background_opaque" type="color">#E1E1E1</item>
+    <item name="bt_nav_item_background_selected_by_keyboard" type="color">#E1E1E1</item>
+    <item name="bt_nav_item_background_selected" type="color">#E1E1E1</item>
+    <item name="bt_nav_item_background" type="color">#FFFFFF</item>
+
+
+
 </resources>

@@ -1,5 +1,6 @@
 package br.edu.ufam.ceteli.mywallet.activities.dialogs;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -127,7 +128,7 @@ public class DialogPhoto extends AppCompatDialogFragment{
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == 1 || requestCode == 2) {
-            if (resultCode == getActivity().RESULT_OK && null != data) {
+            if (resultCode == Activity.RESULT_OK && null != data) {
                 Uri selectedImage = data.getData();
                 String[] filePathColumn = {MediaStore.Images.Media.DATA};
 
@@ -195,7 +196,7 @@ public class DialogPhoto extends AppCompatDialogFragment{
                 entrada.setDataInsercao(dateFormatSave.format(new Date()));
                 entrada.setDataCompra(dateFormatIn.format(calendar.getTime()));
                 entrada.save();
-                ((IUpdateListView) getActivity()).onListUpdated(entrada);
+                ((IUpdateListView) getFragmentManager().findFragmentByTag("Main")).onListUpdated(entrada);
             }
         };
     }

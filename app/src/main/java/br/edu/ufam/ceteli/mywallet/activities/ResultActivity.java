@@ -1,12 +1,13 @@
 package br.edu.ufam.ceteli.mywallet.activities;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.NavigationView;
@@ -23,67 +24,38 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import com.activeandroid.ActiveAndroid;
-import com.getbase.floatingactionbutton.FloatingActionButton;
-import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.Legend.LegendForm;
-import com.github.mikephil.charting.components.Legend.LegendPosition;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.YAxis.AxisDependency;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.highlight.Highlight;
-import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
-import com.github.mikephil.charting.utils.ColorTemplate;
 
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 import java.util.Random;
 
 import br.edu.ufam.ceteli.mywallet.R;
-import br.edu.ufam.ceteli.mywallet.activities.dialogs.DialogNoPhoto;
-import br.edu.ufam.ceteli.mywallet.activities.dialogs.DialogPhoto;
-import br.edu.ufam.ceteli.mywallet.classes.AdapterListView;
-import br.edu.ufam.ceteli.mywallet.classes.Entrada;
-import br.edu.ufam.ceteli.mywallet.classes.IUpdateListView;
+import br.edu.ufam.ceteli.mywallet.activities.menus.MainScreenActivity;
+import br.edu.ufam.ceteli.mywallet.activities.menus.ReportsActivity;
 import br.edu.ufam.ceteli.mywallet.classes.login.FacebookAccountConnection;
 import br.edu.ufam.ceteli.mywallet.classes.login.GoogleAccountConnection;
 import br.edu.ufam.ceteli.mywallet.classes.login.ILoginConnection;
-import br.edu.ufam.ceteli.mywallet.classes.ocr.Utils;
-
-import static br.edu.ufam.ceteli.mywallet.classes.ocr.Utils.getSaldoMes;
 
 
 
-public class ResultActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, OnChartValueSelectedListener, IUpdateListView {
+
+public class ResultActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     // Conta
     private ILoginConnection loggedAccount = null;
+
+    // Toolbar
+    private Toolbar toolbar = null;
 
     // Drawer
     private DrawerLayout drawerLayout = null;
     private NavigationView resultFrameDrawer = null;
     private ImageView toggleArrow = null;
 
-    // Nova entrada (Botão Flutuante)
-    private FloatingActionsMenu fabNewInput = null;
-
-    // private ArrayAdapter<Entrada> adapter;
-    private AdapterListView adapter;
-    TextView orcamento, gastos, saldo, renda;
-    Calendar c = Calendar.getInstance();
-
     // Show popup
     Point p;
-
-    private List<String> mesano=new ArrayList<>();
 
 
     private LineChart mChart;
@@ -115,10 +87,8 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
         resultFrameDrawer.setNavigationItemSelectedListener(this);
         toggleArrow = (ImageView) findViewById(R.id.toggleArrow);
         toggleArrow.setImageDrawable(getResources().getDrawable(R.drawable.ic_arrow_down));
-        NavigationView resultFrameDefaultOptionsDrawer = (NavigationView) findViewById(R.id.resultFrameDefaultOptionsDrawer);
-        resultFrameDefaultOptionsDrawer.setNavigationItemSelectedListener(this);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -135,225 +105,45 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
         loggedAccount.getAccountPicCover(cover);
         loggedAccount.getAccountPicProfile(profile);
 
-        // Quando for mexer na lista, fechar esse FAB
-        fabNewInput = (FloatingActionsMenu) findViewById(R.id.fabNewInput);
-
-        FloatingActionButton fabPhotoInput = (FloatingActionButton) findViewById(R.id.fabPhotoInput);
-        fabPhotoInput.setIcon(R.drawable.ic_photo_fab);
-        fabPhotoInput.setSize(FloatingActionButton.SIZE_MINI);
-        fabPhotoInput.setOnClickListener(fabPhotoOnClick());
-
-        FloatingActionButton fabManualInput = (FloatingActionButton) findViewById(R.id.fabManualInput);
-        fabManualInput.setIcon(R.drawable.ic_manual_fab);
-        fabManualInput.setSize(FloatingActionButton.SIZE_MINI);
-        fabManualInput.setOnClickListener(fabManualOnClick());
-
-        initializeDB();
-
-        List<Entrada> values = Entrada.getComments();
-
-        adapter = new AdapterListView(this, values);
-
-        //ListView lv = (ListView) findViewById(android.R.id.list);
-        //setListAdapter(adapter);
-        //lv.setAdapter(adapter);
-        //lv.setAdapter(adapter);
-
-        //List<Entrada> valuesDoMes = Entrada.getEntradasMesAno(10,2015);
-        Log.d("Saldo", String.valueOf(getSaldoMes(10, 2015)));
-
-        mChart = (LineChart) findViewById(R.id.chart1);
-        mChart.setOnChartValueSelectedListener(this);
-
-        // no description text
-        mChart.setDescription("");
-        mChart.setNoDataTextDescription("You need to provide data for the chart.");
-
-        // enable value highlighting
-        mChart.setHighlightEnabled(true);
-
-        // enable touch gestures
-        mChart.setTouchEnabled(true);
-
-        mChart.setDragDecelerationFrictionCoef(0.9f);
-
-        // enable scaling and dragging
-        mChart.setDragEnabled(true);
-        mChart.setScaleEnabled(true);
-        mChart.setDrawGridBackground(false);
-        mChart.setHighlightPerDragEnabled(true);
-
-        // if disabled, scaling can be done on x- and y-axis separately
-        mChart.setPinchZoom(true);
-
-        // set an alternative background color
-        mChart.setBackgroundColor(Color.LTGRAY);
-
-        mChart.animateX(2500);
-
-        // get the legend (only possible after setting data)
-        Legend l = mChart.getLegend();
-
-        // modify the legend ...
-        // l.setPosition(LegendPosition.LEFT_OF_CHART);
-        l.setForm(LegendForm.LINE);
-        l.setTextSize(11f);
-        l.setTextColor(Color.WHITE);
-        l.setPosition(LegendPosition.BELOW_CHART_LEFT);
-//        l.setYOffset(11f);
-
-        XAxis xAxis = mChart.getXAxis();
-        xAxis.setTextSize(12f);
-        xAxis.setTextColor(Color.WHITE);
-        xAxis.setDrawGridLines(false);
-        xAxis.setDrawAxisLine(false);
-        xAxis.setSpaceBetweenLabels(1);
-
-        mesano.add("Jan/15");
-        mesano.add("Fev/15");
-        mesano.add("Mar/15");
-        mesano.add("Abr/15");
-        mesano.add("Mai/15");
-        mesano.add("Jun/15");
-        mesano.add("Jul/15");
-        mesano.add("Ago/15");
-        mesano.add("Set/15");
-        mesano.add("Out/15");
-        mesano.add("Nov/15");
-        mesano.add("Dez/15");
-
-        setData(12, 20.0f);
-
-
-        orcamento = (TextView) findViewById(R.id.textView23);
-        renda = (TextView) findViewById(R.id.textView24);
-        gastos = (TextView) findViewById(R.id.textView25);
-        saldo = (TextView) findViewById(R.id.textView27);
-
-        orcamento.setText(String.valueOf(Utils.getOrcamentoTotalMes(c.get(Calendar.MONTH) + 1, c.get(Calendar.YEAR))));
-        renda.setText(String.valueOf(Utils.getSaldoOrcamentoTotal(c.get(Calendar.MONTH) + 1, c.get(Calendar.YEAR))));
-        gastos.setText(String.valueOf(Utils.getgastosMes(c.get(Calendar.MONTH) + 1, c.get(Calendar.YEAR))));
-        saldo.setText(String.valueOf(Utils.getSaldoMes(c.get(Calendar.MONTH) + 1, c.get(Calendar.YEAR))));
-
-
-    }
-
-    protected void initializeDB() {
-        com.activeandroid.Configuration.Builder configurationBuilder = new com.activeandroid.Configuration.Builder(this);
-        configurationBuilder.addModelClasses(Entrada.class);
-        configurationBuilder.addModelClasses(br.edu.ufam.ceteli.mywallet.classes.Entry.class);
-        ActiveAndroid.initialize(configurationBuilder.create());
-    }
-
-        private void setData(int count,float range) {
-        ArrayList<String> xVals = new ArrayList<>();
-        for (int i = 0; i < count; i++) {
-            xVals.add(mesano.get(i));
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.frameFragment, new MainScreenActivity(), "Main").commit();
         }
-
-        ArrayList<Entry> yVals1 = new ArrayList<>();
-
-        for (int i = 0; i < count; i++) {
-            float mult = range / 2f;
-            float val = (float) (Math.random() * mult) + 50;// + (float)
-            // ((mult *
-            // 0.1) / 10);
-            yVals1.add(new Entry(val, i));
-        }
-
-        // create a dataset and give it a type
-        LineDataSet set1 = new LineDataSet(yVals1, "Gastos mensais");
-        set1.setAxisDependency(AxisDependency.LEFT);
-        set1.setColor(ColorTemplate.getHoloBlue());
-        set1.setCircleColor(Color.WHITE);
-        set1.setLineWidth(2f);
-        set1.setCircleSize(3f);
-        set1.setFillAlpha(65);
-        set1.setFillColor(ColorTemplate.getHoloBlue());
-        set1.setHighLightColor(Color.rgb(244, 117, 117));
-        set1.setDrawCircles(false);
-        set1.setDrawFilled(true);
-        //set1.setFillFormatter(new MyFillFormatter(0f));
-//        set1.setDrawHorizontalHighlightIndicator(false);
-//        set1.setVisible(false);
-//        set1.setCircleHoleColor(Color.WHITE);
-
-        ArrayList<LineDataSet> dataSets = new ArrayList<>();
-        dataSets.add(set1); // add the datasets
-
-        // create a data object with the datasets
-        LineData data = new LineData(xVals, dataSets);
-        data.setValueTextColor(Color.WHITE);
-        data.setValueTextSize(9f);
-
-        // set data
-        mChart.setData(data);
     }
 
-    @Override
-    public void onValueSelected(Entry e, int dataSetIndex, Highlight h) {
-        Log.i("Entry selected", e.toString());
-    }
-
-    @Override
-    public void onNothingSelected() {
-        Log.i("Nothing selected", "Nothing selected.");
-    }
-
-    public void restartArryaListAdapter(){
-        List<Entrada> values = Entrada.getComments();
-        adapter = new AdapterListView(this, values);
-        ListView lv = (ListView) findViewById(android.R.id.list);
-        lv.setAdapter(adapter);
-    }
-
-    // Faz um update quando é adicionado um novo elemento a partir do dialogFragment
-    @Override
-    public void onListUpdated(Entrada newValueToAdd) {
-        adapter.notifyDataSetInvalidated();
-        adapter.add(newValueToAdd);
-        adapter.notifyDataSetChanged();
-    }
-
-    private View.OnClickListener fabManualOnClick(){
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DialogNoPhoto dialogNoPhoto = new DialogNoPhoto();
-                dialogNoPhoto.show(getSupportFragmentManager(), null);
-                fabNewInput.collapse();
-            }
-        };
-    }
-
-    private View.OnClickListener fabPhotoOnClick(){
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DialogPhoto dialogPhoto = new DialogPhoto();
-                dialogPhoto.show(getSupportFragmentManager(), null);
-                fabNewInput.collapse();
-            }
-        };
-    }
-
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     public boolean onNavigationItemSelected(final MenuItem menuItem) {
-        drawerLayout.closeDrawer(GravityCompat.START);
         switch (menuItem.getItemId()) {
+            case R.id.drawer_item_home:
+                if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
+                    getSupportFragmentManager().popBackStack();
+                    Log.e("Fragment", "Poped");
+                }
+
+                if(getSupportFragmentManager().findFragmentByTag("Main") == null) {
+                    getSupportFragmentManager().beginTransaction().replace(R.id.frameFragment, new MainScreenActivity(), "Main").commit();
+                }
+                break;
+
             case R.id.drawer_item_budget:
                 startActivity(new Intent(ResultActivity.this, BudgetActivity.class));
                 break;
+
             case R.id.drawer_item_report:
-                startActivity(new Intent(ResultActivity.this, ReportsActivity.class));
+                if(getSupportFragmentManager().findFragmentByTag("Reports") == null) {
+                    if (getSupportFragmentManager().getBackStackEntryCount() < 1) {
+                        getSupportFragmentManager().beginTransaction().replace(R.id.frameFragment, new ReportsActivity(), "Reports").addToBackStack(null).commit();
+                        Log.e("Fragment", "<1");
+                    } else {
+                        getSupportFragmentManager().beginTransaction().replace(R.id.frameFragment, new ReportsActivity(), "Reports").commit();
+                    }
+                    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                        toolbar.setElevation(0);
+                }
                 break;
 
             case R.id.drawer_item_planning:
                 startActivity(new Intent(ResultActivity.this, GoalActivity.class));
-                break;
-
-            case R.id.drawer_item_settings:
-                startActivity(new Intent(ResultActivity.this, SettingsActivity.class).putExtra("DBKey", loggedAccount.getAccountEmail()));
                 break;
 
             case R.id.drawer_item_disconnect:
@@ -364,6 +154,10 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
                 loggedAccount.revoke(ResultActivity.this);
                 break;
         }
+
+        toolbar.setTitle(menuItem.getTitle());
+        drawerLayout.closeDrawers();
+
         return true;
     }
 
@@ -377,6 +171,11 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
             resultFrameDrawer.inflateMenu(R.menu.menu_drawer);
             toggleArrow.setImageDrawable(getResources().getDrawable(R.drawable.ic_arrow_down));
         }
+    }
+
+    public void settingOptions(View view){
+        drawerLayout.closeDrawer(GravityCompat.START);
+        startActivity(new Intent(ResultActivity.this, SettingsActivity.class).putExtra("DBKey", loggedAccount.getAccountEmail()));
     }
 
     //******************************************************

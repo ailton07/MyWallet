@@ -1,34 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Na verdade poderia ser relative layour, porem tem algumas funções do NavigationView
-     como elevação que pode ser interessante em APIs maiores ou iguais a 21 -->
 <android.support.design.widget.NavigationView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/resultFrameDrawer"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
     android:layout_gravity="start"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:paddingBottom="48dp"
+    android:clipToPadding="false"
+    android:background="#FFFFFF"
+    app:headerLayout="@layout/drawer_header">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="-48dp"
+        android:fitsSystemWindows="true"
+        android:foregroundGravity="fill_horizontal|center|top"
+        android:background="@drawable/bt_bg_drawer_footer_shadow">
 
-        <android.support.design.widget.NavigationView
-            android:id="@+id/resultFrameDrawer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:headerLayout="@layout/drawer_header"
-            android:layout_above="@+id/resultFrameDefaultOptionsDrawer"
-            android:layout_alignParentTop="true">
-        </android.support.design.widget.NavigationView>
+        <TextView
+            android:id="@+id/drawer_item_settings"
+            android:layout_width="fill_parent"
+            android:layout_height="48dp"
+            android:gravity="center_vertical"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:drawablePadding="32dp"
+            android:drawableLeft="@drawable/ic_settings"
+            android:drawableStart="@drawable/ic_settings"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:fontFamily="sans-serif-medium"
+            android:textSize="14sp"
+            android:textColor="#dd000000"
+            android:text="Configurações"
+            android:background="@drawable/bg_drawer_item"
+            android:clickable="true"
+            android:longClickable="true"
+            android:onClick="settingOptions"/>
 
-        <android.support.design.widget.NavigationView
-            android:id="@+id/resultFrameDefaultOptionsDrawer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:menu="@menu/menu_drawer_default"
-            android:layout_alignParentBottom="true">
-        </android.support.design.widget.NavigationView>
-
-    </RelativeLayout>
+    </FrameLayout>
 
 </android.support.design.widget.NavigationView>

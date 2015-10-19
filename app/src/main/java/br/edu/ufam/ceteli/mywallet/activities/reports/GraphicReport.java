@@ -48,8 +48,8 @@ public class GraphicReport extends Fragment implements OnChartValueSelectedListe
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         categoria_array.add("Mensais");
         categoria_array.add("Casa");
@@ -57,13 +57,13 @@ public class GraphicReport extends Fragment implements OnChartValueSelectedListe
         categoria_array.add("Lazer");
         categoria_array.add("Ocasional");
 
-        mChart = (PieChart) getActivity().findViewById(R.id.chart1);
+        mChart = (PieChart) view.findViewById(R.id.chart1);
         mChart.setUsePercentValues(true);
         mChart.setDescription("");
 
-       // tf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
+        // tf = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
 
-       // mChart.setCenterTextTypeface(Typeface.createFromAsset(getAssets(), "OpenSans-Light.ttf"));
+        // mChart.setCenterTextTypeface(Typeface.createFromAsset(getAssets(), "OpenSans-Light.ttf"));
 
         mChart.setDrawHoleEnabled(true);
         mChart.setHoleColorTransparent(true);
@@ -95,8 +95,6 @@ public class GraphicReport extends Fragment implements OnChartValueSelectedListe
 
 
         setData(100);
-
-
     }
 
     @Override

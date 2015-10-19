@@ -4,19 +4,13 @@
     </style>
 
     <style name="AppTheme.NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">@color/primary</item>
         <item name="toolbarStyle">@style/ToolbarStyle</item>
-        <item name="drawerArrowStyle">@style/DrawerArrowToggle</item>
+        <item name="colorControlNormal">@color/title</item>
     </style>
 
     <style name="ToolbarStyle" parent="Widget.AppCompat.Toolbar">
         <item name="android:background">@color/primary</item>
-        <item name="android:textColorSecondary">@color/title</item>
         <item name="titleTextColor">@color/title</item>
-    </style>
-
-    <style name="DrawerArrowToggle" parent="Widget.AppCompat.DrawerArrowToggle">
-        <item name="color">@color/title</item>
     </style>
 
     <style name="menu_labels_style">

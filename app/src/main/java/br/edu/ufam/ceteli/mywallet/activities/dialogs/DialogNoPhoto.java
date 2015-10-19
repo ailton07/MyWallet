@@ -99,7 +99,7 @@ public class DialogNoPhoto extends AppCompatDialogFragment {
                 entrada.setDataInsercao(dateFormatSave.format(new Date()));
                 entrada.setDataCompra(dateFormatIn.format(calendar.getTime()));
                 entrada.save();
-                ((IUpdateListView) getActivity()).onListUpdated(entrada);
+                ((IUpdateListView) getParentFragment()).onListUpdated(entrada);
             }
         };
     }
