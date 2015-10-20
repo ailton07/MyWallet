@@ -14,7 +14,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="@dimen/abc_action_bar_default_height_material"
-            android:elevation="4dp"
+            style="@style/ToolbarStyleMainScreen"
             android:minHeight="?attr/actionBarSize"/>
 
         <FrameLayout

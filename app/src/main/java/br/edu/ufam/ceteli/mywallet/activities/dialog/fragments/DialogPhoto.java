@@ -1,4 +1,4 @@
-package br.edu.ufam.ceteli.mywallet.activities.dialogs;
+package br.edu.ufam.ceteli.mywallet.activities.dialog.fragments;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;

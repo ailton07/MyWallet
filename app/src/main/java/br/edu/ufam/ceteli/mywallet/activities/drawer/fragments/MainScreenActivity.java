@@ -1,9 +1,10 @@
-package br.edu.ufam.ceteli.mywallet.activities.menus;
+package br.edu.ufam.ceteli.mywallet.activities.drawer.fragments;
 
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,8 +30,8 @@ import java.util.Calendar;
 import java.util.List;
 
 import br.edu.ufam.ceteli.mywallet.R;
-import br.edu.ufam.ceteli.mywallet.activities.dialogs.DialogNoPhoto;
-import br.edu.ufam.ceteli.mywallet.activities.dialogs.DialogPhoto;
+import br.edu.ufam.ceteli.mywallet.activities.dialog.fragments.DialogNoPhoto;
+import br.edu.ufam.ceteli.mywallet.activities.dialog.fragments.DialogPhoto;
 import br.edu.ufam.ceteli.mywallet.classes.AdapterListView;
 import br.edu.ufam.ceteli.mywallet.classes.Entrada;
 import br.edu.ufam.ceteli.mywallet.classes.IUpdateListView;
@@ -45,6 +46,9 @@ public class MainScreenActivity extends Fragment implements OnChartValueSelected
     // Nova entrada (Botão Flutuante)
     private FloatingActionsMenu fabNewInput = null;
 
+    // Singleton
+    private static Fragment instance = null;
+
 
     // private ArrayAdapter<Entrada> adapter;
     private AdapterListView adapter;
@@ -53,6 +57,10 @@ public class MainScreenActivity extends Fragment implements OnChartValueSelected
 
     private List<String> mesano=new ArrayList<>();
     private LineChart mChart;
+
+    public static Fragment getInstance() {
+        return (instance == null)? instance = new MainScreenActivity() : instance;
+    }
 
     @Nullable
     @Override
@@ -77,6 +85,9 @@ public class MainScreenActivity extends Fragment implements OnChartValueSelected
         fabManualInput.setSize(FloatingActionButton.SIZE_MINI);
         fabManualInput.setOnClickListener(fabManualOnClick());
 
+        // Pega Toolbar
+        getActivity().findViewById(R.id.toolbar).setBackgroundColor(getResources().getColor(R.color.toolbar_main));
+        ((Toolbar) getActivity().findViewById(R.id.toolbar)).setTitle("Resumo");
 
         List<Entrada> values = Entrada.getComments();
 
@@ -162,7 +173,6 @@ public class MainScreenActivity extends Fragment implements OnChartValueSelected
         renda.setText(String.valueOf(Utils.getSaldoOrcamentoTotal(c.get(Calendar.MONTH) + 1, c.get(Calendar.YEAR))));
         gastos.setText(String.valueOf(Utils.getgastosMes(c.get(Calendar.MONTH) + 1, c.get(Calendar.YEAR))));
         saldo.setText(String.valueOf(getSaldoMes(c.get(Calendar.MONTH) + 1, c.get(Calendar.YEAR))));
-
     }
 
     private View.OnClickListener fabManualOnClick(){

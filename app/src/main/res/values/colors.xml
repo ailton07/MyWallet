@@ -3,7 +3,13 @@
 
     <item name="primary" type="color">#00BFA5</item>
     <item name="secondary" type="color">#FFEE58</item>
-    <item name="title" type="color">#BBFFFFFF</item>
+    <item name="title" type="color">#DDFFFFFF</item>
+
+    <item name="toolbar_main" type="color">#607d8b</item>
+    <item name="toolbar_graphics" type="color">#ef5350</item>
+
+    <item name="tab_selected" type="color">@color/title</item>
+    <item name="tab_notselected" type="color">#BBFFFFFF</item>
 
     <item name="google_login_button" type="color">@color/common_signin_btn_default_background</item>
     <item name="google_login_button_text" type="color">@color/common_signin_btn_dark_text_default</item>

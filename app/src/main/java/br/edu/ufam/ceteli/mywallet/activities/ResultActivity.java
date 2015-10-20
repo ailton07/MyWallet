@@ -6,10 +6,11 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -32,8 +33,8 @@ import java.util.Calendar;
 import java.util.Random;
 
 import br.edu.ufam.ceteli.mywallet.R;
-import br.edu.ufam.ceteli.mywallet.activities.menus.MainScreenActivity;
-import br.edu.ufam.ceteli.mywallet.activities.menus.ReportsActivity;
+import br.edu.ufam.ceteli.mywallet.activities.drawer.fragments.MainScreenActivity;
+import br.edu.ufam.ceteli.mywallet.activities.drawer.fragments.ReportsActivity;
 import br.edu.ufam.ceteli.mywallet.classes.login.FacebookAccountConnection;
 import br.edu.ufam.ceteli.mywallet.classes.login.GoogleAccountConnection;
 import br.edu.ufam.ceteli.mywallet.classes.login.ILoginConnection;
@@ -104,22 +105,24 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
         loggedAccount.getAccountPicCover(cover);
         loggedAccount.getAccountPicProfile(profile);
 
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.frameFragment, new MainScreenActivity(), "Main").commit();
-        }
+        inflateDefaultFragment(MainScreenActivity.getInstance(), "Main");
     }
 
     @Override
     public boolean onNavigationItemSelected(final MenuItem menuItem) {
+        Fragment fragment = null;
+        drawerLayout.closeDrawers();
+
+        // Um exemplo de redundancia :D
         switch (menuItem.getItemId()) {
             case R.id.drawer_item_home:
-                if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
-                    getSupportFragmentManager().popBackStack();
+                fragment = getSupportFragmentManager().findFragmentByTag("Main");
+                if(fragment == null) {
+                    inflateFragment(MainScreenActivity.getInstance(), "Main");
+                } else {
+                    inflateFragment(fragment, "Main");
                 }
-
-                if(getSupportFragmentManager().findFragmentByTag("Main") == null) {
-                    getSupportFragmentManager().beginTransaction().replace(R.id.frameFragment, new MainScreenActivity(), "Main").commit();
-                }
+                getSupportFragmentManager().popBackStackImmediate();
                 break;
 
             case R.id.drawer_item_budget:
@@ -127,14 +130,11 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
                 break;
 
             case R.id.drawer_item_report:
-                if(getSupportFragmentManager().findFragmentByTag("Reports") == null) {
-                    if (getSupportFragmentManager().getBackStackEntryCount() < 1) {
-                        getSupportFragmentManager().beginTransaction().replace(R.id.frameFragment, new ReportsActivity(), "Reports").addToBackStack(null).commit();
-                    } else {
-                        getSupportFragmentManager().beginTransaction().replace(R.id.frameFragment, new ReportsActivity(), "Reports").commit();
-                    }
-                    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-                        toolbar.setElevation(0);
+                fragment = getSupportFragmentManager().findFragmentByTag("Report");
+                if(fragment == null) {
+                    inflateFragment(ReportsActivity.getInstance(), "Report");
+                } else {
+                    inflateFragment(fragment, "Report");
                 }
                 break;
 
@@ -151,10 +151,40 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
                 break;
         }
 
-        toolbar.setTitle(menuItem.getTitle());
-        drawerLayout.closeDrawers();
+        resultFrameDrawer.setCheckedItem(menuItem.getItemId());
 
         return true;
+    }
+
+    private void inflateFragment(Fragment fragment, String name){
+        if(!fragment.isVisible()) {
+            FragmentTransaction transactionHome = getSupportFragmentManager().beginTransaction();
+            transactionHome.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out);
+            transactionHome.replace(R.id.frameFragment, fragment, name);
+            getSupportFragmentManager().popBackStackImmediate();
+            transactionHome.addToBackStack(name);
+            transactionHome.commit();
+        }
+    }
+
+    private void inflateDefaultFragment(Fragment fragment, String name){
+        if(!fragment.isVisible()) {
+            FragmentTransaction transactionHome = getSupportFragmentManager().beginTransaction();
+            transactionHome.replace(R.id.frameFragment, fragment, name);
+            getSupportFragmentManager().popBackStackImmediate();
+            transactionHome.commit();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(drawerLayout.isDrawerOpen(GravityCompat.START))
+            drawerLayout.closeDrawers();
+
+        if(getSupportFragmentManager().getBackStackEntryCount() > 0)
+            resultFrameDrawer.setCheckedItem(resultFrameDrawer.getMenu().getItem(0).getItemId());
+
+        super.onBackPressed();
     }
 
     public void loginOptions(View view){

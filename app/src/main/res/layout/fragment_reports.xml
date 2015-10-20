@@ -16,9 +16,9 @@
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             app:tabTextColor="@color/title"
-            app:tabSelectedTextColor="@color/secondary"
-            app:tabIndicatorColor="@color/secondary"
-            android:background="@color/primary"
+            app:tabSelectedTextColor="@color/tab_selected"
+            app:tabIndicatorColor="@color/tab_notselected"
+            android:background="@color/toolbar_graphics"
             app:tabMode="scrollable"
             app:tabGravity="fill"/>
     </android.support.design.widget.AppBarLayout>
