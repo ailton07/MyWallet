@@ -48,13 +48,14 @@ public class ReportsActivity extends Fragment {
 
         fragmentPagerAdapter = new ViewPagerAdapter(getFragmentManager());
         fragmentPagerAdapter.addTab("Grafico", new GraphicReport(), getResources().getColor(R.color.toolbar_graphics));
-        fragmentPagerAdapter.addTab("Geral", new GeneralReport(), Color.BLUE);
+        fragmentPagerAdapter.addTab("Todos", new GeneralReport(), Color.BLUE);
         fragmentPagerAdapter.addTab("Ganhos", new EarningReport(), Color.GREEN);
         fragmentPagerAdapter.addTab("Gastos", new SpedingReport(), Color.GRAY);
         fragmentPagerAdapter.addTab("Residencia", new HomeReport(), Color.MAGENTA);
         fragmentPagerAdapter.addTab("Alimentícios", new FoodReport(), Color.LTGRAY);
         fragmentPagerAdapter.addTab("Entretenimento", new LoungeReport(), Color.GREEN);
         fragmentPagerAdapter.addTab("Transporte", new MoveReport(), Color.WHITE);
+        fragmentPagerAdapter.addTab("Saúde", new MoveReport(), Color.RED);
         fragmentPagerAdapter.addTab("Outros gastos", new OthersReport(), Color.BLACK);
 
         ViewPager viewPager = (ViewPager) view.findViewById(R.id.viewPager);

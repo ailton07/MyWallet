@@ -1,5 +1,6 @@
 package br.edu.ufam.ceteli.mywallet.activities;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -24,6 +25,7 @@ public class LoginActivity extends AppCompatActivity implements Observer {
     private ILoginConnection iGoogleConn = null;
     private static final String TYPE_FACEBOOK = "FACEBOOK";
     private static final String TYPE_GOOGLE = "GOOGLE";
+    private ProgressDialog conncecting = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,13 +102,18 @@ public class LoginActivity extends AppCompatActivity implements Observer {
         if(data instanceof StatusGoogleConn) {
             switch ((StatusGoogleConn) data) {
                 case CREATED:
+                    if(conncecting != null)
+                        conncecting.dismiss();
                     setContentView(R.layout.activity_login_root);
                     break;
 
                 case CONNECTING:
+                    conncecting = ProgressDialog.show(this, "", "Concetando. Por favor espere...", true, false);
                     break;
 
                 case CONNECTED:
+                    if(conncecting != null)
+                        conncecting.dismiss();
                     iFacebookConn.clearInstanceReference();
                     Intent intent = new Intent(this, ResultActivity.class);
                     intent.putExtra("TYPE", TYPE_GOOGLE);
@@ -115,6 +122,8 @@ public class LoginActivity extends AppCompatActivity implements Observer {
                     break;
 
                 case DISCONNECTED:
+                    if(conncecting != null)
+                        conncecting.dismiss();
                     break;
             }
         }
@@ -122,12 +131,17 @@ public class LoginActivity extends AppCompatActivity implements Observer {
         if(data instanceof StatusFacebookConn){
             switch ((StatusFacebookConn) data) {
                 case DISCONNECTED:
+                    if(conncecting != null)
+                        conncecting.dismiss();
                     break;
 
                 case CONNECTING:
+                    conncecting = ProgressDialog.show(this, "", "Concetando. Por favor espere...", true, false);
                     break;
 
                 case CONNECTED:
+                    if(conncecting != null)
+                        conncecting.dismiss();
                     iGoogleConn.clearInstanceReference();
                     Intent intent = new Intent(this, ResultActivity.class);
                     intent.putExtra("TYPE", TYPE_FACEBOOK);
