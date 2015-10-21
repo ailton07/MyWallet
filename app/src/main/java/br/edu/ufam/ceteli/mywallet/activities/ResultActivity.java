@@ -38,8 +38,7 @@ import br.edu.ufam.ceteli.mywallet.activities.drawer.fragments.ReportsActivity;
 import br.edu.ufam.ceteli.mywallet.classes.login.FacebookAccountConnection;
 import br.edu.ufam.ceteli.mywallet.classes.login.GoogleAccountConnection;
 import br.edu.ufam.ceteli.mywallet.classes.login.ILoginConnection;
-
-
+import br.edu.ufam.ceteli.mywallet.classes.ocr.Utils;
 
 
 public class ResultActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -228,8 +227,26 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
         p.y = location[1];
 
         showPopup(ResultActivity.this, p);
-
     }
+
+    public void popup(String texto) {
+
+        int[] location = new int[2];
+        Toolbar button = (Toolbar) findViewById(R.id.toolbar);
+
+        // Get the x, y location and store it in the location[] array
+        // location[0] = x, location[1] = y.
+        button.getLocationOnScreen(location);
+
+        //Initialize the Point with x, and y positions
+        Point p = new Point();
+        p.x = location[0];
+        p.y = location[1];
+
+        Utils.showPopup(ResultActivity.this, p, texto);
+    }
+
+
 
 
     // The method that displays the popup.
@@ -286,6 +303,8 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
         super.onResume();
         //restartArryaListAdapter();
 
+
+
         Calendar c = Calendar.getInstance();
         int seconds = c.get(Calendar.SECOND);
 
@@ -293,7 +312,7 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
         if(((seconds%2) == 0) & ((getWindow().getDecorView().getWindowVisibility() == View.GONE) )) {
             new Handler().postDelayed(new Runnable() {
                 public void run() {
-                    popup();
+                    popup(); // popup("TEsteee");
                 }
             }, 100);
 
