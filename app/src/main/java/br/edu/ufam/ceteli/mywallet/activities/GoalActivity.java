@@ -55,8 +55,6 @@ public class GoalActivity extends ActionBarActivity {
         meta.setText(settings.getString("Meta", ""));
         sp.setSelection(settings.getInt("Filtro", valorSpinner));
 
-        meta1 = Float.valueOf(meta.getText().toString());
-
 
         final Button button = (Button) findViewById(R.id.button3);
         button.setOnClickListener(new View.OnClickListener() {
@@ -71,6 +69,7 @@ public class GoalActivity extends ActionBarActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 valorSpinner = sp.getSelectedItemPosition();
+                float valor = 0;
 
                 if(valorSpinner==0){
                     filtro.setText("Sem nenhum filtro");
@@ -80,15 +79,15 @@ public class GoalActivity extends ActionBarActivity {
                 if(valorSpinner==1){
                     filtro.setText("Planejamento do dia");
                     gasto.setText(String.valueOf(Utils.getSaidaDia(c.get(Calendar.DAY_OF_MONTH), c.get(Calendar.MONTH) + 1, c.get(Calendar.YEAR))));
-                    saldo1 = meta1 - Utils.getSaidaDia(c.get(Calendar.DAY_OF_MONTH), c.get(Calendar.MONTH) + 1, c.get(Calendar.YEAR));
+                    valor = CalcularSaldoDia();
                 }
                 if(valorSpinner==2){
                     filtro.setText("Planejamento do Mês");
                     gasto.setText(String.valueOf(Utils.getSaidaMes(c.get(Calendar.MONTH) + 1, c.get(Calendar.YEAR))));
-                    saldo1 = meta1 - Utils.getSaidaMes(c.get(Calendar.MONTH) + 1, c.get(Calendar.YEAR));
+                    valor = CalcularSaldoMes();
                 }
 
-                saldo.setText(String.valueOf(saldo1));
+                saldo.setText(String.valueOf(valor));
 
             }
 
@@ -148,9 +147,16 @@ public class GoalActivity extends ActionBarActivity {
 
                 metaEdit = (EditText) v.findViewById(R.id.editText3);
 
+                meta.setText(metaEdit.getText().toString());
+
+                meta1 = Float.valueOf(meta.getText().toString());
+
+                float a = CalcularSaldo(valorSpinner);
+
+                saldo.setText(String.valueOf(a));
+
                 savePreferences("Meta", metaEdit.getText().toString());
 
-                //meta.setText(metaEdit.getText().toString());
 
             }
         }).setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
@@ -183,6 +189,29 @@ public class GoalActivity extends ActionBarActivity {
         SharedPreferences.Editor edit = sp.edit();
         edit.putInt(key, value);
         edit.commit();
+    }
+
+    public float CalcularSaldoDia(){
+        meta1 = Float.valueOf(meta.getText().toString());
+        saldo1 = meta1 - Utils.getSaidaDia(c.get(Calendar.DAY_OF_MONTH), c.get(Calendar.MONTH) + 1, c.get(Calendar.YEAR));
+        return saldo1;
+    }
+
+    public float CalcularSaldoMes(){
+        meta1 = Float.valueOf(meta.getText().toString());
+        saldo1 = meta1 - Utils.getSaidaMes(c.get(Calendar.MONTH) + 1, c.get(Calendar.YEAR));
+        return saldo1;
+    }
+
+    public float CalcularSaldo(int valor){
+        meta1 = Float.valueOf(meta.getText().toString());
+        if(valor==1) {
+            saldo1 = meta1 - Utils.getSaidaDia(c.get(Calendar.DAY_OF_MONTH), c.get(Calendar.MONTH) + 1, c.get(Calendar.YEAR));
+        }
+        if(valor==2){
+            saldo1 = meta1 - Utils.getSaidaMes(c.get(Calendar.MONTH) + 1, c.get(Calendar.YEAR));
+        }
+        return saldo1;
     }
 
 }
