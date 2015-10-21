@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,7 +30,7 @@ public class GoalActivity extends ActionBarActivity {
     public static final String PREF_NAME = "Preferences";
     TextView meta, gasto, saldo, filtro;
     EditText metaEdit;
-    float meta1, saldo1;
+    float meta1, saldo1, valor;
     int valorSpinner;
     Spinner sp;
     Calendar c;
@@ -69,25 +70,28 @@ public class GoalActivity extends ActionBarActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 valorSpinner = sp.getSelectedItemPosition();
-                float valor = 0;
 
-                if(valorSpinner==0){
+                if (valorSpinner == 0) {
                     filtro.setText("Sem nenhum filtro");
                     gasto.setText("0.0");
                     saldo.setText("0.0");
                 }
-                if(valorSpinner==1){
+                if (valorSpinner == 1) {
                     filtro.setText("Planejamento do dia");
                     gasto.setText(String.valueOf(Utils.getSaidaDia(c.get(Calendar.DAY_OF_MONTH), c.get(Calendar.MONTH) + 1, c.get(Calendar.YEAR))));
                     valor = CalcularSaldoDia();
                 }
-                if(valorSpinner==2){
+                if (valorSpinner == 2) {
                     filtro.setText("Planejamento do Mês");
                     gasto.setText(String.valueOf(Utils.getSaidaMes(c.get(Calendar.MONTH) + 1, c.get(Calendar.YEAR))));
                     valor = CalcularSaldoMes();
                 }
 
                 saldo.setText(String.valueOf(valor));
+
+                Log.i("App123", String.valueOf(valor));
+                String dica = DicaSaldo(valor);
+                Toast.makeText(getApplicationContext(), dica, Toast.LENGTH_LONG).show();
 
             }
 
@@ -212,6 +216,31 @@ public class GoalActivity extends ActionBarActivity {
             saldo1 = meta1 - Utils.getSaidaMes(c.get(Calendar.MONTH) + 1, c.get(Calendar.YEAR));
         }
         return saldo1;
+    }
+
+    public String DicaSaldo(float meta) {
+
+        if (meta < 0) {
+            return "Seu saldo esta negativo" + "\n" + "Saldo: " + meta ;
+        } else {
+            float v = (float) (0.7 * meta);
+            float z = (float) (0.8 * meta);
+            float y = (float) (0.9 * meta);
+            float x = meta;
+
+
+            if (meta >= v && meta < z) {
+                return "Restam cerca de 30% para atingir sua meta." + "\n" + "Saldo: " + meta;
+            } else if (meta >= z && meta < y) {
+                return "Restam cerca de 20% para atingir sua meta." + "\n" + "Saldo: " + meta;
+            } else if (meta >= y && meta<x) {
+                return "Restam cerca de 10% para atingir sua meta." + "\n" + "Saldo: " + meta;
+            } else if (meta == x) {
+                return "Meta alcancada." + "\n" + "Economize seu dinheiro";
+            }else
+                return "Seguro";
+
+        }
     }
 
 }

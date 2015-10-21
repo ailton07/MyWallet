@@ -19,6 +19,7 @@ import br.edu.ufam.ceteli.mywallet.activities.reports.EarningReport;
 import br.edu.ufam.ceteli.mywallet.activities.reports.FoodReport;
 import br.edu.ufam.ceteli.mywallet.activities.reports.GeneralReport;
 import br.edu.ufam.ceteli.mywallet.activities.reports.GraphicReport;
+import br.edu.ufam.ceteli.mywallet.activities.reports.HealthReport;
 import br.edu.ufam.ceteli.mywallet.activities.reports.HomeReport;
 import br.edu.ufam.ceteli.mywallet.activities.reports.LoungeReport;
 import br.edu.ufam.ceteli.mywallet.activities.reports.MoveReport;
@@ -54,8 +55,8 @@ public class ReportsActivity extends Fragment {
         fragmentPagerAdapter.addTab("Residencia", new HomeReport(), Color.MAGENTA);
         fragmentPagerAdapter.addTab("Alimentícios", new FoodReport(), Color.LTGRAY);
         fragmentPagerAdapter.addTab("Entretenimento", new LoungeReport(), Color.GREEN);
-        fragmentPagerAdapter.addTab("Transporte", new MoveReport(), Color.WHITE);
-        fragmentPagerAdapter.addTab("Saúde", new MoveReport(), Color.RED);
+        fragmentPagerAdapter.addTab("Transporte", new MoveReport(), Color.YELLOW);
+        fragmentPagerAdapter.addTab("Saúde", new HealthReport(), Color.RED);
         fragmentPagerAdapter.addTab("Outros gastos", new OthersReport(), Color.BLACK);
 
         ViewPager viewPager = (ViewPager) view.findViewById(R.id.viewPager);
