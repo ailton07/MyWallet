@@ -105,6 +105,23 @@ public class Utils {
 
     }
 
+    static public float getSaidaDia(int dia, int mes, int ano){
+        // 0 -> Entrada e 1 -> Saída
+        float saida = 0;
+        List<Entrada> values = Entrada.getEntradasDia(dia, mes, ano);
+
+        for (Entrada in:
+                values) {
+            if(in.getTipo() == 1){
+                saida += in.getValor();
+            }
+        }
+
+        return saida;
+
+    }
+
+
 
     static public float getSaldoOrcamentoTotal(int mes, int ano){
 
@@ -206,22 +223,6 @@ public class Utils {
             }
         }
         return Stransporte;
-    }
-
-    static public float getgastosMes(int mes, int ano){
-        // 0 -> Entrada e 1 -> Saída
-        float saldo = 0;
-        List<Entrada> values = Entrada.getEntradasMesAno(mes, ano);
-
-        for (Entrada in:
-                values) {
-            if (in.getTipo() == 1) {
-                saldo += in.getValor();
-            }
-        }
-
-        return saldo;
-
     }
 
 

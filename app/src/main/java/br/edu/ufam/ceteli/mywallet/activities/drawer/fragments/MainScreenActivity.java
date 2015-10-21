@@ -171,7 +171,7 @@ public class MainScreenActivity extends Fragment implements OnChartValueSelected
 
         orcamento.setText(String.valueOf(Utils.getOrcamentoTotalMes(c.get(Calendar.MONTH) + 1, c.get(Calendar.YEAR))));
         renda.setText(String.valueOf(Utils.getSaldoOrcamentoTotal(c.get(Calendar.MONTH) + 1, c.get(Calendar.YEAR))));
-        gastos.setText(String.valueOf(Utils.getgastosMes(c.get(Calendar.MONTH) + 1, c.get(Calendar.YEAR))));
+        gastos.setText(String.valueOf(Utils.getSaidaMes(c.get(Calendar.MONTH) + 1, c.get(Calendar.YEAR))));
         saldo.setText(String.valueOf(getSaldoMes(c.get(Calendar.MONTH) + 1, c.get(Calendar.YEAR))));
     }
 

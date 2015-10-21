@@ -40,6 +40,13 @@
 
     </string-array>
 
+    <string-array name="categoria_array1">
+        <item>Filtro</item>
+        <item>Dia</item>
+        <item>Mês</item>
+
+    </string-array>
+
     <string name="title_activity_settings">Configurações</string>
     <string name="backup">Backup</string>
     <string name="backupBt1">Criar Backup</string>
@@ -118,6 +125,7 @@
         <item>31- Antes de fazer qualquer negócio financeiro procure orientação.</item>
     </string-array>
     <string name="title_activity_goal">GoalActivity</string>
+    <string name="Editar">Editar</string>
 
 
 </resources>

@@ -168,6 +168,14 @@ public class Entrada extends Model {
         String mesS = String.valueOf(mes);
         String anoS = String.valueOf(ano);
 
-        return new Select().from(Entrada.class).where("DataCompra > ? and DataCompra < ?", (anoS + mesS +"00"), (anoS+ mesS + "32") ).execute();
+        return new Select().from(Entrada.class).where("DataCompra > ? and DataCompra < ?", (anoS + mesS + "00"), (anoS + mesS + "32")).execute();
+    }
+
+    public static List<Entrada> getEntradasDia(int dia, int mes, int ano){
+        String diaS = String.valueOf(dia);
+        String mesS = String.valueOf(mes);
+        String anoS = String.valueOf(ano);
+
+        return new Select().from(Entrada.class).where("DataCompra == ? ", (anoS + mesS + diaS) ).execute();
     }
 }
