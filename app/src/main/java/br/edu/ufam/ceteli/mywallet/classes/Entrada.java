@@ -104,12 +104,14 @@ public class Entrada extends Model {
         if(categoria == 1){
             comb1 = "Residencia";
         }else if(categoria == 2){
-            comb1 = "Restaurante";
+            comb1 = "Alimenticios";
         }else if(categoria == 3){
             comb1 = "Entretenimento";
         }else if(categoria == 4){
             comb1 = "Transporte";
         }else if(categoria == 5){
+            comb1 = "Saude";
+        }else {
             comb1 = "Ocasional";
         }
 
@@ -124,12 +126,14 @@ public class Entrada extends Model {
         if(categoria == 1){
             comb1 = "Residencia";
         }else if(categoria == 2){
-            comb1 = "Restaurante";
+            comb1 = "Alimenticios";
         }else if(categoria == 3){
             comb1 = "Entretenimento";
         }else if(categoria == 4){
             comb1 = "Transporte";
         }else if(categoria == 5){
+            comb1 = "Saude";
+        }else {
             comb1 = "Ocasional";
         }
 
@@ -158,8 +162,11 @@ public class Entrada extends Model {
     public static List<Entrada> getCategoriaTransporte(){
         return new Select().from(Entrada.class).where("Categoria = 4").orderBy("DataCompra DESC").execute();
     }
-    public static List<Entrada> getCategoriaOcasional(){
+    public static List<Entrada> getCategoriaSaude(){
         return new Select().from(Entrada.class).where("Categoria = 5").orderBy("DataCompra DESC").execute();
+    }
+    public static List<Entrada> getCategoriaOcasional(){
+        return new Select().from(Entrada.class).where("Categoria = 6").orderBy("DataCompra DESC").execute();
     }
 
     // Pega todas as entradas de determinado mês e de determinado ano.

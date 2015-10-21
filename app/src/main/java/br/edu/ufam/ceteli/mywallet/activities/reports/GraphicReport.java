@@ -51,10 +51,11 @@ public class GraphicReport extends Fragment implements OnChartValueSelectedListe
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        categoria_array.add("Mensais");
-        categoria_array.add("Casa");
-        categoria_array.add("Restaurante");
-        categoria_array.add("Lazer");
+        categoria_array.add("Residencia");
+        categoria_array.add("Alimenticios");
+        categoria_array.add("Entretenimento");
+        categoria_array.add("Transporte");
+        categoria_array.add("Saude");
         categoria_array.add("Ocasional");
 
         mChart = (PieChart) view.findViewById(R.id.chart1);
