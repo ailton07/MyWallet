@@ -312,7 +312,37 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
         if(((seconds%2) == 0) & ((getWindow().getDecorView().getWindowVisibility() == View.GONE) )) {
             new Handler().postDelayed(new Runnable() {
                 public void run() {
-                    popup(); // popup("TEsteee");
+                    Calendar c = Calendar.getInstance();
+                    int seconds = c.get(Calendar.SECOND);
+
+                    int mes = c.get(Calendar.MONTH)+1; // String.valueOf(c.get(Calendar.MONTH)
+                    int ano = c.get(Calendar.YEAR);
+                    float proporcao = Utils.getSaidaMes(mes, ano)/Utils.getEntradaMes(mes, ano);
+
+                    Log.d("Saldos Popup", mes + " " + ano);
+                    Log.d("Saldos Popup", Utils.getSaidaMes(mes, ano) + " " + Utils.getEntradaMes(mes, ano));
+
+                    if((seconds%4) == 0) {
+                        if((proporcao>=0.25) && (proporcao<0.5)) {
+                            Log.d("Saldos Popup", Utils.getEntradaMes(mes, ano) + " " + Utils.getSaidaMes(mes, ano));
+                            popup("Voce já gastou mais de 25% da sua renda");
+                        }
+                        else if((proporcao>=0.5) && (proporcao<0.75)) {
+                            Log.d("Saldos Popup", Utils.getEntradaMes(mes, ano) + " " + Utils.getSaidaMes(mes, ano));
+                            popup("Voce já gastou mais de 50% da sua renda");
+                        }
+                        else if((proporcao>=0.75) && (proporcao<0.9)) {
+                            Log.d("Saldos Popup", Utils.getEntradaMes(mes, ano) + " " + Utils.getSaidaMes(mes, ano));
+                            popup("Voce já gastou mais de 75% da sua renda");
+                        }
+                        else if(proporcao >= 0.9) {
+                            Log.d("Saldos Popup", Utils.getEntradaMes(mes, ano) + " " + Utils.getSaidaMes(mes, ano));
+                            popup("Voce já gastou mais de 90% da sua renda");
+                        }
+                    }
+                    else{
+                        popup(); // popup("TEsteee");
+                    }
                 }
             }, 100);
 

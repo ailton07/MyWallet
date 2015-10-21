@@ -28,7 +28,7 @@ import br.edu.ufam.ceteli.mywallet.classes.Entry;
  */
 public class Utils {
 
- //Método Chamador do showPopup, deve ser colocado na Activity que vai aparecer o popup
+ //Método Chamador do popup, deve ser colocado na Activity que vai aparecer o popup
 //    public void popup(String texto) {
 //
 //        int[] location = new int[2];
