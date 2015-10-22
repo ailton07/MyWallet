@@ -219,14 +219,16 @@ public class MainScreenActivity extends Fragment implements OnChartValueSelected
         ArrayList<String> xVals = new ArrayList<>();
         DateFormat dateFormat = new SimpleDateFormat("yyyymmdd");
         Date date = new Date();
-        System.out.println(dateFormat.format(date));
+        //System.out.println(dateFormat.format(date));
         int mes=Integer.parseInt(dateFormat.format(date).substring(6));
         int ano=Integer.parseInt(dateFormat.format(date).substring(0,3));
         Log.e("graphic",mes+" "+ano);
         ArrayList<Entry> yVals1 = new ArrayList<>();
         int cn=0;
         int i=12-(12-mes);
-        for ( i = i; i != count; i++) {
+        Log.e("App123", "i" + Integer.toString(i));
+        for ( i = i; i < count; i++) {
+            Log.e("App123", "i" + Integer.toString(i));
             xVals.add(mesano.get(i));
             yVals1.add(new Entry((float) Utils.getSaidaMes(i,ano),cn));
             if(i==11) {
@@ -259,7 +261,7 @@ public class MainScreenActivity extends Fragment implements OnChartValueSelected
         set1.setFillAlpha(65);
         set1.setFillColor(ColorTemplate.getHoloBlue());
         set1.setHighLightColor(Color.rgb(244, 117, 117));
-        set1.setDrawCircles(false);
+        set1.setDrawCircles(true);
         set1.setDrawFilled(true);
         //set1.setFillFormatter(new MyFillFormatter(0f));
 //        set1.setDrawHorizontalHighlightIndicator(false);

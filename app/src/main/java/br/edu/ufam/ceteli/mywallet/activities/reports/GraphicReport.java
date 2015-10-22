@@ -89,7 +89,7 @@ public class GraphicReport extends Fragment implements OnChartValueSelectedListe
 
         mChart.setRotationAngle(0);
         // enable rotation of the chart by touch
-        mChart.setRotationEnabled(true);
+        mChart.setRotationEnabled(false);
 
         mChart.setOnChartValueSelectedListener(this);
 
@@ -129,10 +129,14 @@ public class GraphicReport extends Fragment implements OnChartValueSelectedListe
         float mult = range;
         DateFormat dateFormat = new SimpleDateFormat("yyyymmdd");
         Date date = new Date();
-        System.out.println(dateFormat.format(date));
-        int mes=Integer.parseInt(dateFormat.format(date).substring(6));
-        int ano=Integer.parseInt(dateFormat.format(date).substring(0,3));
-        Log.e("graphic",mes+" "+ano);
+        Calendar cal = Calendar.getInstance();
+
+        //System.out.println(dateFormat.format(date));
+        //int mes=Integer.parseInt(dateFormat.format(date).substring(6));
+        int mes = cal.get(Calendar.MONTH) + 1;
+        //int ano=Integer.parseInt(dateFormat.format(date).substring(0,3));
+        int ano = cal.get(Calendar.YEAR);
+        Log.e("App123",mes+" "+ano);
 
         ArrayList<Entry> yVals1 = new ArrayList<Entry>();
 
@@ -142,19 +146,43 @@ public class GraphicReport extends Fragment implements OnChartValueSelectedListe
 //        for (int i = 0; i < count + 1; i++) {
 //            yVals1.add(new Entry((float) (Math.random() * mult) + mult / 5, i));
 //        }
-        yVals1.add(new Entry((float) Utils.getGastosCasa(mes, ano),0));
-        yVals1.add(new Entry((float) Utils.getGastosAlimenticios(mes, ano),1));
-        yVals1.add(new Entry((float) Utils.getGastosEntrentenimento(mes, ano),2));
-        yVals1.add(new Entry((float) Utils.getGastosTransporte(mes, ano),3));
-        yVals1.add(new Entry((float) Utils.getGastosSaude(mes, ano),4));
-        yVals1.add(new Entry((float) Utils.getGastosOutros(mes, ano),5));
+
+        if(Utils.getGastosCasa(mes, ano)!=0){
+            yVals1.add(new Entry((float) Utils.getGastosCasa(mes, ano),0));
+        }
+
+        if (Utils.getGastosAlimenticios(mes, ano) != 0){
+            yVals1.add(new Entry((float) Utils.getGastosAlimenticios(mes, ano),1));
+        }
+
+        if (Utils.getGastosEntrentenimento(mes, ano) != 0){
+            yVals1.add(new Entry((float) Utils.getGastosEntrentenimento(mes, ano),2));
+        }
+
+        if (Utils.getGastosTransporte(mes, ano) != 0){
+            yVals1.add(new Entry((float) Utils.getGastosTransporte(mes, ano),3));
+        }
+
+        if (Utils.getGastosSaude(mes, ano) != 0){
+            yVals1.add(new Entry((float) Utils.getGastosSaude(mes, ano),4));
+        }
+
+        if (Utils.getGastosOutros(mes, ano) != 0){
+            yVals1.add(new Entry((float) Utils.getGastosOutros(mes, ano),5));
+        }
+
+
+
+
+
+
 
 
 
         ArrayList<String> xVals = new ArrayList<String>();
 
         for (int i = 0; i < count + 1; i++)
-            xVals.add(categoria_array.get(i % categoria_array.size()));
+                xVals.add(categoria_array.get(i % categoria_array.size()));
 
         PieDataSet dataSet = new PieDataSet(yVals1, "");
         dataSet.setSliceSpace(3f);

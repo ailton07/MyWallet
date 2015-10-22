@@ -108,7 +108,7 @@ public class LoginActivity extends AppCompatActivity implements Observer {
                     break;
 
                 case CONNECTING:
-                    conncecting = ProgressDialog.show(this, "", "Concetando. Por favor espere...", true, false);
+                    conncecting = ProgressDialog.show(this, "", "Conectando. Por favor espere...", true, false);
                     break;
 
                 case CONNECTED:

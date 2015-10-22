@@ -90,8 +90,8 @@ public class GoalActivity extends ActionBarActivity {
                 saldo.setText(String.valueOf(valor));
 
                 Log.i("App123", String.valueOf(valor));
-                String dica = DicaSaldo(valor);
-                Toast.makeText(getApplicationContext(), dica, Toast.LENGTH_LONG).show();
+                //String dica = DicaSaldo(valor);
+                //Toast.makeText(getApplicationContext(), dica, Toast.LENGTH_LONG).show();
 
             }
 
