@@ -225,12 +225,13 @@ public class MainScreenActivity extends Fragment implements OnChartValueSelected
         Log.e("graphic",mes+" "+ano);
         ArrayList<Entry> yVals1 = new ArrayList<>();
         int cn=0;
-        for (int i = mes; i != count; i--) {
+        int i=12-(12-mes);
+        for ( i = i; i != count; i++) {
             xVals.add(mesano.get(i));
             yVals1.add(new Entry((float) Utils.getSaidaMes(i,ano),cn));
-            if(i==0) {
-                i = 11;
-                ano = ano - 1;
+            if(i==11) {
+                i = 0;
+                ano = ano + 1;
             }
             cn++;
             }
