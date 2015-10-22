@@ -5,6 +5,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,10 +23,19 @@ import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
+import org.apache.http.impl.cookie.DateUtils;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import br.edu.ufam.ceteli.mywallet.R;
+import br.edu.ufam.ceteli.mywallet.classes.OperacoesData;
+import br.edu.ufam.ceteli.mywallet.classes.ocr.Utils;
+import br.edu.ufam.ceteli.mywallet.classes.OperacoesData;
 
 
 /**
@@ -114,18 +124,32 @@ public class GraphicReport extends Fragment implements OnChartValueSelectedListe
     }
 
     private void setData(float range) {
-        int count =5;
+        int count =6;
 
         float mult = range;
+        DateFormat dateFormat = new SimpleDateFormat("yyyymmdd");
+        Date date = new Date();
+        System.out.println(dateFormat.format(date));
+        int mes=Integer.parseInt(dateFormat.format(date).substring(6));
+        int ano=Integer.parseInt(dateFormat.format(date).substring(0,3));
+        Log.e("graphic",mes+" "+ano);
 
         ArrayList<Entry> yVals1 = new ArrayList<Entry>();
 
         // IMPORTANT: In a PieChart, no values (Entry) should have the same
         // xIndex (even if from different DataSets), since no values can be
         // drawn above each other.
-        for (int i = 0; i < count + 1; i++) {
-            yVals1.add(new Entry((float) (Math.random() * mult) + mult / 5, i));
-        }
+//        for (int i = 0; i < count + 1; i++) {
+//            yVals1.add(new Entry((float) (Math.random() * mult) + mult / 5, i));
+//        }
+        yVals1.add(new Entry((float) Utils.getGastosCasa(mes, ano),0));
+        yVals1.add(new Entry((float) Utils.getGastosAlimenticios(mes, ano),1));
+        yVals1.add(new Entry((float) Utils.getGastosEntrentenimento(mes, ano),2));
+        yVals1.add(new Entry((float) Utils.getGastosTransporte(mes, ano),3));
+        yVals1.add(new Entry((float) Utils.getGastosSaude(mes, ano),4));
+        yVals1.add(new Entry((float) Utils.getGastosOutros(mes, ano),5));
+
+
 
         ArrayList<String> xVals = new ArrayList<String>();
 

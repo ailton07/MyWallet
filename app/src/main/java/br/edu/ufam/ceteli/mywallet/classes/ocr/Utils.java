@@ -306,6 +306,32 @@ public class Utils {
         return Stransporte;
     }
 
+    static public float getGastosSaude(int mes, int ano){
+        float Ssaude=0;
+        List<Entrada> Lsaude = Entrada.getEntradasMesAno(mes, ano);
+
+        for(Entrada y : Lsaude){
+            if(y.getTipo()==1) {
+                if (y.getCategoria() == 5)
+                    Ssaude += y.getValor();
+            }
+        }
+        return Ssaude;
+    }
+
+    static public float getGastosOutros(int mes, int ano){
+        float Soutros=0;
+        List<Entrada> Loutros = Entrada.getEntradasMesAno(mes, ano);
+
+        for(Entrada y : Loutros){
+            if(y.getTipo()==1) {
+                if (y.getCategoria() == 6)
+                    Soutros += y.getValor();
+            }
+        }
+        return Soutros;
+    }
+
 
 
     }

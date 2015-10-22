@@ -25,8 +25,11 @@ import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import br.edu.ufam.ceteli.mywallet.R;
@@ -214,19 +217,36 @@ public class MainScreenActivity extends Fragment implements OnChartValueSelected
 
     private void setData(int count,float range) {
         ArrayList<String> xVals = new ArrayList<>();
-        for (int i = 0; i < count; i++) {
-            xVals.add(mesano.get(i));
-        }
-
+        DateFormat dateFormat = new SimpleDateFormat("yyyymmdd");
+        Date date = new Date();
+        System.out.println(dateFormat.format(date));
+        int mes=Integer.parseInt(dateFormat.format(date).substring(6));
+        int ano=Integer.parseInt(dateFormat.format(date).substring(0,3));
+        Log.e("graphic",mes+" "+ano);
         ArrayList<Entry> yVals1 = new ArrayList<>();
+        int cn=0;
+        for (int i = mes; i != count; i--) {
+            xVals.add(mesano.get(i));
+            yVals1.add(new Entry((float) Utils.getSaidaMes(i,ano),cn));
+            if(i==0) {
+                i = 11;
+                ano = ano - 1;
+            }
+            cn++;
+            }
 
-        for (int i = 0; i < count; i++) {
-            float mult = range / 2f;
-            float val = (float) (Math.random() * mult) + 50;// + (float)
-            // ((mult *
-            // 0.1) / 10);
-            yVals1.add(new Entry(val, i));
-        }
+
+
+
+
+
+//        for (int i = 0; i < count; i++) {
+//            float mult = range / 2f;
+//            float val = (float) (Math.random() * mult) + 50;// + (float)
+//            // ((mult *
+//            // 0.1) / 10);
+//            yVals1.add(new Entry(val, i));
+//        }
 
         // create a dataset and give it a type
         LineDataSet set1 = new LineDataSet(yVals1, "Gastos mensais");
