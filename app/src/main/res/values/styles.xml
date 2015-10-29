@@ -7,7 +7,7 @@
         <!-- Customize your theme here. -->
     </style>
 
-    // Toolbar Tela Principal
+    // Toolbar
     <style name="ToolbarStyleMainScreen" parent="Widget.AppCompat.Toolbar">
         <item name="android:background">@color/primary</item>
         <item name="titleTextColor">@color/title</item>

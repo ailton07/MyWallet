@@ -33,8 +33,7 @@ import java.util.Calendar;
 import java.util.Random;
 
 import br.edu.ufam.ceteli.mywallet.R;
-import br.edu.ufam.ceteli.mywallet.activities.drawer.fragments.MainScreenActivity;
-import br.edu.ufam.ceteli.mywallet.activities.drawer.fragments.ReportsActivity;
+import br.edu.ufam.ceteli.mywallet.activities.drawer.fragments.*;
 import br.edu.ufam.ceteli.mywallet.classes.login.FacebookAccountConnection;
 import br.edu.ufam.ceteli.mywallet.classes.login.GoogleAccountConnection;
 import br.edu.ufam.ceteli.mywallet.classes.login.ILoginConnection;
@@ -125,7 +124,12 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
                 break;
 
             case R.id.drawer_item_budget:
-                startActivity(new Intent(ResultActivity.this, BudgetActivity.class));
+                fragment = getSupportFragmentManager().findFragmentByTag("Budget");
+                if(fragment == null) {
+                    inflateFragment(br.edu.ufam.ceteli.mywallet.activities.drawer.fragments.BudgetActivity.getInstance(), "Budget");
+                } else {
+                    inflateFragment(fragment, "Budget");
+                }
                 break;
 
             case R.id.drawer_item_report:
