@@ -1,32 +1,36 @@
 package br.edu.ufam.ceteli.mywallet.activities.reports;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.Toast;
-
-import java.util.List;
 
 import br.edu.ufam.ceteli.mywallet.R;
-import br.edu.ufam.ceteli.mywallet.classes.AdapterListView;
+import br.edu.ufam.ceteli.mywallet.classes.DividerItemDecoration;
 import br.edu.ufam.ceteli.mywallet.classes.Entrada;
+import br.edu.ufam.ceteli.mywallet.classes.RecyclerViewAdapter;
 
 public class OthersReport extends Fragment {
-    private AdapterListView adapter;
+    private static Fragment instance = null;
+
+    public static Fragment getInstance() {
+        return (instance == null)? instance = new OthersReport() : instance;
+    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_others_report, container, false);
+        RecyclerView recyclerView = (RecyclerView) inflater.inflate(R.layout.recycler_reports, container, false);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST));
+        recyclerView.setAdapter(new RecyclerViewAdapter(Entrada.getCategoriaOcasional()));
+        return recyclerView;
     }
-
+/*
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -62,5 +66,5 @@ public class OthersReport extends Fragment {
                 return true;
             }
         });
-    }
+    }*/
 }

@@ -17,6 +17,8 @@ dependencies {
 
     // Biblioteca de design (Não deletar de forma alguma)
     compile 'com.android.support:design:23.0.1'
+    compile 'com.android.support:recyclerview-v7:22.2.0'
+    compile 'com.android.support:cardview-v7:22.2.0'
 
     // RecyclerView (Substituto do listview, talvez seja usado)
     compile 'com.android.support:recyclerview-v7:23.0.1'

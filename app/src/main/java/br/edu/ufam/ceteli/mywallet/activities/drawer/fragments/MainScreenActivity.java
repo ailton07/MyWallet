@@ -227,8 +227,8 @@ public class MainScreenActivity extends Fragment implements OnChartValueSelected
         int cn=0;
         int i=12-(12-mes);
         Log.e("App123", "i" + Integer.toString(i));
-        for ( i = i; i < count; i++) {
-            Log.e("App123", "i" + Integer.toString(i));
+        /*for ( i = i; i < count; i++) {
+            //Log.e("App123", "i" + Integer.toString(i));
             xVals.add(mesano.get(i));
             yVals1.add(new Entry((float) Utils.getSaidaMes(i,ano),cn));
             if(i==11) {
@@ -236,7 +236,7 @@ public class MainScreenActivity extends Fragment implements OnChartValueSelected
                 ano = ano + 1;
             }
             cn++;
-            }
+            }*/
 
 
 

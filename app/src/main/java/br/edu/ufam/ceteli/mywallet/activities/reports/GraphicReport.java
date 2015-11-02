@@ -5,7 +5,6 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,8 +22,6 @@ import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
-import org.apache.http.impl.cookie.DateUtils;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -33,23 +30,21 @@ import java.util.Date;
 import java.util.List;
 
 import br.edu.ufam.ceteli.mywallet.R;
-import br.edu.ufam.ceteli.mywallet.classes.OperacoesData;
 import br.edu.ufam.ceteli.mywallet.classes.ocr.Utils;
-import br.edu.ufam.ceteli.mywallet.classes.OperacoesData;
 
 
 /**
  * Created by Asus on 04/10/2015.
  */
 public class GraphicReport extends Fragment implements OnChartValueSelectedListener{
-
     private PieChart mChart;
-
     private Typeface tf;
-
     private List<String> categoria_array=new ArrayList<String>();
+    private static Fragment instance = null;
 
-
+    public static Fragment getInstance() {
+        return (instance == null)? instance = new GraphicReport() : instance;
+    }
 
     @Nullable
     @Override
@@ -148,27 +143,27 @@ public class GraphicReport extends Fragment implements OnChartValueSelectedListe
 //        }
 
         if(Utils.getGastosCasa(mes, ano)!=0){
-            yVals1.add(new Entry((float) Utils.getGastosCasa(mes, ano),0));
+            yVals1.add(new Entry(Utils.getGastosCasa(mes, ano),0));
         }
 
         if (Utils.getGastosAlimenticios(mes, ano) != 0){
-            yVals1.add(new Entry((float) Utils.getGastosAlimenticios(mes, ano),1));
+            yVals1.add(new Entry(Utils.getGastosAlimenticios(mes, ano),1));
         }
 
         if (Utils.getGastosEntrentenimento(mes, ano) != 0){
-            yVals1.add(new Entry((float) Utils.getGastosEntrentenimento(mes, ano),2));
+            yVals1.add(new Entry(Utils.getGastosEntrentenimento(mes, ano),2));
         }
 
         if (Utils.getGastosTransporte(mes, ano) != 0){
-            yVals1.add(new Entry((float) Utils.getGastosTransporte(mes, ano),3));
+            yVals1.add(new Entry(Utils.getGastosTransporte(mes, ano),3));
         }
 
         if (Utils.getGastosSaude(mes, ano) != 0){
-            yVals1.add(new Entry((float) Utils.getGastosSaude(mes, ano),4));
+            yVals1.add(new Entry(Utils.getGastosSaude(mes, ano),4));
         }
 
         if (Utils.getGastosOutros(mes, ano) != 0){
-            yVals1.add(new Entry((float) Utils.getGastosOutros(mes, ano),5));
+            yVals1.add(new Entry(Utils.getGastosOutros(mes, ano),5));
         }
 
 

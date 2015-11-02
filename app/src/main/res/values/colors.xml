@@ -5,8 +5,18 @@
     <item name="secondary" type="color">#FFEE58</item>
     <item name="title" type="color">#DDFFFFFF</item>
 
-    <item name="toolbar_main" type="color">#607d8b</item>
-    <item name="toolbar_graphics" type="color">#ef5350</item>
+    <item name="toolbar_main" type="color">@color/primary</item>
+
+    <item name="toolbar_graphics" type="color">@color/primary</item>
+    <item name="toolbar_all" type="color">@color/primary</item>
+    <item name="toolbar_earning" type="color">@color/primary</item>
+    <item name="toolbar_spending" type="color">@color/primary</item>
+    <item name="toolbar_food" type="color">@color/primary</item>
+    <item name="toolbar_health" type="color">#E20000</item>
+    <item name="toolbar_home" type="color">#329FF4</item>
+    <item name="toolbar_lounge" type="color">#ED1559</item>
+    <item name="toolbar_transport" type="color">#FE9111</item>
+    <item name="toolbar_others" type="color">#C5D92D</item>
 
     <item name="tab_selected" type="color">@color/title</item>
     <item name="tab_notselected" type="color">#BBFFFFFF</item>

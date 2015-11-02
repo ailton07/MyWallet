@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:clickable="true"
+    android:background="?android:selectableItemBackground">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp">
+
+
+        <ImageView
+            android:id="@+id/ivType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"/>
+
+        <TextView
+            android:id="@+id/tvDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceListItem"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:text="Medium Text"
+            android:layout_toRightOf="@id/ivType"
+            android:layout_toLeftOf="@+id/tvDate"
+            android:layout_toStartOf="@+id/tvDate" />
+
+        <TextView
+            android:id="@+id/tvValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceListItemSmall"
+            android:layout_below="@id/tvDescription"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:text="Medium Text"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/ivType"
+            android:layout_alignRight="@+id/tvDescription"
+            android:layout_alignEnd="@+id/tvDescription" />
+
+        <TextView
+            android:id="@+id/tvPlace"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceListItemSmall"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:text="Medium Text"
+            android:layout_below="@id/tvValue"
+            android:layout_toRightOf="@id/ivType"
+            android:layout_alignRight="@+id/tvValue"
+            android:layout_alignEnd="@+id/tvValue" />
+
+        <TextView
+            android:id="@+id/tvType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:text="Small Text"
+            android:layout_alignTop="@+id/tvPlace"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+        <TextView
+            android:id="@+id/tvDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:text="Small Text"
+            android:layout_alignBottom="@+id/tvDescription"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+
+    </RelativeLayout>
+
+</LinearLayout>

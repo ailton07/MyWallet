@@ -8,6 +8,8 @@ import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -33,7 +35,8 @@ import java.util.Calendar;
 import java.util.Random;
 
 import br.edu.ufam.ceteli.mywallet.R;
-import br.edu.ufam.ceteli.mywallet.activities.drawer.fragments.*;
+import br.edu.ufam.ceteli.mywallet.activities.drawer.fragments.MainScreenActivity;
+import br.edu.ufam.ceteli.mywallet.activities.drawer.fragments.ReportsActivity;
 import br.edu.ufam.ceteli.mywallet.classes.login.FacebookAccountConnection;
 import br.edu.ufam.ceteli.mywallet.classes.login.GoogleAccountConnection;
 import br.edu.ufam.ceteli.mywallet.classes.login.ILoginConnection;
@@ -119,6 +122,7 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
                     inflateFragment(MainScreenActivity.getInstance(), "Main");
                 } else {
                     inflateFragment(fragment, "Main");
+                    resetToolbarScrool();
                 }
                 getSupportFragmentManager().popBackStackImmediate();
                 break;
@@ -159,6 +163,15 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
         return true;
     }
 
+    private void resetToolbarScrool(){
+        // Reseta Scroll
+        CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
+        AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appBarLayout);
+        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) appBarLayout.getLayoutParams();
+        AppBarLayout.Behavior behavior = (AppBarLayout.Behavior) layoutParams.getBehavior();
+        behavior.onNestedFling(coordinatorLayout, appBarLayout, null, 0, -2000, true);
+    }
+
     private void inflateFragment(Fragment fragment, String name){
         if(!fragment.isVisible()) {
             FragmentTransaction transactionHome = getSupportFragmentManager().beginTransaction();
@@ -181,12 +194,13 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
 
     @Override
     public void onBackPressed() {
-        if(drawerLayout.isDrawerOpen(GravityCompat.START))
+        if(drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawers();
-
-        if(getSupportFragmentManager().getBackStackEntryCount() > 0)
+        }
+        if(getSupportFragmentManager().getBackStackEntryCount() > 0) {
             resultFrameDrawer.setCheckedItem(resultFrameDrawer.getMenu().getItem(0).getItemId());
-
+            resetToolbarScrool();
+        }
         super.onBackPressed();
     }
 
