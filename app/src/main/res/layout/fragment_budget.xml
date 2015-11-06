@@ -1,126 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/coordinatorBudget"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     tools:context="br.edu.ufam.ceteli.mywallet.activities.RelatoriosActivity">
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clipToPadding="false"/>
-
-    <android.support.design.widget.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        style="@style/ToolbarStyleMainScreen">
-
-        <RelativeLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/title"
-                android:text="Orçamento"
-                android:id="@+id/tvBudget"
-                android:paddingTop="8dp"
-                android:layout_alignLeft="@+id/tvBonus"
-                android:layout_alignStart="@+id/tvBonus" />
-
-            <TextView
-                android:id="@+id/tvBonus"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/title"
-                android:text="Bonus"
-                android:layout_below="@+id/tvBudget"
-                android:paddingTop="8dp"
-                android:layout_alignLeft="@+id/view"
-                android:layout_alignStart="@+id/view" />
-
-            <View
-                android:layout_width="fill_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="12dp"
-                android:layout_below="@id/tvBonus"
-                android:background="@color/title"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:id="@+id/view" />
-
-            <TextView
-                android:id="@+id/tvTotal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/title"
-                android:text="Total"
-                android:paddingTop="8dp"
-                android:layout_below="@id/view"
-                android:layout_alignLeft="@+id/view"
-                android:layout_alignStart="@+id/view" />
-
-            <TextView
-                android:id="@+id/tvValueBudget"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/title"
-                android:text="0,0"
-                android:layout_alignBottom="@+id/tvBudget"
-                android:layout_alignLeft="@+id/tvValueBonus"
-                android:layout_alignStart="@+id/tvValueBonus" />
-
-            <TextView
-                android:id="@+id/tvValueBonus"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/title"
-                android:text="0,0"
-                android:layout_alignBottom="@+id/tvBonus"
-                android:layout_alignLeft="@+id/tvValueTotal"
-                android:layout_alignStart="@+id/tvValueTotal" />
-
-            <TextView
-                android:id="@+id/tvValueTotal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/title"
-                android:text="0,0"
-                android:paddingTop="8dp"
-                android:layout_below="@+id/view"
-                android:layout_alignRight="@+id/view"
-                android:layout_alignEnd="@+id/view" />
-
-        </RelativeLayout>
-
-        <android.support.design.widget.TabLayout
-            android:id="@+id/tabBudget"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            app:tabTextColor="@color/title"
-            app:tabSelectedTextColor="@color/tab_selected"
-            app:tabIndicatorColor="@color/tab_notselected"
-            android:background="@color/toolbar_graphics"
-            app:tabMode="scrollable"
-            app:tabGravity="fill"/>
-
-    </android.support.design.widget.AppBarLayout>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/viewPager"

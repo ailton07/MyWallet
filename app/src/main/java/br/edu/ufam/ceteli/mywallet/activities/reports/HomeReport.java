@@ -2,6 +2,7 @@ package br.edu.ufam.ceteli.mywallet.activities.reports;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,6 +13,7 @@ import android.view.ViewGroup;
 import br.edu.ufam.ceteli.mywallet.R;
 import br.edu.ufam.ceteli.mywallet.classes.DividerItemDecoration;
 import br.edu.ufam.ceteli.mywallet.classes.Entrada;
+import br.edu.ufam.ceteli.mywallet.classes.RecyclerScrollListener;
 import br.edu.ufam.ceteli.mywallet.classes.RecyclerViewAdapter;
 
 public class HomeReport extends Fragment {
@@ -24,11 +26,25 @@ public class HomeReport extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        RecyclerView recyclerView = (RecyclerView) inflater.inflate(R.layout.recycler_reports, container, false);
+        AppBarLayout appBarLayout = (AppBarLayout) getActivity().findViewById(R.id.appBarLayout);
+        RecyclerView recyclerView = (RecyclerView) inflater.inflate(R.layout.recycler_view, container, false);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setPadding(0, (int) (56 * getResources().getDisplayMetrics().density + 0.5f), 0, 0);
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST));
         recyclerView.setAdapter(new RecyclerViewAdapter(Entrada.getCategoriaCasa()));
+        recyclerView.addOnScrollListener(RecyclerScrollListener.getInstance(appBarLayout,0));
         return recyclerView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        try{
+            RecyclerView recyclerView = (RecyclerView) getView().findViewById(R.id.recyclerView);
+            recyclerView.scrollToPosition(0);
+        } catch (Exception e){
+            // Faz nada
+        }
     }
 
     /*

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:clickable="true"
+    android:background="?android:selectableItemBackground">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp">
+
+        <TextView
+            android:id="@+id/tvM"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:textAppearance="?android:attr/textAppearanceListItem"
+            android:text="Renda:"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:id="@+id/tvB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:textAppearance="?android:attr/textAppearanceListItemSmall"
+            android:layout_below="@id/tvM"
+            android:text="Bônus:"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:id="@+id/tvT"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:textAppearance="?android:attr/textAppearanceListItemSmall"
+            android:text="Total:"
+            android:layout_below="@id/tvB"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"/>
+
+        <TextView
+            android:id="@+id/tvMonth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:text="Mês"
+            android:layout_alignBottom="@+id/tvM"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Small Text"
+            android:id="@+id/tvBudget"
+            android:layout_above="@id/tvB"
+            android:layout_toLeftOf="@+id/tvMonth"
+            android:layout_alignLeft="@+id/tvBonus"
+            android:layout_alignStart="@+id/tvBonus" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Small Text"
+            android:id="@+id/tvBonus"
+            android:layout_above="@+id/tvT"
+            android:layout_toRightOf="@+id/tvB"
+            android:layout_toLeftOf="@+id/tvMonth"
+            android:layout_toStartOf="@+id/tvMonth" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Small Text"
+            android:id="@+id/tvTotal"
+            android:layout_below="@id/tvB"
+            android:layout_toLeftOf="@+id/tvMonth"
+            android:layout_alignLeft="@+id/tvBonus"
+            android:layout_alignStart="@+id/tvBonus" />
+
+
+    </RelativeLayout>
+
+</LinearLayout>

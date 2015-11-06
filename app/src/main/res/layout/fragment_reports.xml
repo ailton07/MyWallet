@@ -1,33 +1,14 @@
-<LinearLayout
+<android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    tools:context="br.edu.ufam.ceteli.mywallet.activities.RelatoriosActivity">
-
-    <android.support.design.widget.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <android.support.design.widget.TabLayout
-            android:id="@+id/tabReports"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            app:tabTextColor="@color/title"
-            app:tabSelectedTextColor="@color/tab_selected"
-            app:tabIndicatorColor="@color/tab_notselected"
-            android:background="@color/toolbar_graphics"
-            app:tabMode="scrollable"
-            app:tabGravity="fill"/>
-    </android.support.design.widget.AppBarLayout>
+    android:paddingTop="@dimen/abc_action_bar_default_height_material"
+    android:clipToPadding="false">
 
     <android.support.v4.view.ViewPager
         android:id="@+id/viewPager"
-        android:layout_height="match_parent"
-        android:layout_width="match_parent" />
+        android:layout_height="fill_parent"
+        android:layout_width="fill_parent"
+        android:layout_marginTop="-8dp"/>
 
-</LinearLayout>
-
-
+</android.support.design.widget.CoordinatorLayout>

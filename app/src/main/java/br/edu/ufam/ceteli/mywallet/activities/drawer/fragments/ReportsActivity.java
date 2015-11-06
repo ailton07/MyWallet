@@ -3,13 +3,14 @@ package br.edu.ufam.ceteli.mywallet.activities.drawer.fragments;
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +27,7 @@ import br.edu.ufam.ceteli.mywallet.activities.reports.LoungeReport;
 import br.edu.ufam.ceteli.mywallet.activities.reports.MoveReport;
 import br.edu.ufam.ceteli.mywallet.activities.reports.OthersReport;
 import br.edu.ufam.ceteli.mywallet.activities.reports.SpedingReport;
+import br.edu.ufam.ceteli.mywallet.classes.RecyclerScrollListener;
 import br.edu.ufam.ceteli.mywallet.classes.ViewPagerAdapter;
 
 public class ReportsActivity extends Fragment {
@@ -33,6 +35,7 @@ public class ReportsActivity extends Fragment {
     private int previoustPage = 0;
     private TabLayout tabLayout = null;
     private static Fragment instance = null;
+    private ViewPager viewPager = null;
 
     public static Fragment getInstance() {
         return (instance == null)? instance = new ReportsActivity() : instance;
@@ -41,12 +44,17 @@ public class ReportsActivity extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        LayoutInflater layoutInflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        AppBarLayout appBar = (AppBarLayout) getActivity().findViewById(R.id.appBarLayout);
+        layoutInflater.inflate(R.layout.appbar_reports, appBar);
         return inflater.inflate(R.layout.fragment_reports, container, false);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        tabLayout = (TabLayout) getActivity().findViewById(R.id.tabReports);
 
         fragmentPagerAdapter = new ViewPagerAdapter(getChildFragmentManager());
         fragmentPagerAdapter.addTab("Grafico", GraphicReport.getInstance(), getResources().getColor(R.color.toolbar_graphics));
@@ -60,20 +68,14 @@ public class ReportsActivity extends Fragment {
         fragmentPagerAdapter.addTab("Saúde", HealthReport.getInstance(), getResources().getColor(R.color.toolbar_health));
         fragmentPagerAdapter.addTab("Outros gastos", OthersReport.getInstance(), getResources().getColor(R.color.toolbar_others));
 
-        ViewPager viewPager = (ViewPager) view.findViewById(R.id.viewPager);
+        viewPager = (ViewPager) view.findViewById(R.id.viewPager);
         viewPager.setAdapter(fragmentPagerAdapter);
         viewPager.addOnPageChangeListener(pageChangeListener());
 
-        tabLayout = (TabLayout) view.findViewById(R.id.tabReports);
         tabLayout.setupWithViewPager(viewPager);
 
-        // Ao criar, seta cores
-        tabLayout.setBackgroundColor(getResources().getColor(R.color.toolbar_graphics));
-
         // Pega Toolbar
-        getActivity().findViewById(R.id.toolbar).setBackgroundColor(getResources().getColor(R.color.toolbar_graphics));
         ((Toolbar) getActivity().findViewById(R.id.toolbar)).setTitle("Relatórios");
-
     }
 
     private ViewPager.OnPageChangeListener pageChangeListener(){
@@ -85,9 +87,14 @@ public class ReportsActivity extends Fragment {
 
             @Override
             public void onPageSelected(int position) {
-                if(position == 0){
-                    resetToolbarScrool();
+                RecyclerScrollListener.resetScrollingView();
+                RecyclerView recyclerView = (RecyclerView) getActivity().findViewById(R.id.recyclerView);
+                if(recyclerView != null) {
+                    recyclerView.scrollToPosition(0);
+                } else {
+                    RecyclerScrollListener.resetScrollingView();
                 }
+
                 int currentColor = fragmentPagerAdapter.getColor(position);
                 int previousColor = fragmentPagerAdapter.getColor(previoustPage);
                 ValueAnimator colorToolbar= ObjectAnimator.ofInt(getActivity().findViewById(R.id.toolbar), "backgroundColor", previousColor, currentColor);
@@ -108,12 +115,12 @@ public class ReportsActivity extends Fragment {
         };
     }
 
-    private void resetToolbarScrool(){
+    /*private void resetToolbarScrool(){
         // Reseta Scroll
         CoordinatorLayout coordinatorLayout = (CoordinatorLayout) getActivity().findViewById(R.id.coordinatorLayout);
         AppBarLayout appBarLayout = (AppBarLayout) getActivity().findViewById(R.id.appBarLayout);
         CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) appBarLayout.getLayoutParams();
         AppBarLayout.Behavior behavior = (AppBarLayout.Behavior) layoutParams.getBehavior();
         behavior.onNestedFling(coordinatorLayout, appBarLayout, null, 0, -2000, true);
-    }
+    }*/
 }

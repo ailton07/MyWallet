@@ -7,7 +7,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 
 import br.edu.ufam.ceteli.mywallet.R;
 
@@ -32,11 +34,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public void onBindViewHolder(RecyclerViewHolder holder, int position) {
+        NumberFormat numberFormat = NumberFormat.getInstance(new Locale("pt","BR"));
         holder.tvDate.setText(items.get(position).getDataCompra());
         holder.tvDescription.setText(items.get(position).getDescricao());
         holder.tvPlace.setText(items.get(position).getEstabelecimento());
         holder.tvType.setText(view.getResources().getStringArray(R.array.categoria_array)[items.get(position).getCategoria()]);
-        holder.tvValue.setText(Float.toString(items.get(position).getValor()));
+        holder.tvValue.setText(numberFormat.format(items.get(position).getValor()));
         holder.ivType.setImageDrawable(items.get(position).getTipo() == 1? view.getResources().getDrawable(R.drawable.ic_spending) : view.getResources().getDrawable(R.drawable.ic_earning));
     }
 
@@ -55,11 +58,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         public RecyclerViewHolder(View itemView) {
             super(itemView);
-            tvDescription = (TextView) itemView.findViewById(R.id.tvDescription);
-            tvValue = (TextView) itemView.findViewById(R.id.tvValue);
+            tvDescription = (TextView) itemView.findViewById(R.id.tvM);
+            tvValue = (TextView) itemView.findViewById(R.id.tvB);
             tvType = (TextView) itemView.findViewById(R.id.tvType);
-            tvDate = (TextView) itemView.findViewById(R.id.tvDate);
-            tvPlace = (TextView) itemView.findViewById(R.id.tvPlace);
+            tvDate = (TextView) itemView.findViewById(R.id.tvMonth);
+            tvPlace = (TextView) itemView.findViewById(R.id.tvT);
             ivType = (ImageView) itemView.findViewById(R.id.ivType);
         }
     }

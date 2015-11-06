@@ -153,7 +153,7 @@ public class BudgetActivity extends AppCompatActivity {
         TextView t = (TextView) findViewById(R.id.textView4);
         t.setText(String.valueOf(Utils.getSaldoOrcamento(c.get(Calendar.MONTH) + 1, c.get(Calendar.YEAR))));
 
-        TextView te = (TextView) findViewById(R.id.textView7);
+        TextView te = (TextView) findViewById(R.id.tvTotal);
         te.setText(String.valueOf(Utils.getSaldoBonus(c.get(Calendar.MONTH) + 1, c.get(Calendar.YEAR))));
     }
 

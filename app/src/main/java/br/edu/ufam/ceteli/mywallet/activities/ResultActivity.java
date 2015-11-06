@@ -9,7 +9,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -23,6 +22,8 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -37,6 +38,8 @@ import java.util.Random;
 import br.edu.ufam.ceteli.mywallet.R;
 import br.edu.ufam.ceteli.mywallet.activities.drawer.fragments.MainScreenActivity;
 import br.edu.ufam.ceteli.mywallet.activities.drawer.fragments.ReportsActivity;
+import br.edu.ufam.ceteli.mywallet.classes.DesignUtils;
+import br.edu.ufam.ceteli.mywallet.classes.RecyclerScrollListener;
 import br.edu.ufam.ceteli.mywallet.classes.login.FacebookAccountConnection;
 import br.edu.ufam.ceteli.mywallet.classes.login.GoogleAccountConnection;
 import br.edu.ufam.ceteli.mywallet.classes.login.ILoginConnection;
@@ -118,17 +121,21 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
         switch (menuItem.getItemId()) {
             case R.id.drawer_item_home:
                 fragment = getSupportFragmentManager().findFragmentByTag("Main");
+                removeTabBar();
+                RecyclerScrollListener.removeObjectReference();
                 if(fragment == null) {
                     inflateFragment(MainScreenActivity.getInstance(), "Main");
                 } else {
                     inflateFragment(fragment, "Main");
-                    resetToolbarScrool();
+                    //resetToolbarScrool();
                 }
                 getSupportFragmentManager().popBackStackImmediate();
                 break;
 
             case R.id.drawer_item_budget:
                 fragment = getSupportFragmentManager().findFragmentByTag("Budget");
+                removeTabBar();
+                RecyclerScrollListener.removeObjectReference();
                 if(fragment == null) {
                     inflateFragment(br.edu.ufam.ceteli.mywallet.activities.drawer.fragments.BudgetActivity.getInstance(), "Budget");
                 } else {
@@ -138,6 +145,8 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
 
             case R.id.drawer_item_report:
                 fragment = getSupportFragmentManager().findFragmentByTag("Report");
+                removeTabBar();
+                RecyclerScrollListener.removeObjectReference();
                 if(fragment == null) {
                     inflateFragment(ReportsActivity.getInstance(), "Report");
                 } else {
@@ -163,13 +172,14 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
         return true;
     }
 
-    private void resetToolbarScrool(){
-        // Reseta Scroll
-        CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
+    private void removeTabBar(){
+        View view = findViewById(R.id.tabReports) != null? findViewById(R.id.tabReports) : findViewById(R.id.appBarBudget);
         AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appBarLayout);
-        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) appBarLayout.getLayoutParams();
-        AppBarLayout.Behavior behavior = (AppBarLayout.Behavior) layoutParams.getBehavior();
-        behavior.onNestedFling(coordinatorLayout, appBarLayout, null, 0, -2000, true);
+        if(view != null) {
+            view.animate().translationY(-DesignUtils.getToolbarHeight(this,0)).setInterpolator(new DecelerateInterpolator(2)).start();
+            ((ViewGroup) view.getParent()).removeView(view);
+        }
+        appBarLayout.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2)).start();
     }
 
     private void inflateFragment(Fragment fragment, String name){
@@ -199,7 +209,8 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
         }
         if(getSupportFragmentManager().getBackStackEntryCount() > 0) {
             resultFrameDrawer.setCheckedItem(resultFrameDrawer.getMenu().getItem(0).getItemId());
-            resetToolbarScrool();
+            removeTabBar();
+            RecyclerScrollListener.removeObjectReference();
         }
         super.onBackPressed();
     }

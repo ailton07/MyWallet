@@ -51,7 +51,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="0.0"
-        android:id="@+id/textView7"
+        android:id="@+id/tvTotal"
         android:layout_below="@+id/textView4"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
@@ -62,7 +62,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="0.0"
         android:id="@+id/textView8"
-        android:layout_below="@+id/textView7"
+        android:layout_below="@+id/tvTotal"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
