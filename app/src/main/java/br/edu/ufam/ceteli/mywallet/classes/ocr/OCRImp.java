@@ -211,9 +211,11 @@ public class OCRImp {
                     // ivSelectedImg.setVisibility(View.GONE);
                     //  llResultContainer.setVisibility(View.VISIBLE);
                     OCRResposta reposta = new OCRResposta(text);
-                    Log.v("ETSS", text);
+
                     estabelecimento.setText(reposta.getEmpresa());
+                    //Log.v("ETSS_OCR", "getEmpresa" + reposta.getEmpresa());
                     valor.setText(reposta.getTotal());
+                    Log.v("ETSS_OCR", "getTotal" + reposta.getTotal());
                 }
             }
             else
@@ -248,10 +250,16 @@ public class OCRImp {
                             //llResultContainer.setVisibility(View.VISIBLE);
                             OCRResposta reposta = new OCRResposta(text);
                             //edTextResult.setText(text);
-                            Log.v("ETSS", reposta.getEmpresa());
-                            Log.v("ETSS", reposta.getTotal());
                             estabelecimento.setText(reposta.getEmpresa());
+                            //Log.v("ETSS_OCR", "getEmpresa" + reposta.getEmpresa());
+                            Log.v("ETSS_OCR", "getTotal" + reposta.getTotal());
                             valor.setText(reposta.getTotal());
+
+
+//                            Log.v("ETSS_OCR", reposta.getEmpresa());
+//                            Log.v("ETSS_OCR", reposta.getTotal());
+//                            estabelecimento.setText(reposta.getEmpresa());
+//                            valor.setText(reposta.getTotal());
 
                         }
                     }

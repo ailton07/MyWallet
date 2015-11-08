@@ -19,25 +19,33 @@ public class OCRResposta {
 
         Log.d("OCR", res);
     }
-
     public String getEmpresa(){
-        String aux= "";
-        for (String aux2: vetorResposta) {
-            if (aux2.toLowerCase().contains("ltda")) {
-                aux = aux2;
-                return aux;
-            }
-        }
-        return aux;
+
+        return vetorResposta[0];
 
     }
+//    public String getEmpresa(){
+//        String aux= "";
+//        for (String aux2: vetorResposta) {
+//            if (aux2.toLowerCase().contains("ltda")) {
+//                aux = aux2;
+//                return aux;
+//            }
+//        }
+//        return aux;
+//
+//    }
 
     public String getTotal(){
-        String aux= "";
+        String aux= " ";
         for (String aux2: vetorResposta ) {
-            if(aux2.toLowerCase().contains("rs")) {
-                aux = aux2.split("RS")[1];
-                aux = processaValor(aux);
+            if(aux2.toLowerCase().contains("r$")) {
+            //if(aux2.contains("R$")) {
+                aux = aux2.toLowerCase().split("r\\$")[1];
+                //aux = aux2.split("R$")[1];
+                Log.d("OCR", "Valor"+aux);
+               aux = processaVirgula(aux);
+               //aux = processaValor(aux);
 
             }
         }
@@ -45,6 +53,35 @@ public class OCRResposta {
 
         return aux;
     }
+
+    public String processaVirgula(String valorS) {
+
+        String aux = valorS.replaceAll(",", ".");
+        aux = aux.replaceAll(" " , "");
+        aux = processaValorPontoFinal(aux);
+        return aux.replaceAll(" " , "");
+    }
+
+    static String processaValorPontoFinal(String valorS){
+        String padrao = ("[0-9]\\.[0-9]");
+        Pattern p = Pattern.compile(padrao);
+        String teste2 = "";
+
+        Matcher m = p.matcher(valorS);
+        if(m.find()){
+
+            StringBuilder s = new StringBuilder(valorS);
+            s.setCharAt(m.start()+4, ' ');
+            teste2 = s.toString();
+
+            teste2 = teste2.replaceAll(" ", "");
+            //System.out.println(teste2);
+        }
+
+        return teste2;
+
+    }
+
 
     public String processaValor(String valorS){
         String padrao = ("[0-9] [0-9]");
