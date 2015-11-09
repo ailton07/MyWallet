@@ -3,6 +3,7 @@ package br.edu.ufam.ceteli.mywallet.activities.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +24,7 @@ import br.edu.ufam.ceteli.mywallet.classes.ocr.Utils;
  */
 public class BudgetGraphic extends Fragment {
     private static Fragment instance = null;
-    int mes, ano;
+    int mes, ano, semana;
     Calendar c = Calendar.getInstance();
 
     public static Fragment getInstance() {
@@ -44,13 +45,14 @@ public class BudgetGraphic extends Fragment {
 
         mes = c.get(Calendar.MONTH) + 1;
         ano = c.get(Calendar.YEAR);
+        semana = c.get(Calendar.WEEK_OF_MONTH);
 
-
+        Log.i("App123", String.valueOf(Utils.getOrcamentoTotalSemana(semana, mes, ano)));
 
         //float[] algo = {1.0F,5.0F,6.0F};
-        float[] algo = {Utils.getSaidaMes(mes - 2, ano), Utils.getSaidaMes(mes - 1, ano), Utils.getSaidaMes(mes, ano)};
-        float[] algo2 = {1000 ,2000, 4000};
-        String[] labels = {"label1", "label2", "label3"};
+        float[] algo = {Utils.getOrcamentoTotalSemana(1, mes ,ano), Utils.getOrcamentoTotalSemana(2, mes, ano), Utils.getOrcamentoTotalSemana(3, mes, ano),  Utils.getOrcamentoTotalSemana(4, mes, ano)};
+        float[] algo2 = {Utils.getOrcamentoTotalSemana(1, mes - 1, ano), Utils.getOrcamentoTotalSemana(2, mes - 1, ano), Utils.getOrcamentoTotalSemana(3, mes - 1, ano),  Utils.getOrcamentoTotalSemana(4, mes - 1, ano)};
+        String[] labels = {"Semana1", "Semana2", "Semana3", "Semana4"};
 
         LineSet mesAtual = new LineSet(labels, algo);
         LineSet mesAnterior = new LineSet(labels,algo2);

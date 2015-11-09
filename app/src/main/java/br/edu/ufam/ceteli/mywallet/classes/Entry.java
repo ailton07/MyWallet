@@ -78,4 +78,27 @@ public class Entry extends Model {
 
         return new Select().from(Entry.class).where("DataOrcamento > ? and DataOrcamento < ?", (ano1 + mes1 + "00"), (ano1 + mes1 + "32")).execute();
     }
+
+    public static List<Entry> getOrcamentoDia(int dia, int mes, int ano){
+        String diaS = String.valueOf(dia);
+        String mesS = String.valueOf(mes);
+        String anoS = String.valueOf(ano);
+
+        return new Select().from(Entry.class).where("DataOrcamento == ? ", (anoS + mesS + diaS) ).execute();
+    }
+
+    public static List<Entry> getOrcamentoSemana(int semana, int mes ,int ano){
+        //String semanaS = String.valueOf(semana);
+        String mesS = String.valueOf(mes);
+        String anoS = String.valueOf(ano);
+
+        if(semana == 1){
+            return new Select().from(Entry.class).where("DataOrcamento > ? and DataOrcamento < ? ", (anoS + mesS + "00"), (anoS + mesS + "07")).execute();
+        }else if(semana == 2){
+            return new Select().from(Entry.class).where("DataOrcamento > ? and DataOrcamento < ? ", (anoS + mesS + "08"), (anoS + mesS + "15")).execute();
+        }else if(semana == 3){
+            return new Select().from(Entry.class).where("DataOrcamento > ? and DataOrcamento < ? ", (anoS + mesS + "16"), (anoS + mesS + "23")).execute();
+        }else
+            return new Select().from(Entry.class).where("DataOrcamento > ? and DataOrcamento < ? ", (anoS + mesS + "24"), (anoS + mesS + "32")).execute();
+    }
 }
