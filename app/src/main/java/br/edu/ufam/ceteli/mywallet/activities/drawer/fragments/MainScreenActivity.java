@@ -1,5 +1,6 @@
 package br.edu.ufam.ceteli.mywallet.activities.drawer.fragments;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -57,6 +58,7 @@ public class MainScreenActivity extends Fragment implements OnChartValueSelected
 
     TextView orcamento, gastos, saldo, renda;
     Calendar c = Calendar.getInstance();
+    int mes, ano;
 
     private List<String> mesano=new ArrayList<>();
     private LineChart mChart;
@@ -99,8 +101,12 @@ public class MainScreenActivity extends Fragment implements OnChartValueSelected
         // Gráfico
         LineChartView chartView = (LineChartView) view.findViewById(R.id.mainChart);
 
-        float[] algo = {2,3,8};
-        float[] algo2 = {2.3F ,10, 4.5F};
+        mes = c.get(Calendar.MONTH) + 1;
+        ano = c.get(Calendar.YEAR);
+
+        //float[] algo = {1.0F,5.0F,6.0F};
+        float[] algo = {Utils.getSaidaMes(mes-2, ano), Utils.getSaidaMes(mes - 1, ano), Utils.getSaidaMes(mes, ano)};
+        float[] algo2 = {1000 ,2000, 4000};
         String[] labels = {"label1", "label2", "label3"};
 
         LineSet mesAtual = new LineSet(labels, algo);

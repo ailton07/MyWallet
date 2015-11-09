@@ -8,6 +8,9 @@
     <item name="chartActualMonth" type="color">#4E00BFA5</item>
     <item name="chartLastMonth" type="color">#AEFFEE58</item>
 
+    <item name="chartActualMonth1" type="color">#00C853</item>
+    <item name="chartLastMonth1" type="color">#329FF4</item>
+
     <item name="toolbar_main" type="color">@color/primary</item>
     <item name="toolbar_graphics" type="color">@color/primary</item>
     <item name="toolbar_all" type="color">@color/primary</item>

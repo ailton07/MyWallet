@@ -210,24 +210,11 @@ public class Utils {
         List<Entry> valores = Entry.getOrcamento(mes, ano);
 
         for (Entry x : valores){
-            saldo1 = saldo1 + x.getTotal();
+            saldo1 = saldo1 + x.getOrcamento();
         }
 
         return saldo1;
     }
-
-
-    static public float getSaldoOrcamento(int mes, int ano){
-
-        float orcamento = 0;
-        List<Entry> valOrc = Entry.getOrcamento(mes, ano);
-
-        for(Entry y : valOrc){
-            orcamento += y.getOrcamento();
-        }
-        return orcamento;
-    }
-
 
     static public float getSaldoBonus(int mes, int ano){
 
