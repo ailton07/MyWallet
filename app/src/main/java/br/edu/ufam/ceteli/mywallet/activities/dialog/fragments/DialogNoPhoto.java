@@ -3,7 +3,6 @@ package br.edu.ufam.ceteli.mywallet.activities.dialog.fragments;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatDialogFragment;
@@ -28,10 +27,8 @@ import java.util.Locale;
 import java.util.Map;
 
 import br.edu.ufam.ceteli.mywallet.R;
-import br.edu.ufam.ceteli.mywallet.activities.ResultActivity;
 import br.edu.ufam.ceteli.mywallet.classes.Entrada;
-import br.edu.ufam.ceteli.mywallet.classes.IUpdateListView;
-import br.edu.ufam.ceteli.mywallet.classes.ocr.Utils;
+import br.edu.ufam.ceteli.mywallet.classes.RecyclerViewAdapter;
 
 /**
  * Created by rodrigo on 15/10/15.
@@ -102,8 +99,7 @@ public class DialogNoPhoto extends AppCompatDialogFragment {
                 entrada.setDataInsercao(dateFormatSave.format(new Date()));
                 entrada.setDataCompra(dateFormatIn.format(calendar.getTime()));
                 entrada.save();
-
-                ((IUpdateListView) getFragmentManager().findFragmentByTag("Main")).onListUpdated(entrada);
+                RecyclerViewAdapter.getInstance(null).add(entrada);
             }
         };
     }

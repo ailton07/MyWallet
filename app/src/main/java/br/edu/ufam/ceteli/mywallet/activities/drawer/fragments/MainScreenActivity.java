@@ -13,14 +13,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 import android.widget.TextView;
 
+import com.db.chart.Tools;
+import com.db.chart.model.LineSet;
+import com.db.chart.view.LineChartView;
+import com.db.chart.view.animation.Animation;
+import com.db.chart.view.animation.easing.CubicEase;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
@@ -39,10 +41,8 @@ import java.util.List;
 import br.edu.ufam.ceteli.mywallet.R;
 import br.edu.ufam.ceteli.mywallet.activities.dialog.fragments.DialogNoPhoto;
 import br.edu.ufam.ceteli.mywallet.activities.dialog.fragments.DialogPhoto;
-import br.edu.ufam.ceteli.mywallet.classes.AdapterListView;
 import br.edu.ufam.ceteli.mywallet.classes.DividerItemDecoration;
 import br.edu.ufam.ceteli.mywallet.classes.Entrada;
-import br.edu.ufam.ceteli.mywallet.classes.IUpdateListView;
 import br.edu.ufam.ceteli.mywallet.classes.RecyclerViewAdapter;
 import br.edu.ufam.ceteli.mywallet.classes.ocr.Utils;
 
@@ -51,16 +51,10 @@ import static br.edu.ufam.ceteli.mywallet.classes.ocr.Utils.getSaldoMes;
 /**
  * Created by rodrigo on 18/10/15.
  */
-public class MainScreenActivity extends Fragment implements OnChartValueSelectedListener, IUpdateListView {
-    // Nova entrada (Botão Flutuante)
+public class MainScreenActivity extends Fragment implements OnChartValueSelectedListener {
     private FloatingActionMenu fabNewInput = null;
-
-    // Singleton
     private static Fragment instance = null;
 
-
-    // private ArrayAdapter<Entrada> adapter;
-    private AdapterListView adapter;
     TextView orcamento, gastos, saldo, renda;
     Calendar c = Calendar.getInstance();
 
@@ -94,20 +88,39 @@ public class MainScreenActivity extends Fragment implements OnChartValueSelected
 
         FloatingActionButton fabManualInput = (com.github.clans.fab.FloatingActionButton) view.findViewById(R.id.fabManualInput);
         fabManualInput.setOnClickListener(fabManualOnClick());
-        List<Entrada> values = Entrada.getComments();
-
 
         // RecyclerView
         // TODO: Atualizar na inserção
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerViewMainScreen);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST));
-        recyclerView.setAdapter(new RecyclerViewAdapter(Entrada.getComments()));
+        recyclerView.setAdapter(RecyclerViewAdapter.getInstance(Entrada.getComments()));
 
+        // Gráfico
+        LineChartView chartView = (LineChartView) view.findViewById(R.id.mainChart);
 
+        float[] algo = {2,3,8};
+        float[] algo2 = {2.3F ,10, 4.5F};
+        String[] labels = {"label1", "label2", "label3"};
 
+        LineSet mesAtual = new LineSet(labels, algo);
+        LineSet mesAnterior = new LineSet(labels,algo2);
 
-        mChart = (LineChart) view.findViewById(R.id.chart1);
+        mesAtual.setFill(getResources().getColor(R.color.chartActualMonth));
+        mesAnterior.setFill(getResources().getColor(R.color.chartLastMonth));
+
+        mesAtual.setThickness(Tools.fromDpToPx(0));
+        mesAnterior.setThickness(Tools.fromDpToPx(0));
+
+        chartView.addData(mesAnterior);
+        chartView.addData(mesAtual);
+
+        Animation animation = new Animation(2000);
+        animation.setEasing(new CubicEase());
+
+        chartView.show(animation);
+
+        /*mChart = (LineChart) view.findViewById(R.id.chart1);
         mChart.setOnChartValueSelectedListener(this);
 
         // no description text
@@ -167,7 +180,7 @@ public class MainScreenActivity extends Fragment implements OnChartValueSelected
         mesano.add("Nov/15");
         mesano.add("Dez/15");
 
-        setData(12, 20.0f);
+        setData(12, 20.0f);*/
 
 
         orcamento = (TextView) view.findViewById(R.id.textView23);
@@ -203,21 +216,6 @@ public class MainScreenActivity extends Fragment implements OnChartValueSelected
         };
     }
 
-    public void restartArryaListAdapter(){
-        List<Entrada> values = Entrada.getComments();
-        adapter = new AdapterListView(getContext(), values);
-        ListView lv = (ListView) getView().findViewById(android.R.id.list);
-        lv.setAdapter(adapter);
-    }
-
-    // Faz um update quando é adicionado um novo elemento a partir do dialogFragment
-    @Override
-    public void onListUpdated(Entrada newValueToAdd) {
-        adapter.notifyDataSetInvalidated();
-        adapter.add(newValueToAdd);
-        adapter.notifyDataSetChanged();
-    }
-
     private void setData(int count,float range) {
         ArrayList<String> xVals = new ArrayList<>();
         DateFormat dateFormat = new SimpleDateFormat("yyyymmdd");
@@ -225,7 +223,7 @@ public class MainScreenActivity extends Fragment implements OnChartValueSelected
         //System.out.println(dateFormat.format(date));
         int mes=Integer.parseInt(dateFormat.format(date).substring(6));
         int ano=Integer.parseInt(dateFormat.format(date).substring(0,3));
-        Log.e("graphic",mes+" "+ano);
+        Log.e("graphic", mes + " " + ano);
         ArrayList<Entry> yVals1 = new ArrayList<>();
         int cn=0;
         int i=12-(12-mes);

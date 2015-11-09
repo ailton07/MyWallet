@@ -17,14 +17,34 @@ import br.edu.ufam.ceteli.mywallet.R;
  * Created by rodrigo on 01/11/15.
  */
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.RecyclerViewHolder>{
+    private static RecyclerViewAdapter instance = null;
     private List<Entrada> items = null;
     private String[] categories = null;
     private View view = null;
+    private Entrada object = null;
+
+    public static RecyclerViewAdapter getInstance(List<Entrada> list){
+        return instance == null? instance = new RecyclerViewAdapter(list) : instance;
+    }
 
     public RecyclerViewAdapter(List<Entrada> list){
         items = list;
     }
 
+    public void add(Entrada item){
+        items.add(0, item);
+        notifyItemInserted(0);
+    }
+
+    public void remove(Entrada item){
+        int index = items.indexOf(item);
+        items.remove(index);
+        notifyItemRemoved(index);
+    }
+
+    public Entrada getClickedItem(){
+        return object;
+    }
 
     @Override
     public RecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -33,14 +53,22 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     @Override
-    public void onBindViewHolder(RecyclerViewHolder holder, int position) {
+    public void onBindViewHolder(final RecyclerViewHolder holder, final int position) {
         NumberFormat numberFormat = NumberFormat.getInstance(new Locale("pt","BR"));
         holder.tvDate.setText(items.get(position).getDataCompra());
         holder.tvDescription.setText(items.get(position).getDescricao());
         holder.tvPlace.setText(items.get(position).getEstabelecimento());
         holder.tvType.setText(view.getResources().getStringArray(R.array.categoria_array)[items.get(position).getCategoria()]);
         holder.tvValue.setText(numberFormat.format(items.get(position).getValor()));
-        holder.ivType.setImageDrawable(items.get(position).getTipo() == 1? view.getResources().getDrawable(R.drawable.ic_spending) : view.getResources().getDrawable(R.drawable.ic_earning));
+        holder.ivType.setImageDrawable(items.get(position).getTipo() == 1 ? view.getResources().getDrawable(R.drawable.ic_spending) : view.getResources().getDrawable(R.drawable.ic_earning));
+        holder.itemView.setLongClickable(true);
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                object = items.get(holder.getAdapterPosition());
+                return false;
+            }
+        });
     }
 
     @Override

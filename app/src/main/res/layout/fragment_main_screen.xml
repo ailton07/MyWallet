@@ -9,22 +9,28 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
         android:orientation="vertical"
         android:weightSum="100"
         android:dividerPadding="16dp"
         android:divider="@drawable/divider_linear_layout"
-        android:showDividers="middle">
+        android:showDividers="middle|end">
 
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="0dp"
-            android:layout_weight="20">
+            android:layout_weight="25">
 
             <RelativeLayout
                 android:orientation="vertical"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:layout_margin="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
                 android:gravity="center_vertical">
 
                 <TextView
@@ -114,18 +120,17 @@
             android:layout_margin="16dp"
             android:layout_weight="35">
 
-            <com.github.mikephil.charting.charts.LineChart
-                android:id="@+id/chart1"
+            <com.db.chart.view.LineChartView
+                android:id="@+id/mainChart"
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_gravity="center_vertical"/>
+                android:layout_height="fill_parent"/>
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="0dp"
-            android:layout_weight="45">
+            android:layout_weight="40">
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recyclerViewMainScreen"
@@ -134,9 +139,7 @@
                 android:layout_marginRight="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginEnd="16dp"
-                android:layout_marginStart="16dp"
-                android:paddingTop="16dp"
-                android:clipToPadding="false"/>
+                android:layout_marginStart="16dp" />
 
         </LinearLayout>
 

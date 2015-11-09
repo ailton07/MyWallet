@@ -42,6 +42,7 @@ import java.util.Map;
 
 import br.edu.ufam.ceteli.mywallet.R;
 import br.edu.ufam.ceteli.mywallet.classes.Entrada;
+import br.edu.ufam.ceteli.mywallet.classes.RecyclerViewAdapter;
 import br.edu.ufam.ceteli.mywallet.classes.ocr.CommsEngine;
 import br.edu.ufam.ceteli.mywallet.classes.ocr.OCRImp;
 
@@ -195,7 +196,7 @@ public class DialogPhoto extends AppCompatDialogFragment{
                 entrada.setDataInsercao(dateFormatSave.format(new Date()));
                 entrada.setDataCompra(dateFormatIn.format(calendar.getTime()));
                 entrada.save();
-                //((IUpdateListView) getFragmentManager().findFragmentByTag("Main")).onListUpdated(entrada);
+                RecyclerViewAdapter.getInstance(null).add(entrada);
             }
         };
     }

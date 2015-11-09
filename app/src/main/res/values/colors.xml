@@ -5,8 +5,10 @@
     <item name="secondary" type="color">#FFEE58</item>
     <item name="title" type="color">#DDFFFFFF</item>
 
-    <item name="toolbar_main" type="color">@color/primary</item>
+    <item name="chartActualMonth" type="color">#4E00BFA5</item>
+    <item name="chartLastMonth" type="color">#AEFFEE58</item>
 
+    <item name="toolbar_main" type="color">@color/primary</item>
     <item name="toolbar_graphics" type="color">@color/primary</item>
     <item name="toolbar_all" type="color">@color/primary</item>
     <item name="toolbar_earning" type="color">@color/primary</item>
