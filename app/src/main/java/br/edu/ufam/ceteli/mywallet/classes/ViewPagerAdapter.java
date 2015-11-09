@@ -2,14 +2,14 @@ package br.edu.ufam.ceteli.mywallet.classes;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.app.FragmentPagerAdapter;
 
 import java.util.ArrayList;
 
 /**
  * Created by rodrigo on 29/09/15.
  */
-public class ViewPagerAdapter extends FragmentStatePagerAdapter {
+public class ViewPagerAdapter extends FragmentPagerAdapter {
     private ArrayList<Integer> tabColors = null;
     private ArrayList<String> tabTitles = null;
     private ArrayList<Fragment> tabFragments = null;
