@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
@@ -37,8 +40,10 @@ import br.edu.ufam.ceteli.mywallet.R;
 import br.edu.ufam.ceteli.mywallet.activities.dialog.fragments.DialogNoPhoto;
 import br.edu.ufam.ceteli.mywallet.activities.dialog.fragments.DialogPhoto;
 import br.edu.ufam.ceteli.mywallet.classes.AdapterListView;
+import br.edu.ufam.ceteli.mywallet.classes.DividerItemDecoration;
 import br.edu.ufam.ceteli.mywallet.classes.Entrada;
 import br.edu.ufam.ceteli.mywallet.classes.IUpdateListView;
+import br.edu.ufam.ceteli.mywallet.classes.RecyclerViewAdapter;
 import br.edu.ufam.ceteli.mywallet.classes.ocr.Utils;
 
 import static br.edu.ufam.ceteli.mywallet.classes.ocr.Utils.getSaldoMes;
@@ -87,19 +92,20 @@ public class MainScreenActivity extends Fragment implements OnChartValueSelected
         com.github.clans.fab.FloatingActionButton fabPhotoInput = (com.github.clans.fab.FloatingActionButton) view.findViewById(R.id.fabPhotoInput);
         fabPhotoInput.setOnClickListener(fabPhotoOnClick());
 
-        com.github.clans.fab.FloatingActionButton fabManualInput = (com.github.clans.fab.FloatingActionButton) view.findViewById(R.id.fabManualInput);
+        FloatingActionButton fabManualInput = (com.github.clans.fab.FloatingActionButton) view.findViewById(R.id.fabManualInput);
         fabManualInput.setOnClickListener(fabManualOnClick());
         List<Entrada> values = Entrada.getComments();
 
-        adapter = new AdapterListView(getContext(), values);
 
-        //ListView lv = (ListView) findViewById(android.R.id.list);
-        //setListAdapter(adapter);
-        //lv.setAdapter(adapter);
-        //lv.setAdapter(adapter);
+        // RecyclerView
+        // TODO: Atualizar na inserção
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerViewMainScreen);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST));
+        recyclerView.setAdapter(new RecyclerViewAdapter(Entrada.getComments()));
 
-        //List<Entrada> valuesDoMes = Entrada.getEntradasMesAno(10,2015);
-        Log.d("Saldo", String.valueOf(getSaldoMes(10, 2015)));
+
+
 
         mChart = (LineChart) view.findViewById(R.id.chart1);
         mChart.setOnChartValueSelectedListener(this);
