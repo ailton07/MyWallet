@@ -1,8 +1,10 @@
 package br.edu.ufam.ceteli.mywallet.activities.drawer.fragments;
 
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -12,8 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.getbase.floatingactionbutton.FloatingActionButton;
-import com.getbase.floatingactionbutton.FloatingActionsMenu;
+import com.github.clans.fab.FloatingActionMenu;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
@@ -47,7 +48,7 @@ import static br.edu.ufam.ceteli.mywallet.classes.ocr.Utils.getSaldoMes;
  */
 public class MainScreenActivity extends Fragment implements OnChartValueSelectedListener, IUpdateListView {
     // Nova entrada (Botão Flutuante)
-    private FloatingActionsMenu fabNewInput = null;
+    private FloatingActionMenu fabNewInput = null;
 
     // Singleton
     private static Fragment instance = null;
@@ -68,6 +69,10 @@ public class MainScreenActivity extends Fragment implements OnChartValueSelected
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        ((Toolbar) getActivity().findViewById(R.id.toolbar)).setTitle("Resumo");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getActivity().findViewById(R.id.appBarLayout).setElevation(((AppBarLayout) getActivity().findViewById(R.id.appBarLayout)).getTargetElevation());
+        }
         return inflater.inflate(R.layout.fragment_main_screen, container, false);
     }
 
@@ -76,22 +81,14 @@ public class MainScreenActivity extends Fragment implements OnChartValueSelected
         super.onViewCreated(view, savedInstanceState);
 
         // Quando for mexer na lista, fechar esse FAB
-        fabNewInput = (FloatingActionsMenu) view.findViewById(R.id.fabNewInput);
+        fabNewInput = (FloatingActionMenu) view.findViewById(R.id.fabNewInput);
+        fabNewInput.setClosedOnTouchOutside(true);
 
-        FloatingActionButton fabPhotoInput = (FloatingActionButton) view.findViewById(R.id.fabPhotoInput);
-        fabPhotoInput.setIcon(R.drawable.ic_photo_fab);
-        fabPhotoInput.setSize(FloatingActionButton.SIZE_MINI);
+        com.github.clans.fab.FloatingActionButton fabPhotoInput = (com.github.clans.fab.FloatingActionButton) view.findViewById(R.id.fabPhotoInput);
         fabPhotoInput.setOnClickListener(fabPhotoOnClick());
 
-        FloatingActionButton fabManualInput = (FloatingActionButton) view.findViewById(R.id.fabManualInput);
-        fabManualInput.setIcon(R.drawable.ic_manual_fab);
-        fabManualInput.setSize(FloatingActionButton.SIZE_MINI);
+        com.github.clans.fab.FloatingActionButton fabManualInput = (com.github.clans.fab.FloatingActionButton) view.findViewById(R.id.fabManualInput);
         fabManualInput.setOnClickListener(fabManualOnClick());
-
-        // Pega Toolbar
-        getActivity().findViewById(R.id.toolbar).setBackgroundColor(getResources().getColor(R.color.toolbar_main));
-        ((Toolbar) getActivity().findViewById(R.id.toolbar)).setTitle("Resumo");
-
         List<Entrada> values = Entrada.getComments();
 
         adapter = new AdapterListView(getContext(), values);
@@ -184,7 +181,7 @@ public class MainScreenActivity extends Fragment implements OnChartValueSelected
             public void onClick(View v) {
                 DialogNoPhoto dialogNoPhoto = new DialogNoPhoto();
                 dialogNoPhoto.show(getFragmentManager(), null);
-                fabNewInput.collapse();
+                fabNewInput.close(true);
             }
         };
     }
@@ -195,7 +192,7 @@ public class MainScreenActivity extends Fragment implements OnChartValueSelected
             public void onClick(View v) {
                 DialogPhoto dialogPhoto = new DialogPhoto();
                 dialogPhoto.show(getFragmentManager(), null);
-                fabNewInput.collapse();
+                fabNewInput.close(true);
             }
         };
     }

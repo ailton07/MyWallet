@@ -1,9 +1,8 @@
 package br.edu.ufam.ceteli.mywallet.activities.drawer.fragments;
 
-import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -13,7 +12,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.github.clans.fab.FloatingActionButton;
+
 import br.edu.ufam.ceteli.mywallet.R;
+import br.edu.ufam.ceteli.mywallet.activities.dialog.fragments.DialogBudget;
 import br.edu.ufam.ceteli.mywallet.activities.fragments.BudgetGraphic;
 import br.edu.ufam.ceteli.mywallet.activities.fragments.BudgetReport;
 import br.edu.ufam.ceteli.mywallet.classes.RecyclerScrollListener;
@@ -34,9 +36,10 @@ public class BudgetActivity extends Fragment{
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        LayoutInflater layoutInflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        AppBarLayout appBar = (AppBarLayout) getActivity().findViewById(R.id.appBarLayout);
-        layoutInflater.inflate(R.layout.appbar_budget, appBar);
+        ((Toolbar) getActivity().findViewById(R.id.toolbar)).setTitle("Orçamento");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getActivity().findViewById(R.id.appBarLayout).setElevation(0);
+        }
         return inflater.inflate(R.layout.fragment_budget, container, false);
     }
 
@@ -55,11 +58,18 @@ public class BudgetActivity extends Fragment{
         tabLayout = (TabLayout) getActivity().findViewById(R.id.tabBudget);
         tabLayout.setupWithViewPager(viewPager);
 
-        // Ao criar, seta cores
-        tabLayout.setBackgroundColor(getResources().getColor(R.color.toolbar_graphics));
+        FloatingActionButton fabNewBudget = (FloatingActionButton) view.findViewById(R.id.fabNewBudget);
+        fabNewBudget.setOnClickListener(fabNew());
+    }
 
-        // Pega Toolbar
-        ((Toolbar) getActivity().findViewById(R.id.toolbar)).setTitle("Orçamento");
+    private View.OnClickListener fabNew(){
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogBudget dialogBudget = new DialogBudget();
+                dialogBudget.show(getFragmentManager(), null);
+            }
+        };
     }
 
     private ViewPager.OnPageChangeListener pageChangeListener(){

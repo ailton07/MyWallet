@@ -32,7 +32,7 @@ public class FoodReport extends Fragment {
         recyclerView.setPadding(0, (int) (56 * getResources().getDisplayMetrics().density + 0.5f), 0, 0);
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST));
         recyclerView.setAdapter(new RecyclerViewAdapter(Entrada.getCategoriaRestaurante()));
-        recyclerView.addOnScrollListener(RecyclerScrollListener.getInstance(appBarLayout,0));
+        recyclerView.addOnScrollListener(RecyclerScrollListener.getInstance(appBarLayout, null));
         return recyclerView;
     }
 

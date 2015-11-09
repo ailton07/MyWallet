@@ -176,7 +176,7 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
         View view = findViewById(R.id.tabReports) != null? findViewById(R.id.tabReports) : findViewById(R.id.appBarBudget);
         AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appBarLayout);
         if(view != null) {
-            view.animate().translationY(-DesignUtils.getToolbarHeight(this,0)).setInterpolator(new DecelerateInterpolator(2)).start();
+            view.animate().translationY(-DesignUtils.getToolbarHeight(this)).setInterpolator(new DecelerateInterpolator(2)).start();
             ((ViewGroup) view.getParent()).removeView(view);
         }
         appBarLayout.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2)).start();

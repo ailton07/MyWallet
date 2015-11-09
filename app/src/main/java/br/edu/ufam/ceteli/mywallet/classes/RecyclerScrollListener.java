@@ -16,27 +16,35 @@ public abstract class RecyclerScrollListener extends RecyclerView.OnScrollListen
     private static boolean mControlsVisible = true;
     private static int mToolbarHeight;
     private static View view = null;
-
     private static int mToolbarOffset = 0;
     private static int mTotalScrolledDistance;
 
-    public static RecyclerScrollListener getInstance(final View v, int offset){
+    public static RecyclerScrollListener getInstance(final View toolbarView, final View otherView){
         if(scrollListener == null){
-            view = v;
-            scrollListener = new RecyclerScrollListener(view.getContext(), offset) {
+            view = toolbarView;
+            scrollListener = new RecyclerScrollListener(toolbarView.getContext()) {
                 @Override
                 public void onMoved(int distance) {
                     view.setTranslationY(-distance);
+                    if(otherView != null){
+                        otherView.setTranslationY(-distance);
+                    }
                 }
 
                 @Override
                 public void onShow() {
                     view.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2)).start();
+                    if(otherView != null){
+                        otherView.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2)).start();
+                    }
                 }
 
                 @Override
                 public void onHide() {
                     view.animate().translationY(-mToolbarHeight).setInterpolator(new AccelerateInterpolator(2)).start();
+                    if(otherView != null){
+                        otherView.animate().translationY(-mToolbarHeight).setInterpolator(new AccelerateInterpolator(2)).start();
+                    }
                 }
             };
         }
@@ -54,8 +62,8 @@ public abstract class RecyclerScrollListener extends RecyclerView.OnScrollListen
         scrollListener = null;
     }
 
-    private RecyclerScrollListener(Context context, int offset) {
-        mToolbarHeight = DesignUtils.getToolbarHeight(context, offset);
+    private RecyclerScrollListener(Context context) {
+        mToolbarHeight = DesignUtils.getToolbarHeight(context);
     }
 
     @Override

@@ -16,11 +16,22 @@ import br.edu.ufam.ceteli.mywallet.R;
  * Created by rodrigo on 03/11/15.
  */
 public class RecyclerViewBudgetAdapter extends RecyclerView.Adapter<RecyclerViewBudgetAdapter.RecyclerViewHolder>{
+    private static RecyclerViewBudgetAdapter instance = null;
     private List<Entry> items = null;
     private View view = null;
 
-    public RecyclerViewBudgetAdapter(List<Entry> list){
+    public static RecyclerViewBudgetAdapter getInstance(List<Entry> list){
+        return instance == null? instance = new RecyclerViewBudgetAdapter(list) : instance;
+    }
+
+
+    private RecyclerViewBudgetAdapter(List<Entry> list){
         items = list;
+    }
+
+    public void add(Entry entry){
+        items.add(0, entry);
+        notifyItemInserted(0);
     }
 
 

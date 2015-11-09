@@ -44,6 +44,7 @@ public class ReportsActivity extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        ((Toolbar) getActivity().findViewById(R.id.toolbar)).setTitle("Relatórios");
         LayoutInflater layoutInflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         AppBarLayout appBar = (AppBarLayout) getActivity().findViewById(R.id.appBarLayout);
         layoutInflater.inflate(R.layout.appbar_reports, appBar);
@@ -73,9 +74,6 @@ public class ReportsActivity extends Fragment {
         viewPager.addOnPageChangeListener(pageChangeListener());
 
         tabLayout.setupWithViewPager(viewPager);
-
-        // Pega Toolbar
-        ((Toolbar) getActivity().findViewById(R.id.toolbar)).setTitle("Relatórios");
     }
 
     private ViewPager.OnPageChangeListener pageChangeListener(){
@@ -114,13 +112,4 @@ public class ReportsActivity extends Fragment {
             }
         };
     }
-
-    /*private void resetToolbarScrool(){
-        // Reseta Scroll
-        CoordinatorLayout coordinatorLayout = (CoordinatorLayout) getActivity().findViewById(R.id.coordinatorLayout);
-        AppBarLayout appBarLayout = (AppBarLayout) getActivity().findViewById(R.id.appBarLayout);
-        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) appBarLayout.getLayoutParams();
-        AppBarLayout.Behavior behavior = (AppBarLayout.Behavior) layoutParams.getBehavior();
-        behavior.onNestedFling(coordinatorLayout, appBarLayout, null, 0, -2000, true);
-    }*/
 }
