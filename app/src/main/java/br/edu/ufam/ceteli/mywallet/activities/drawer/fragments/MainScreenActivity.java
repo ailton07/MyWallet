@@ -58,7 +58,7 @@ public class MainScreenActivity extends Fragment implements OnChartValueSelected
 
     TextView orcamento, gastos, saldo, renda;
     Calendar c = Calendar.getInstance();
-    int mes, ano;
+    int mes, ano, semana;
 
     private List<String> mesano=new ArrayList<>();
     private LineChart mChart;
@@ -103,11 +103,15 @@ public class MainScreenActivity extends Fragment implements OnChartValueSelected
 
         mes = c.get(Calendar.MONTH) + 1;
         ano = c.get(Calendar.YEAR);
+        semana = c.get(Calendar.WEEK_OF_MONTH);
+
+        Log.i("App123", String.valueOf(semana));
+        Log.i("App123", String.valueOf(Utils.getGastosSemana(semana, mes, ano)));
 
         //float[] algo = {1.0F,5.0F,6.0F};
-        float[] algo = {Utils.getSaidaMes(mes-2, ano), Utils.getSaidaMes(mes - 1, ano), Utils.getSaidaMes(mes, ano)};
-        float[] algo2 = {1000 ,2000, 4000};
-        String[] labels = {"label1", "label2", "label3"};
+        float[] algo = {Utils.getGastosSemana(1, mes ,ano), Utils.getGastosSemana(2, mes, ano), Utils.getGastosSemana(3, mes, ano),  Utils.getGastosSemana(4, mes, ano)};
+        float[] algo2 = {Utils.getGastosSemana(1, mes-1 ,ano), Utils.getGastosSemana(2, mes-1, ano), Utils.getGastosSemana(3, mes-1, ano),  Utils.getGastosSemana(4, mes-1, ano)};
+        String[] labels = {"Semana1", "Semana2", "Semana3", "Semana4"};
 
         LineSet mesAtual = new LineSet(labels, algo);
         LineSet mesAnterior = new LineSet(labels,algo2);

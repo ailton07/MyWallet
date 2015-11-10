@@ -319,6 +319,43 @@ public class Utils {
         return Soutros;
     }
 
+    static public float getGastosSemana(int semana, int mes ,int ano){
+        float Semana=0;
+        List<Entrada> Lsemana = Entrada.getEntradasSemana(semana, mes, ano);
+
+        for(Entrada y : Lsemana){
+            if(y.getTipo()==1)
+                Semana += y.getValor();
+
+        }
+        return Semana;
+    }
+
+    static public float getOrcamentoTotalSemana(int semana, int mes ,int ano){
+        float saldo = 0;
+        float saldo1 = 0;
+        float saldo2 = 0;
+        float Semana;
+        List<Entrada> Lsemana = Entrada.getEntradasSemana(semana, mes, ano);
+        List<Entry> valores = Entry.getOrcamentoSemana(semana, mes, ano);
+
+        for(Entrada y : Lsemana){
+            if(y.getTipo() == 0) {
+                saldo += y.getValor();
+            }
+        }
+
+        for (Entry x: valores){
+            saldo1 += x.getOrcamento();
+            saldo2 += x.getBonus();
+        }
+
+        Semana = saldo + saldo1 + saldo2;
+
+
+        return Semana;
+    }
+
 
 
     }
