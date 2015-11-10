@@ -15,9 +15,9 @@ import android.view.ViewGroup;
 import com.github.clans.fab.FloatingActionButton;
 
 import br.edu.ufam.ceteli.mywallet.R;
+import br.edu.ufam.ceteli.mywallet.activities.budget.fragments.BudgetGraphic;
+import br.edu.ufam.ceteli.mywallet.activities.budget.fragments.BudgetReport;
 import br.edu.ufam.ceteli.mywallet.activities.dialog.fragments.DialogBudget;
-import br.edu.ufam.ceteli.mywallet.activities.fragments.BudgetGraphic;
-import br.edu.ufam.ceteli.mywallet.activities.fragments.BudgetReport;
 import br.edu.ufam.ceteli.mywallet.classes.RecyclerScrollListener;
 import br.edu.ufam.ceteli.mywallet.classes.ViewPagerAdapter;
 

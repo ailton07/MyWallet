@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="@dimen/abc_action_bar_default_height_material"
+    android:paddingTop="16dp">
+
+    <TextView
+        android:id="@+id/tvFilter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:text="Filtro de Metas:"/>
+
+    <Spinner
+        android:id="@+id/spinnerGoalFilter"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        style="@style/Widget.AppCompat.Spinner.Underlined"
+        android:layout_below="@id/tvFilter">
+
+    </Spinner>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:weightSum="100"
+        android:divider="@drawable/divider_linear_layout"
+        android:showDividers="middle"
+        android:layout_below="@id/spinnerGoalFilter">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            android:layout_weight="15">
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+
+                <ImageView
+                    android:id="@+id/iv1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/ic_goal"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Meta"
+                    android:id="@+id/tvMeta"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/iv1"
+                    android:layout_toEndOf="@+id/iv1"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginLeft="32dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="New Text"
+                    android:id="@+id/tvMetaValue"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            android:layout_weight="15">
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+
+                <ImageView
+                    android:id="@+id/iv2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/ic_goal_spending"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Gastos"
+                    android:id="@+id/tvSpend"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/iv2"
+                    android:layout_toEndOf="@+id/iv2"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginLeft="32dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="New Text"
+                    android:id="@+id/tvSpendValue"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            android:layout_weight="15">
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+
+                <ImageView
+                    android:id="@+id/iv3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/ic_goal_leftover"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Saldo"
+                    android:id="@+id/tvLeftover"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/iv3"
+                    android:layout_toEndOf="@+id/iv3"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginLeft="32dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="New Text"
+                    android:id="@+id/tvLeftoverValue"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <com.github.clans.fab.FloatingActionButton
+        android:id="@+id/fabNewGoal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/fab_add"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp">
+    </com.github.clans.fab.FloatingActionButton>
+
+</RelativeLayout>

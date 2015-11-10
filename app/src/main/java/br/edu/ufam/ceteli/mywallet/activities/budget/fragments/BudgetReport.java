@@ -1,4 +1,4 @@
-package br.edu.ufam.ceteli.mywallet.activities.fragments;
+package br.edu.ufam.ceteli.mywallet.activities.budget.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

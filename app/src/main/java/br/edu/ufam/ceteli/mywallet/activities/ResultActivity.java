@@ -36,6 +36,7 @@ import java.util.Calendar;
 import java.util.Random;
 
 import br.edu.ufam.ceteli.mywallet.R;
+import br.edu.ufam.ceteli.mywallet.activities.drawer.fragments.BudgetActivity;
 import br.edu.ufam.ceteli.mywallet.activities.drawer.fragments.MainScreenActivity;
 import br.edu.ufam.ceteli.mywallet.activities.drawer.fragments.ReportsActivity;
 import br.edu.ufam.ceteli.mywallet.classes.DesignUtils;
@@ -115,47 +116,26 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
     @Override
     public boolean onNavigationItemSelected(final MenuItem menuItem) {
         Fragment fragment = null;
+        Class fragmentClass = null;
+        String name = null;
         drawerLayout.closeDrawers();
 
         // Um exemplo de redundancia :D
         switch (menuItem.getItemId()) {
             case R.id.drawer_item_home:
-                fragment = getSupportFragmentManager().findFragmentByTag("Main");
-                removeTabBar();
-                RecyclerScrollListener.removeObjectReference();
-                if(fragment == null) {
-                    inflateFragment(MainScreenActivity.getInstance(), "Main");
-                } else {
-                    inflateFragment(fragment, "Main");
-                    //resetToolbarScrool();
-                }
-                getSupportFragmentManager().popBackStackImmediate();
+                onBackPressed();
                 break;
 
             case R.id.drawer_item_budget:
-                fragment = getSupportFragmentManager().findFragmentByTag("Budget");
-                removeTabBar();
-                RecyclerScrollListener.removeObjectReference();
-                if(fragment == null) {
-                    inflateFragment(br.edu.ufam.ceteli.mywallet.activities.drawer.fragments.BudgetActivity.getInstance(), "Budget");
-                } else {
-                    inflateFragment(fragment, "Budget");
-                }
+                inflateFragment(BudgetActivity.getInstance(), "Budget");
                 break;
 
             case R.id.drawer_item_report:
-                fragment = getSupportFragmentManager().findFragmentByTag("Report");
-                removeTabBar();
-                RecyclerScrollListener.removeObjectReference();
-                if(fragment == null) {
-                    inflateFragment(ReportsActivity.getInstance(), "Report");
-                } else {
-                    inflateFragment(fragment, "Report");
-                }
+                inflateFragment(ReportsActivity.getInstance(),"Report");
                 break;
 
             case R.id.drawer_item_planning:
-                startActivity(new Intent(ResultActivity.this, GoalActivity.class));
+                inflateFragment(br.edu.ufam.ceteli.mywallet.activities.drawer.fragments.GoalActivity.getInstance(), "Planning");
                 break;
 
             case R.id.drawer_item_disconnect:
@@ -166,6 +146,8 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
                 loggedAccount.revoke(ResultActivity.this);
                 break;
         }
+
+        removeTabBar();
 
         resultFrameDrawer.setCheckedItem(menuItem.getItemId());
 
@@ -187,8 +169,10 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
             FragmentTransaction transactionHome = getSupportFragmentManager().beginTransaction();
             transactionHome.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out);
             transactionHome.replace(R.id.frameFragment, fragment, name);
-            getSupportFragmentManager().popBackStackImmediate();
-            transactionHome.addToBackStack(name);
+            if(getSupportFragmentManager().getBackStackEntryCount() == 0){
+                Log.e("POP", "Empty");
+                transactionHome.addToBackStack("Main");
+            }
             transactionHome.commit();
         }
     }
@@ -197,7 +181,6 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
         if(!fragment.isVisible()) {
             FragmentTransaction transactionHome = getSupportFragmentManager().beginTransaction();
             transactionHome.replace(R.id.frameFragment, fragment, name);
-            getSupportFragmentManager().popBackStackImmediate();
             transactionHome.commit();
         }
     }
