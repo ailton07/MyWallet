@@ -63,7 +63,7 @@ public class RecyclerViewBudgetAdapter extends RecyclerView.Adapter<RecyclerView
 
         public RecyclerViewHolder(View itemView) {
             super(itemView);
-            tvBudget = (TextView) itemView.findViewById(R.id.tvBudget);
+            tvBudget = (TextView) itemView.findViewById(R.id.tvGoal);
             tvBonus = (TextView) itemView.findViewById(R.id.tvBonus);
             tvTotal = (TextView) itemView.findViewById(R.id.tvTotal);
             tvMonth = (TextView) itemView.findViewById(R.id.tvMonth);

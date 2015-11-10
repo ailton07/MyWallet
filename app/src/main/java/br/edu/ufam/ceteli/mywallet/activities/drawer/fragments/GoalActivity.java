@@ -14,11 +14,15 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.github.clans.fab.FloatingActionButton;
+
 import java.text.NumberFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
 import br.edu.ufam.ceteli.mywallet.R;
+import br.edu.ufam.ceteli.mywallet.activities.dialog.fragments.DialogBudget;
+import br.edu.ufam.ceteli.mywallet.activities.dialog.fragments.DialogGoal;
 import br.edu.ufam.ceteli.mywallet.classes.ocr.Utils;
 
 /**
@@ -26,6 +30,10 @@ import br.edu.ufam.ceteli.mywallet.classes.ocr.Utils;
  */
 public class GoalActivity extends Fragment {
     private static Fragment instance = null;
+    TextView meta, spend, leftover;
+    Spinner spinner;
+    int valor;
+    SharedPreferences sharedPreferences;
 
     public static Fragment getInstance() {
         return (instance == null)? instance = new GoalActivity() : instance;
@@ -38,22 +46,52 @@ public class GoalActivity extends Fragment {
 
         ((Toolbar) getActivity().findViewById(R.id.toolbar)).setTitle("Planejamento");
 
-        TextView meta = (TextView) view.findViewById(R.id.tvMetaValue);
-        TextView spend = (TextView) view.findViewById(R.id.tvSpendValue);
-        TextView leftover = (TextView) view.findViewById(R.id.tvLeftoverValue);
+        FloatingActionButton fabNewBudget = (FloatingActionButton) view.findViewById(R.id.fabNewGoal);
+        fabNewBudget.setOnClickListener(fabNew());
+
+        meta = (TextView) view.findViewById(R.id.tvMetaValue);
+        spend = (TextView) view.findViewById(R.id.tvSpendValue);
+        leftover = (TextView) view.findViewById(R.id.tvLeftoverValue);
 
         ArrayAdapter<CharSequence> adapterSpinner = ArrayAdapter.createFromResource(getContext(), R.array.categoria_array1, android.R.layout.simple_spinner_item);
         adapterSpinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        Spinner spinner = (Spinner) view.findViewById(R.id.spinnerGoalFilter);
+        spinner = (Spinner) view.findViewById(R.id.spinnerGoalFilter);
         spinner.setAdapter(adapterSpinner);
 
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("SELECTED_FILTER", 0);
-
+        sharedPreferences = getActivity().getSharedPreferences("SELECTED_FILTER", 0);
+        meta.setText(sharedPreferences.getString("meta", "0.0"));
         spinner.setOnItemSelectedListener(onItemSelectedListener(meta, spend, leftover));
-        spinner.setSelection(0, true);
+        spinner.setSelection(sharedPreferences.getInt("filtro", 0), true);
+
+
+        Log.i("App123", String.valueOf(valor));
 
         return view;
+    }
+
+    private View.OnClickListener fabNew(){
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogGoal dialogGoal = new DialogGoal();
+                dialogGoal.show(getFragmentManager(), null);
+            }
+        };
+    }
+
+    private void savePreferences(String key, String value) {
+        SharedPreferences sp = getActivity().getSharedPreferences("SELECTED_FILTER", 0);
+        SharedPreferences.Editor edit = sp.edit();
+        edit.putString(key, value);
+        edit.commit();
+    }
+
+    public void savePreferences1(String key, int value) {
+        SharedPreferences sp = getActivity().getSharedPreferences("SELECTED_FILTER", 0);
+        SharedPreferences.Editor edit = sp.edit();
+        edit.putInt(key, value);
+        edit.commit();
     }
 
     private AdapterView.OnItemSelectedListener onItemSelectedListener(final TextView meta, final TextView spend, final TextView leftover){
@@ -65,6 +103,8 @@ public class GoalActivity extends Fragment {
 
                 numberFormat.setGroupingUsed(true);
 
+                valor = position;
+
                 switch (position){
                     case 0:
                         meta.setText("Nenhum Filtro Definido");
@@ -74,12 +114,15 @@ public class GoalActivity extends Fragment {
 
                     case 1:
                         spend.setText(numberFormat.format(Utils.getSaidaDia(calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.YEAR))));
+                        //Log.i("App123", String.valueOf(CalcularSaldoDia(meta, calendar)));
                         leftover.setText(numberFormat.format(CalcularSaldoDia(meta, calendar)));
+                        savePreferences1("filtro", valor);
                         break;
 
                     case 2:
                         spend.setText(numberFormat.format(Utils.getSaidaMes(calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.YEAR))));
                         leftover.setText(numberFormat.format(CalcularSaldoMes(meta, calendar)));
+                        savePreferences1("filtro", valor);
                         break;
                 }
             }
@@ -94,6 +137,8 @@ public class GoalActivity extends Fragment {
     @Override
     public void onResume(){
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("SELECTED_FILTER", 0);
+//        meta.setText(sharedPreferences.getString("meta", ""));
+//        spinner.setSelection(sharedPreferences.getInt("Filtro", valor));
         Log.e("META", sharedPreferences.getString("Meta", "Vazio"));
         super.onResume();
 
@@ -103,6 +148,7 @@ public class GoalActivity extends Fragment {
         float goal, leftover;
         try{
             goal = Float.valueOf(meta.getText().toString());
+            //Log.i("App123", String.valueOf(goal));
             leftover = goal - Utils.getSaidaDia(calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.YEAR));
         } catch (Exception e){
             leftover = 0;

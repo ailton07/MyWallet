@@ -2,29 +2,37 @@ package br.edu.ufam.ceteli.mywallet.activities.dialog.fragments;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatDialogFragment;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import br.edu.ufam.ceteli.mywallet.R;
+import br.edu.ufam.ceteli.mywallet.activities.GoalActivity;
 import br.edu.ufam.ceteli.mywallet.classes.Entry;
 import br.edu.ufam.ceteli.mywallet.classes.RecyclerViewBudgetAdapter;
 
 /**
- * Created by rodrigo on 08/11/15.
+ * Created by ceteli on 10/11/2015.
  */
-public class DialogBudget extends AppCompatDialogFragment {
+public class DialogGoal extends AppCompatDialogFragment {
+
     private View view = null;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        view = View.inflate(getContext(), R.layout.fragment_dialog_budget, null);
+        view = View.inflate(getContext(), R.layout.fragment_dialog_goal, null);
 
         // Toolbar
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.dialogBudgetToolbar);
@@ -48,33 +56,25 @@ public class DialogBudget extends AppCompatDialogFragment {
         };
     }
 
+    private void savePreferences(String key, String value) {
+        SharedPreferences sp = getActivity().getSharedPreferences("SELECTED_FILTER", 0);
+        SharedPreferences.Editor edit = sp.edit();
+        edit.putString(key, value);
+        edit.commit();
+    }
+
     private DialogInterface.OnClickListener onClickListenerConfirm(){
         return new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                EditText etBudget = (EditText) view.findViewById(R.id.etGoal);
-                EditText etBonus = (EditText) view.findViewById(R.id.etBonus);
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
-                Entry entry = new Entry();
-                Date date = new Date();
-                float budget = 0, bonus = 0;
-
-                if(!etBudget.getText().toString().equals("")){
-                    budget = Float.parseFloat(etBudget.getText().toString());
-                }
-
-                if(!etBonus.getText().toString().equals("")){
-                    bonus = Float.parseFloat(etBonus.getText().toString());
-                }
-
-                entry.setOrcamento(budget);
-                entry.setBonus(bonus);
-                entry.setTotal(budget + bonus);
-                entry.setDataOrcamento(dateFormat.format(date));
-                entry.save();
-
-                RecyclerViewBudgetAdapter.getInstance(null).add(entry);
+                NumberFormat numberFormat = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+                EditText meta = (EditText) view.findViewById(R.id.etGoal);
+                TextView tvMeta = (TextView) getActivity().findViewById(R.id.tvMetaValue);
+                tvMeta.setText(numberFormat.format(Float.parseFloat(meta.getText().toString())));
+                savePreferences("meta", numberFormat.format(Float.parseFloat(meta.getText().toString())));
             }
         };
     }
+
+
 }

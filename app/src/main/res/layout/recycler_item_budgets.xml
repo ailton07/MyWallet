@@ -67,7 +67,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="Small Text"
-            android:id="@+id/tvBudget"
+            android:id="@+id/tvGoal"
             android:layout_above="@id/tvB"
             android:layout_toLeftOf="@+id/tvMonth"
             android:layout_alignLeft="@+id/tvBonus"

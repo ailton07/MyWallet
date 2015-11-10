@@ -119,7 +119,7 @@ public class MainScreenActivity extends Fragment implements OnChartValueSelected
         String[] labels = {"Semana1", "Semana2", "Semana3", "Semana4"};
 
         LineSet mesAtual = new LineSet(labels, algo);
-        LineSet mesAnterior = new LineSet(labels,algo2);
+        LineSet mesAnterior = new LineSet(labels, algo2);
 
         mesAtual.setFill(getResources().getColor(R.color.chartActualMonth));
         mesAnterior.setFill(getResources().getColor(R.color.chartLastMonth));
@@ -139,10 +139,21 @@ public class MainScreenActivity extends Fragment implements OnChartValueSelected
         else
             aux1 = d;
 
-        chartView.setAxisBorderValues(0, (int) aux1, (int) aux1 / 4);
+        if(aux1 == 0){
+            chartView.setAxisBorderValues(0, 1, 1);
+        }else{
+            if(aux1%2==0) {
+                chartView.setAxisBorderValues(0, (int) aux1, (int) aux1 / 2);
+            }else{
+                chartView.setAxisBorderValues(0, (int) aux1, (int) aux1 / 3);
+            }
+        }
 
         chartView.addData(mesAnterior);
         chartView.addData(mesAtual);
+
+        chartView.setAxisThickness(Tools.fromDpToPx(1));
+        chartView.setAxisColor(Color.parseColor("#4E000000"));
 
         Animation animation = new Animation(2000);
         animation.setEasing(new CubicEase());
