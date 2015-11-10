@@ -59,6 +59,7 @@ public class MainScreenActivity extends Fragment implements OnChartValueSelected
     TextView orcamento, gastos, saldo, renda;
     Calendar c = Calendar.getInstance();
     int mes, ano, semana;
+    float aux, aux1;
 
     private List<String> mesano=new ArrayList<>();
     private LineChart mChart;
@@ -108,7 +109,11 @@ public class MainScreenActivity extends Fragment implements OnChartValueSelected
         Log.i("App123", String.valueOf(semana));
         Log.i("App123", String.valueOf(Utils.getGastosSemana(semana, mes, ano)));
 
-        //float[] algo = {1.0F,5.0F,6.0F};
+        float a = Utils.getGastosSemana(1, mes ,ano);
+        float b = Utils.getGastosSemana(2, mes, ano);
+        float e = Utils.getGastosSemana(3, mes, ano);
+        float d = Utils.getGastosSemana(4, mes, ano);
+
         float[] algo = {Utils.getGastosSemana(1, mes ,ano), Utils.getGastosSemana(2, mes, ano), Utils.getGastosSemana(3, mes, ano),  Utils.getGastosSemana(4, mes, ano)};
         float[] algo2 = {Utils.getGastosSemana(1, mes-1 ,ano), Utils.getGastosSemana(2, mes-1, ano), Utils.getGastosSemana(3, mes-1, ano),  Utils.getGastosSemana(4, mes-1, ano)};
         String[] labels = {"Semana1", "Semana2", "Semana3", "Semana4"};
@@ -121,6 +126,20 @@ public class MainScreenActivity extends Fragment implements OnChartValueSelected
 
         mesAtual.setThickness(Tools.fromDpToPx(0));
         mesAnterior.setThickness(Tools.fromDpToPx(0));
+
+        if(a>b && a>e)
+            aux = a;
+        else if(b>e)
+            aux = b;
+        else
+            aux = e;
+
+        if(aux>d)
+            aux1 = aux;
+        else
+            aux1 = d;
+
+        chartView.setAxisBorderValues(0, (int) aux1, (int) aux1 / 4);
 
         chartView.addData(mesAnterior);
         chartView.addData(mesAtual);

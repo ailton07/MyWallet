@@ -11,8 +11,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.github.clans.fab.FloatingActionButton;
+
+import java.util.Calendar;
 
 import br.edu.ufam.ceteli.mywallet.R;
 import br.edu.ufam.ceteli.mywallet.activities.budget.fragments.BudgetGraphic;
@@ -20,6 +23,7 @@ import br.edu.ufam.ceteli.mywallet.activities.budget.fragments.BudgetReport;
 import br.edu.ufam.ceteli.mywallet.activities.dialog.fragments.DialogBudget;
 import br.edu.ufam.ceteli.mywallet.classes.RecyclerScrollListener;
 import br.edu.ufam.ceteli.mywallet.classes.ViewPagerAdapter;
+import br.edu.ufam.ceteli.mywallet.classes.ocr.Utils;
 
 /**
  * Created by rodrigo on 29/10/15.
@@ -28,6 +32,8 @@ public class BudgetActivity extends Fragment{
     private ViewPagerAdapter fragmentPagerAdapter = null;
     private TabLayout tabLayout = null;
     private static Fragment instance = null;
+    private TextView budget, bonus, total;
+    Calendar c = Calendar.getInstance();
 
     public static Fragment getInstance() {
         return (instance == null)? instance = new BudgetActivity() : instance;
@@ -40,6 +46,15 @@ public class BudgetActivity extends Fragment{
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getActivity().findViewById(R.id.appBarLayout).setElevation(0);
         }
+
+        budget = (TextView) getActivity().findViewById(R.id.tvValueBudget);
+        bonus = (TextView) getActivity().findViewById(R.id.tvValueBonus);
+        total = (TextView) getActivity().findViewById(R.id.tvValueTotal);
+
+        //budget.setText(String.valueOf(Utils.getSaldoOrcamentoTotal(c.get(Calendar.MONTH) + 1, c.get(Calendar.YEAR))));
+        //bonus.setText(String.valueOf(Utils.getSaldoBonus(c.get(Calendar.MONTH) + 1, c.get(Calendar.YEAR))));
+        //total.setText(String.valueOf(Utils.getOrcamentoTotalMes(c.get(Calendar.MONTH) + 1, c.get(Calendar.YEAR))));
+
         return inflater.inflate(R.layout.fragment_budget, container, false);
     }
 

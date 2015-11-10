@@ -5,8 +5,8 @@
     android:weightSum="1">
 
     <view
-        android:layout_width="290dp"
-        android:layout_height="237dp"
+        android:layout_width="268dp"
+        android:layout_height="215dp"
         class="com.db.chart.view.LineChartView"
         android:id="@+id/view2"
         android:layout_weight="0.49"

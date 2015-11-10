@@ -26,6 +26,7 @@ public class BudgetGraphic extends Fragment {
     private static Fragment instance = null;
     int mes, ano, semana;
     Calendar c = Calendar.getInstance();
+    float aux, aux1;
 
     public static Fragment getInstance() {
         return (instance == null)? instance = new BudgetGraphic() : instance;
@@ -49,6 +50,11 @@ public class BudgetGraphic extends Fragment {
 
         Log.i("App123", String.valueOf(Utils.getOrcamentoTotalSemana(semana, mes, ano)));
 
+        float a = Utils.getOrcamentoTotalSemana(1, mes ,ano);
+        float b = Utils.getOrcamentoTotalSemana(2, mes, ano);
+        float e = Utils.getOrcamentoTotalSemana(3, mes, ano);
+        float d = Utils.getOrcamentoTotalSemana(4, mes, ano);
+
         //float[] algo = {1.0F,5.0F,6.0F};
         float[] algo = {Utils.getOrcamentoTotalSemana(1, mes ,ano), Utils.getOrcamentoTotalSemana(2, mes, ano), Utils.getOrcamentoTotalSemana(3, mes, ano),  Utils.getOrcamentoTotalSemana(4, mes, ano)};
         float[] algo2 = {Utils.getOrcamentoTotalSemana(1, mes - 1, ano), Utils.getOrcamentoTotalSemana(2, mes - 1, ano), Utils.getOrcamentoTotalSemana(3, mes - 1, ano),  Utils.getOrcamentoTotalSemana(4, mes - 1, ano)};
@@ -62,6 +68,20 @@ public class BudgetGraphic extends Fragment {
 
         mesAtual.setThickness(Tools.fromDpToPx(0));
         mesAnterior.setThickness(Tools.fromDpToPx(0));
+
+        if(a>b && a>e)
+            aux = a;
+        else if(b>e)
+            aux = b;
+        else
+            aux = e;
+
+        if(aux>d)
+            aux1 = aux;
+        else
+            aux1 = d;
+
+        chartView.setAxisBorderValues(0, (int) aux1, (int) aux1 / 4);
 
         chartView.addData(mesAnterior);
         chartView.addData(mesAtual);
