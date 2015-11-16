@@ -30,6 +30,7 @@ import java.util.Date;
 import java.util.List;
 
 import br.edu.ufam.ceteli.mywallet.R;
+import br.edu.ufam.ceteli.mywallet.classes.Entrada;
 import br.edu.ufam.ceteli.mywallet.classes.ocr.Utils;
 
 
@@ -93,12 +94,13 @@ public class GraphicReport extends Fragment implements OnChartValueSelectedListe
         mChart.animateY(1500, Easing.EasingOption.EaseInOutQuad);
         // mChart.spin(2000, 0, 360);
 
+        /*
         Legend l = mChart.getLegend();
         l.setPosition(LegendPosition.RIGHT_OF_CHART);
         l.setXEntrySpace(7f);
         l.setYEntrySpace(0f);
         l.setYOffset(0f);
-
+        */
 
         setData(100);
     }
@@ -143,11 +145,11 @@ public class GraphicReport extends Fragment implements OnChartValueSelectedListe
 //        }
 
         if(Utils.getGastosCasa(mes, ano)!=0){
-            yVals1.add(new Entry(Utils.getGastosCasa(mes, ano),0));
+            yVals1.add(new Entry(Utils.getGastosCasa(mes, ano),1));
         }
 
         if (Utils.getGastosAlimenticios(mes, ano) != 0){
-            yVals1.add(new Entry(Utils.getGastosAlimenticios(mes, ano),1));
+            yVals1.add(new Entry(Utils.getGastosAlimenticios(mes, ano),4));
         }
 
         if (Utils.getGastosEntrentenimento(mes, ano) != 0){
@@ -159,20 +161,12 @@ public class GraphicReport extends Fragment implements OnChartValueSelectedListe
         }
 
         if (Utils.getGastosSaude(mes, ano) != 0){
-            yVals1.add(new Entry(Utils.getGastosSaude(mes, ano),4));
+            yVals1.add(new Entry(Utils.getGastosSaude(mes, ano),5));
         }
 
         if (Utils.getGastosOutros(mes, ano) != 0){
-            yVals1.add(new Entry(Utils.getGastosOutros(mes, ano),5));
+            yVals1.add(new Entry(Utils.getGastosOutros(mes, ano),6));
         }
-
-
-
-
-
-
-
-
 
         ArrayList<String> xVals = new ArrayList<String>();
 

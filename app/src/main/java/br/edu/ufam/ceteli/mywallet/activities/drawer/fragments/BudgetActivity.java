@@ -43,9 +43,6 @@ public class BudgetActivity extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ((Toolbar) getActivity().findViewById(R.id.toolbar)).setTitle("Orçamento");
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getActivity().findViewById(R.id.appBarLayout).setElevation(0);
-        }
 
         budget = (TextView) getActivity().findViewById(R.id.tvValueBudget);
         bonus = (TextView) getActivity().findViewById(R.id.tvValueBonus);
@@ -54,6 +51,10 @@ public class BudgetActivity extends Fragment{
         //budget.setText(String.valueOf(Utils.getSaldoOrcamentoTotal(c.get(Calendar.MONTH) + 1, c.get(Calendar.YEAR))));
         //bonus.setText(String.valueOf(Utils.getSaldoBonus(c.get(Calendar.MONTH) + 1, c.get(Calendar.YEAR))));
         //total.setText(String.valueOf(Utils.getOrcamentoTotalMes(c.get(Calendar.MONTH) + 1, c.get(Calendar.YEAR))));
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getActivity().findViewById(R.id.appBarLayout).setElevation(0);
+        }
 
         return inflater.inflate(R.layout.fragment_budget, container, false);
     }
@@ -75,6 +76,7 @@ public class BudgetActivity extends Fragment{
 
         FloatingActionButton fabNewBudget = (FloatingActionButton) view.findViewById(R.id.fabNewBudget);
         fabNewBudget.setOnClickListener(fabNew());
+
     }
 
     private View.OnClickListener fabNew(){

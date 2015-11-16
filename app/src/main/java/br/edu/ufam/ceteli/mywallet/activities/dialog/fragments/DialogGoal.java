@@ -70,8 +70,8 @@ public class DialogGoal extends AppCompatDialogFragment {
                 NumberFormat numberFormat = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
                 EditText meta = (EditText) view.findViewById(R.id.etGoal);
                 TextView tvMeta = (TextView) getActivity().findViewById(R.id.tvMetaValue);
-                tvMeta.setText(numberFormat.format(Float.parseFloat(meta.getText().toString())));
-                savePreferences("meta", numberFormat.format(Float.parseFloat(meta.getText().toString())));
+                tvMeta.setText(numberFormat.format(Float.valueOf(meta.getText().toString())));
+                savePreferences("meta", meta.getText().toString());
             }
         };
     }

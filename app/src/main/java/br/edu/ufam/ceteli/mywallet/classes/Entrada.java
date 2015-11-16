@@ -5,7 +5,9 @@ import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Select;
 
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 
 import static br.edu.ufam.ceteli.mywallet.classes.OperacoesData.getDataFormatada;
 
@@ -98,8 +100,9 @@ public class Entrada extends Model {
 
     @Override
     public String toString() {
-
+        NumberFormat numberFormat = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
         String comb1 = "";
+        float val = Float.parseFloat(numberFormat.format(valor));
 
         if(categoria == 1){
             comb1 = "Residencia";
@@ -115,13 +118,14 @@ public class Entrada extends Model {
             comb1 = "Ocasional";
         }
 
-
-        return getDataCompra()+  "       " +  comb1  + " \n "+ "Estebelecimento: "+ estabelecimento  + "\n" + "Valor: " + valor
+        return getDataCompra()+  "       " +  comb1  + " \n "+ "Estebelecimento: "+ estabelecimento  + "\n" + "Valor: " + val
                 + "\n" +  "Descricao: " + descricao;
     }
 
     public String toString1(){
+        NumberFormat numberFormat = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
         String comb1 = "";
+        float val = Float.parseFloat(numberFormat.format(valor));
 
         if(categoria == 1){
             comb1 = "Residencia";
@@ -137,7 +141,7 @@ public class Entrada extends Model {
             comb1 = "Ocasional";
         }
 
-        return getDataCompra()+  "       " + " \n "+ "Estebelecimento: "+ estabelecimento  + "\n" + "Valor: " + valor
+        return getDataCompra()+  "       " + " \n "+ "Estebelecimento: "+ estabelecimento  + "\n" + "Valor: " + val
                 + "\n" +  "Descricao: " + descricao;
     }
 
@@ -192,12 +196,12 @@ public class Entrada extends Model {
         String anoS = String.valueOf(ano);
 
         if(semana == 1){
-        return new Select().from(Entrada.class).where("DataCompra > ? and DataCompra < ? ", (anoS + mesS + "00"), (anoS + mesS + "07")).execute();
+        return new Select().from(Entrada.class).where("DataCompra > ? and DataCompra <= ? ", (anoS + mesS + "00"), (anoS + mesS + "07")).execute();
         }else if(semana == 2){
-            return new Select().from(Entrada.class).where("DataCompra > ? and DataCompra < ? ", (anoS + mesS + "08"), (anoS + mesS + "15")).execute();
+            return new Select().from(Entrada.class).where("DataCompra >= ? and DataCompra <= ? ", (anoS + mesS + "08"), (anoS + mesS + "15")).execute();
         }else if(semana == 3){
-            return new Select().from(Entrada.class).where("DataCompra > ? and DataCompra < ? ", (anoS + mesS + "16"), (anoS + mesS + "23")).execute();
+            return new Select().from(Entrada.class).where("DataCompra >= ? and DataCompra <= ? ", (anoS + mesS + "16"), (anoS + mesS + "23")).execute();
         }else
-            return new Select().from(Entrada.class).where("DataCompra > ? and DataCompra < ? ", (anoS + mesS + "24"), (anoS + mesS + "32")).execute();
+            return new Select().from(Entrada.class).where("DataCompra >= ? and DataCompra < ? ", (anoS + mesS + "24"), (anoS + mesS + "32")).execute();
         }
 }

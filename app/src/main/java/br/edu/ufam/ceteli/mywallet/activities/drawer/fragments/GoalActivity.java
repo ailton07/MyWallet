@@ -65,7 +65,7 @@ public class GoalActivity extends Fragment {
         spinner.setSelection(sharedPreferences.getInt("filtro", 0), true);
 
 
-        Log.i("App123", String.valueOf(valor));
+        //Log.i("App123", String.valueOf(valor));
 
         return view;
     }
@@ -113,13 +113,14 @@ public class GoalActivity extends Fragment {
                         break;
 
                     case 1:
+                        meta.setText(numberFormat.format(Float.valueOf(sharedPreferences.getString("meta", "0.0"))));
                         spend.setText(numberFormat.format(Utils.getSaidaDia(calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.YEAR))));
-                        //Log.i("App123", String.valueOf(CalcularSaldoDia(meta, calendar)));
                         leftover.setText(numberFormat.format(CalcularSaldoDia(meta, calendar)));
                         savePreferences1("filtro", valor);
                         break;
 
                     case 2:
+                        meta.setText(numberFormat.format(Float.valueOf(sharedPreferences.getString("meta", "0.0"))));
                         spend.setText(numberFormat.format(Utils.getSaidaMes(calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.YEAR))));
                         leftover.setText(numberFormat.format(CalcularSaldoMes(meta, calendar)));
                         savePreferences1("filtro", valor);
@@ -147,8 +148,7 @@ public class GoalActivity extends Fragment {
     public float CalcularSaldoDia(TextView meta, Calendar calendar){
         float goal, leftover;
         try{
-            goal = Float.valueOf(meta.getText().toString());
-            //Log.i("App123", String.valueOf(goal));
+            goal = Float.valueOf(sharedPreferences.getString("meta", "0.0"));
             leftover = goal - Utils.getSaidaDia(calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.YEAR));
         } catch (Exception e){
             leftover = 0;
@@ -159,7 +159,7 @@ public class GoalActivity extends Fragment {
     public float CalcularSaldoMes(final TextView meta, Calendar calendar){
         float goal, leftover;
         try{
-            goal = Float.valueOf(meta.getText().toString());
+            goal = Float.valueOf(sharedPreferences.getString("meta", "0.0"));
             leftover = goal - Utils.getSaidaMes(calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.YEAR));
         } catch (Exception e){
             leftover = 0;

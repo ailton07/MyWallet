@@ -5,7 +5,9 @@ import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Select;
 
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 
 import static br.edu.ufam.ceteli.mywallet.classes.OperacoesData.getDataFormatada;
 
@@ -63,8 +65,12 @@ public class Entry extends Model {
     }
 
     public String toString() {
+        NumberFormat numberFormat = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+        float orc = Float.parseFloat(numberFormat.format(orcamento));
+        float bon = Float.parseFloat(numberFormat.format(bonus));
+        float tot = Float.parseFloat(numberFormat.format(total));
 
-        return "Orcamento: " + orcamento + "\n" + "Bonus: " + bonus + "\n" + "Total: " + total;
+        return "Orcamento: " + orc + "\n" + "Bonus: " + bon + "\n" + "Total: " + tot;
 
     }
 
@@ -93,12 +99,12 @@ public class Entry extends Model {
         String anoS = String.valueOf(ano);
 
         if(semana == 1){
-            return new Select().from(Entry.class).where("DataOrcamento > ? and DataOrcamento < ? ", (anoS + mesS + "00"), (anoS + mesS + "07")).execute();
+            return new Select().from(Entry.class).where("DataOrcamento > ? and DataOrcamento <= ? ", (anoS + mesS + "00"), (anoS + mesS + "07")).execute();
         }else if(semana == 2){
-            return new Select().from(Entry.class).where("DataOrcamento > ? and DataOrcamento < ? ", (anoS + mesS + "08"), (anoS + mesS + "15")).execute();
+            return new Select().from(Entry.class).where("DataOrcamento >= ? and DataOrcamento <= ? ", (anoS + mesS + "08"), (anoS + mesS + "15")).execute();
         }else if(semana == 3){
-            return new Select().from(Entry.class).where("DataOrcamento > ? and DataOrcamento < ? ", (anoS + mesS + "16"), (anoS + mesS + "23")).execute();
+            return new Select().from(Entry.class).where("DataOrcamento >= ? and DataOrcamento <= ? ", (anoS + mesS + "16"), (anoS + mesS + "23")).execute();
         }else
-            return new Select().from(Entry.class).where("DataOrcamento > ? and DataOrcamento < ? ", (anoS + mesS + "24"), (anoS + mesS + "32")).execute();
+            return new Select().from(Entry.class).where("DataOrcamento >= ? and DataOrcamento < ? ", (anoS + mesS + "24"), (anoS + mesS + "32")).execute();
     }
 }
