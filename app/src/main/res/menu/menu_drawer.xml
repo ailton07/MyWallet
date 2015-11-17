@@ -6,7 +6,7 @@
             android:id="@+id/drawer_item_home"
             android:title="Resumo"
             android:checked="true"
-            />
+            android:icon="@drawable/ic_main_screen"/>
 
         <item
             android:id="@+id/drawer_item_budget"
