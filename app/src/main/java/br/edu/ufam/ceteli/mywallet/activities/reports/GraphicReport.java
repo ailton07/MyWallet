@@ -144,29 +144,29 @@ public class GraphicReport extends Fragment implements OnChartValueSelectedListe
 //            yVals1.add(new Entry((float) (Math.random() * mult) + mult / 5, i));
 //        }
 
-        if(Utils.getGastosCasa(mes, ano)!=0){
-            yVals1.add(new Entry(Utils.getGastosCasa(mes, ano),1));
-        }
+        //if(Utils.getGastosCasa(mes, ano)!=0) {
+            yVals1.add(new Entry(Utils.getGastosCasa(mes, ano), 1));
+        //}
 
-        if (Utils.getGastosAlimenticios(mes, ano) != 0){
-            yVals1.add(new Entry(Utils.getGastosAlimenticios(mes, ano),4));
-        }
+        //if (Utils.getGastosAlimenticios(mes, ano) != 0){
+            yVals1.add(new Entry(Utils.getGastosAlimenticios(mes, ano),1));
+        //}
 
-        if (Utils.getGastosEntrentenimento(mes, ano) != 0){
-            yVals1.add(new Entry(Utils.getGastosEntrentenimento(mes, ano),2));
-        }
+        //if (Utils.getGastosEntrentenimento(mes, ano) != 0){
+            yVals1.add(new Entry(Utils.getGastosEntrentenimento(mes, ano),1));
+        //}
 
-        if (Utils.getGastosTransporte(mes, ano) != 0){
-            yVals1.add(new Entry(Utils.getGastosTransporte(mes, ano),3));
-        }
+        //if (Utils.getGastosTransporte(mes, ano) != 0){
+            yVals1.add(new Entry(Utils.getGastosTransporte(mes, ano),1));
+        //}
 
-        if (Utils.getGastosSaude(mes, ano) != 0){
-            yVals1.add(new Entry(Utils.getGastosSaude(mes, ano),5));
-        }
+        //if (Utils.getGastosSaude(mes, ano) != 0){
+            yVals1.add(new Entry(Utils.getGastosSaude(mes, ano),1));
+        //}
 
-        if (Utils.getGastosOutros(mes, ano) != 0){
-            yVals1.add(new Entry(Utils.getGastosOutros(mes, ano),6));
-        }
+        //if (Utils.getGastosOutros(mes, ano) != 0){
+            yVals1.add(new Entry(Utils.getGastosOutros(mes, ano),1));
+        //}
 
         ArrayList<String> xVals = new ArrayList<String>();
 

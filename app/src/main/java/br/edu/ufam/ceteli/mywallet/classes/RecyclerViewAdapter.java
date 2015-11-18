@@ -54,7 +54,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public void onBindViewHolder(final RecyclerViewHolder holder, final int position) {
-        NumberFormat numberFormat = NumberFormat.getInstance(new Locale("pt","BR"));
+        NumberFormat numberFormat = NumberFormat.getCurrencyInstance(new Locale("pt","BR"));
         holder.tvDate.setText(items.get(position).getDataCompra());
         holder.tvDescription.setText(items.get(position).getDescricao());
         holder.tvPlace.setText(items.get(position).getEstabelecimento());

@@ -43,7 +43,7 @@ public class RecyclerViewBudgetAdapter extends RecyclerView.Adapter<RecyclerView
 
     @Override
     public void onBindViewHolder(RecyclerViewHolder holder, int position) {
-        NumberFormat numberFormat = NumberFormat.getInstance(new Locale("pt","BR"));
+        NumberFormat numberFormat = NumberFormat.getCurrencyInstance(new Locale("pt","BR"));
         holder.tvBudget.setText(numberFormat.format(items.get(position).getOrcamento()));
         holder.tvBonus.setText(numberFormat.format(items.get(position).getBonus()));
         holder.tvTotal.setText(numberFormat.format(items.get(position).getTotal()));
