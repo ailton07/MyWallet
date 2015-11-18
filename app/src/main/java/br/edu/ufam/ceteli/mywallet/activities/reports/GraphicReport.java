@@ -133,7 +133,7 @@ public class GraphicReport extends Fragment implements OnChartValueSelectedListe
         int mes = cal.get(Calendar.MONTH) + 1;
         //int ano=Integer.parseInt(dateFormat.format(date).substring(0,3));
         int ano = cal.get(Calendar.YEAR);
-        Log.e("App123",mes+" "+ano);
+        //Log.e("App123",mes+" "+ano);
 
         ArrayList<Entry> yVals1 = new ArrayList<Entry>();
 

@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -16,12 +17,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import br.edu.ufam.ceteli.mywallet.R;
+import br.edu.ufam.ceteli.mywallet.activities.dialog.fragments.DialogNoPhoto;
 import br.edu.ufam.ceteli.mywallet.classes.DividerItemDecoration;
 import br.edu.ufam.ceteli.mywallet.classes.Entrada;
 import br.edu.ufam.ceteli.mywallet.classes.RecyclerScrollListener;
 import br.edu.ufam.ceteli.mywallet.classes.RecyclerViewAdapter;
 
-public class AllReport extends Fragment {
+public class AllReport extends Fragment{
     private static Fragment instance = null;
     private RecyclerView recyclerView = null;
 
@@ -51,7 +53,8 @@ public class AllReport extends Fragment {
     }
 
     @Override
-    public boolean onContextItemSelected(MenuItem item) {
+    public boolean onContextItemSelected(final MenuItem item) {
+
         if(getUserVisibleHint()) {
             switch (item.getItemId()) {
                 case R.id.action_remove_item:
@@ -61,15 +64,23 @@ public class AllReport extends Fragment {
                     builder.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
+
                             ((RecyclerViewAdapter) recyclerView.getAdapter()).remove(((RecyclerViewAdapter) recyclerView.getAdapter()).getClickedItem());
-                            //TODO: Cadê o método de remoção do BD???
+
+                            //No lugar do 2, precisa estar a posicao do item no recycler.
+                            //exemplo, posicao 1, 2...
+                            Entrada.delete(Entrada.class, 2);
+
                         }
                     });
                     builder.setNegativeButton("Cancelar", null);
                     builder.create().show();
+
                     break;
 
                 case R.id.action_edit_item:
+                    DialogNoPhoto dialogNoPhoto = new DialogNoPhoto();
+                    dialogNoPhoto.show(getFragmentManager(), null);
                     break;
             }
             return true;
@@ -87,4 +98,6 @@ public class AllReport extends Fragment {
             // Faz nada
         }
     }
+
+
 }

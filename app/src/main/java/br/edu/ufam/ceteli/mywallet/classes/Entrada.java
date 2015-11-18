@@ -3,6 +3,7 @@ package br.edu.ufam.ceteli.mywallet.classes;
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
+import com.activeandroid.query.Delete;
 import com.activeandroid.query.Select;
 
 import java.text.NumberFormat;
@@ -171,6 +172,11 @@ public class Entrada extends Model {
     }
     public static List<Entrada> getCategoriaOcasional(){
         return new Select().from(Entrada.class).where("Categoria = 6").orderBy("DataCompra DESC").execute();
+    }
+
+
+    public static List<Entrada> delComments(int pos){
+        return new Delete().from(Entrada.class).where("Id = ?", pos).execute();
     }
 
     // Pega todas as entradas de determinado mês e de determinado ano.

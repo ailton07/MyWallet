@@ -254,7 +254,7 @@ public class MainScreenActivity extends Fragment implements OnChartValueSelected
                 fabNewInput.close(true);
             }
         };
-    }
+}
 
     private void setData(int count,float range) {
         ArrayList<String> xVals = new ArrayList<>();
