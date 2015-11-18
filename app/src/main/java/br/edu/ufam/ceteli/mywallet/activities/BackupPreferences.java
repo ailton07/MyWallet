@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
+import android.support.v7.app.AlertDialog;
 
 import br.edu.ufam.ceteli.mywallet.R;
 import br.edu.ufam.ceteli.mywallet.classes.Download;
@@ -24,9 +25,11 @@ public class BackupPreferences extends PreferenceFragment {
 
         Preference createBackup = findPreference("createBackup");
         Preference restoreBackup = findPreference("restoreBackup");
+        Preference aboutApp = findPreference("aboutApp");
 
         createBackup.setOnPreferenceClickListener(createBackupListener());
         restoreBackup.setOnPreferenceClickListener(restoreBackupListener());
+        aboutApp.setOnPreferenceClickListener(aboutAppListener());
 
         dbKey = getActivity().getIntent().getExtras().getString("DBKey");
     }
@@ -46,6 +49,16 @@ public class BackupPreferences extends PreferenceFragment {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 restaurarBackup();
+                return true;
+            }
+        };
+    }
+
+    private Preference.OnPreferenceClickListener aboutAppListener(){
+        return new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                aboutApp();
                 return true;
             }
         };
@@ -76,5 +89,13 @@ public class BackupPreferences extends PreferenceFragment {
         //Download
         Download download = new Download(getActivity());
         download.baixa(dbKey);
+    }
+
+    private void aboutApp(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        ProgressDialog pd = null;
+        //pd.show(getActivity(), "", "Aplicativo criado com o objetivo de proporcionar melhor controle sobre seus gastos. Produzido por Ailton, Ariele, Gabriel, Mateus e Rodrigo. Versão 1.0", true);
+        builder.setMessage("Aplicativo criado com o objetivo de proporcionar melhor controle sobre seus gastos. Produzido por Ailton, Ariele, Gabriel, Mateus e Rodrigo. Versão 1.0");
+        builder.show();
     }
 }

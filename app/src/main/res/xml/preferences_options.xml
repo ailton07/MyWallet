@@ -9,5 +9,12 @@
             android:title="Restaurar backup"
             android:key="restoreBackup"
             android:summary="Restaura um backup salvo em nosso servidor"/>
+        <Preference
+            android:title="Sobre o aplicativo"
+            android:key="aboutApp"
+            android:summary="Versão 1.0"/>
+        <Preference
+            android:title="Avalie o aplicativo"
+            android:key="evaluateApp"/>
     </PreferenceCategory>
 </PreferenceScreen>
