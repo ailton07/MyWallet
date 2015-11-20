@@ -30,8 +30,6 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import com.github.mikephil.charting.charts.LineChart;
-
 import java.util.Calendar;
 import java.util.Random;
 
@@ -49,22 +47,13 @@ import br.edu.ufam.ceteli.mywallet.classes.ocr.Utils;
 
 
 public class ResultActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-    // Conta
     private ILoginConnection loggedAccount = null;
-
-    // Toolbar
     private Toolbar toolbar = null;
-
-    // Drawer
     private DrawerLayout drawerLayout = null;
     private NavigationView resultFrameDrawer = null;
     private ImageView toggleArrow = null;
-
-    // Show popup
-    Point p;
-
-
-    private LineChart mChart;
+    private Point p;
+    private boolean isOnMainScreen = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,35 +107,39 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
     public boolean onNavigationItemSelected(final MenuItem menuItem) {
         drawerLayout.closeDrawers();
 
-        // Um exemplo de redundancia :D
         switch (menuItem.getItemId()) {
             case R.id.drawer_item_home:
+                isOnMainScreen = true;
                 inflateFragment(MainScreenActivity.getInstance(), "Main");
                 break;
 
             case R.id.drawer_item_budget:
+                isOnMainScreen = false;
                 inflateFragment(BudgetActivity.getInstance(), "Budget");
                 break;
 
             case R.id.drawer_item_report:
+                isOnMainScreen = false;
                 inflateFragment(ReportsActivity.getInstance(),"Report");
                 break;
 
             case R.id.drawer_item_planning:
+                isOnMainScreen = false;
                 inflateFragment(GoalActivity.getInstance(), "Planning");
                 break;
 
             case R.id.drawer_item_disconnect:
+                isOnMainScreen = false;
                 loggedAccount.disconnect(ResultActivity.this);
                 break;
 
             case R.id.drawer_item_revoke:
+                isOnMainScreen = false;
                 loggedAccount.revoke(ResultActivity.this);
                 break;
         }
 
         removeTabBar();
-
         resultFrameDrawer.setCheckedItem(menuItem.getItemId());
 
         return true;
@@ -167,9 +160,6 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out);
             transaction.replace(R.id.frameFragment, fragment, name);
-            if(getSupportFragmentManager().getBackStackEntryCount() == 0){
-                transaction.addToBackStack("Main");
-            }
             transaction.commit();
         }
     }
@@ -187,12 +177,15 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
         if(drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawers();
         }
-        if(getSupportFragmentManager().getBackStackEntryCount() > 0) {
+        if(!isOnMainScreen) {
             resultFrameDrawer.setCheckedItem(resultFrameDrawer.getMenu().getItem(0).getItemId());
             removeTabBar();
             RecyclerScrollListener.removeObjectReference();
+            isOnMainScreen = true;
+            inflateFragment(MainScreenActivity.getInstance(), "Main");
+        } else {
+            super.onBackPressed();
         }
-        super.onBackPressed();
     }
 
     public void loginOptions(View view){
