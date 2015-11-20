@@ -37,6 +37,7 @@ import java.util.Random;
 
 import br.edu.ufam.ceteli.mywallet.R;
 import br.edu.ufam.ceteli.mywallet.activities.drawer.fragments.BudgetActivity;
+import br.edu.ufam.ceteli.mywallet.activities.drawer.fragments.GoalActivity;
 import br.edu.ufam.ceteli.mywallet.activities.drawer.fragments.MainScreenActivity;
 import br.edu.ufam.ceteli.mywallet.activities.drawer.fragments.ReportsActivity;
 import br.edu.ufam.ceteli.mywallet.classes.DesignUtils;
@@ -115,15 +116,12 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
 
     @Override
     public boolean onNavigationItemSelected(final MenuItem menuItem) {
-        Fragment fragment = null;
-        Class fragmentClass = null;
-        String name = null;
         drawerLayout.closeDrawers();
 
         // Um exemplo de redundancia :D
         switch (menuItem.getItemId()) {
             case R.id.drawer_item_home:
-                onBackPressed();
+                inflateFragment(MainScreenActivity.getInstance(), "Main");
                 break;
 
             case R.id.drawer_item_budget:
@@ -135,7 +133,7 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
                 break;
 
             case R.id.drawer_item_planning:
-                inflateFragment(br.edu.ufam.ceteli.mywallet.activities.drawer.fragments.GoalActivity.getInstance(), "Planning");
+                inflateFragment(GoalActivity.getInstance(), "Planning");
                 break;
 
             case R.id.drawer_item_disconnect:
@@ -166,14 +164,13 @@ public class ResultActivity extends AppCompatActivity implements NavigationView.
 
     private void inflateFragment(Fragment fragment, String name){
         if(!fragment.isVisible()) {
-            FragmentTransaction transactionHome = getSupportFragmentManager().beginTransaction();
-            transactionHome.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out);
-            transactionHome.replace(R.id.frameFragment, fragment, name);
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out);
+            transaction.replace(R.id.frameFragment, fragment, name);
             if(getSupportFragmentManager().getBackStackEntryCount() == 0){
-                Log.e("POP", "Empty");
-                transactionHome.addToBackStack("Main");
+                transaction.addToBackStack("Main");
             }
-            transactionHome.commit();
+            transaction.commit();
         }
     }
 

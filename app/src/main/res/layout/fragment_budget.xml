@@ -8,7 +8,8 @@
     android:layout_height="match_parent"
     android:paddingTop="@dimen/abc_action_bar_default_height_material"
     android:clipToPadding="false"
-    tools:context="br.edu.ufam.ceteli.mywallet.activities.RelatoriosActivity">
+    tools:context="br.edu.ufam.ceteli.mywallet.activities.RelatoriosActivity"
+    android:clickable="true">
 
     <android.support.v4.view.ViewPager
         android:id="@+id/viewPager"

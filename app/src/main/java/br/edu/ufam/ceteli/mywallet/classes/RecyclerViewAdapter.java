@@ -1,6 +1,7 @@
 package br.edu.ufam.ceteli.mywallet.classes;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +20,6 @@ import br.edu.ufam.ceteli.mywallet.R;
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.RecyclerViewHolder>{
     private static RecyclerViewAdapter instance = null;
     private List<Entrada> items = null;
-    private String[] categories = null;
     private View view = null;
     private Entrada object = null;
 
@@ -38,6 +38,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     public void remove(Entrada item){
         int index = items.indexOf(item);
+        Log.e("Postion", String.valueOf(index + 1));
+        Entrada.delete(Entrada.class, index + 1);
         items.remove(index);
         notifyItemRemoved(index);
     }

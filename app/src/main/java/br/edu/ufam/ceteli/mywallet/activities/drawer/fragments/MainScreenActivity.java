@@ -1,6 +1,5 @@
 package br.edu.ufam.ceteli.mywallet.activities.drawer.fragments;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -145,7 +144,7 @@ public class MainScreenActivity extends Fragment implements OnChartValueSelected
             if(aux1%2==0) {
                 chartView.setAxisBorderValues(0, (int) aux1, (int) aux1 / 2);
             }else{
-                chartView.setAxisBorderValues(0, (int) aux1, (int) aux1 / 3);
+//                chartView.setAxisBorderValues(0, (int) aux1, (int) aux1 / 3);
             }
         }
 

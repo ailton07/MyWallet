@@ -8,7 +8,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -54,7 +53,6 @@ public class AllReport extends Fragment{
 
     @Override
     public boolean onContextItemSelected(final MenuItem item) {
-
         if(getUserVisibleHint()) {
             switch (item.getItemId()) {
                 case R.id.action_remove_item:
@@ -64,13 +62,7 @@ public class AllReport extends Fragment{
                     builder.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-
                             ((RecyclerViewAdapter) recyclerView.getAdapter()).remove(((RecyclerViewAdapter) recyclerView.getAdapter()).getClickedItem());
-
-                            //No lugar do 2, precisa estar a posicao do item no recycler.
-                            //exemplo, posicao 1, 2...
-                            Entrada.delete(Entrada.class, 2);
-
                         }
                     });
                     builder.setNegativeButton("Cancelar", null);

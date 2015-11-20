@@ -62,7 +62,6 @@ public class FoodReport extends Fragment {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             ((RecyclerViewAdapter) recyclerView.getAdapter()).remove(((RecyclerViewAdapter) recyclerView.getAdapter()).getClickedItem());
-                            //TODO: Cadê o método de remoção do BD???
                         }
                     });
                     builder.setNegativeButton("Cancelar", null);
