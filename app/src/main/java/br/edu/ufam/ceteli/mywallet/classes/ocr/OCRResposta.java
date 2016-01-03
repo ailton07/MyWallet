@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 /**
  * Created by AiltonFH on 03/09/2015.
  */
+
 public class OCRResposta {
     String resposta;
     String[] vetorResposta;
@@ -40,12 +41,13 @@ public class OCRResposta {
         String aux= " ";
         for (String aux2: vetorResposta ) {
             if(aux2.toLowerCase().contains("r$")) {
-            //if(aux2.contains("R$")) {
+                //if(aux2.contains("R$")) {
                 aux = aux2.toLowerCase().split("r\\$")[1];
                 //aux = aux2.split("R$")[1];
                 Log.d("OCR", "Valor"+aux);
-               aux = processaVirgula(aux);
-               //aux = processaValor(aux);
+                aux = processaVirgula(aux);
+                Log.d("OCR", "Valor Pós processo"+aux);
+                //aux = processaValor(aux);
 
             }
         }
@@ -58,7 +60,7 @@ public class OCRResposta {
 
         String aux = valorS.replaceAll(",", ".");
         aux = aux.replaceAll(" " , "");
-        aux = processaValorPontoFinal(aux);
+        //aux = processaValorPontoFinal(aux);
         return aux.replaceAll(" " , "");
     }
 
