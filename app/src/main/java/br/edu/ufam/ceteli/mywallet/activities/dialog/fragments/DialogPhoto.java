@@ -39,6 +39,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Observer;
 
 import br.edu.ufam.ceteli.mywallet.R;
 import br.edu.ufam.ceteli.mywallet.classes.Entrada;
@@ -184,6 +185,8 @@ public class DialogPhoto extends AppCompatDialogFragment{
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Entrada entrada = new Entrada();
+                if(getFragmentManager().findFragmentById(R.id.frameFragment) instanceof Observer)
+                    entrada.addObserverClass((Observer) getFragmentManager().findFragmentById(R.id.frameFragment));
                 SimpleDateFormat dateFormatSave = new SimpleDateFormat("yyyyMMdd HH:mm:ss", Locale.getDefault());
                 SimpleDateFormat dateFormatIn = new SimpleDateFormat("yyyyMMdd", Locale.getDefault());
 
@@ -195,7 +198,7 @@ public class DialogPhoto extends AppCompatDialogFragment{
                 entrada.setCategoria(spinner.getSelectedItemPosition());
                 entrada.setDataInsercao(dateFormatSave.format(new Date()));
                 entrada.setDataCompra(dateFormatIn.format(calendar.getTime()));
-                entrada.save();
+                entrada.salvar();
                 RecyclerViewAdapter.getInstance(null).add(entrada);
             }
         };

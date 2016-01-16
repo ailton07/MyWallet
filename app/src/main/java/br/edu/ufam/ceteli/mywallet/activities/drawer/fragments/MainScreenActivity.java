@@ -23,20 +23,12 @@ import com.db.chart.view.animation.easing.CubicEase;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.highlight.Highlight;
-import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
-import com.github.mikephil.charting.utils.ColorTemplate;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 import br.edu.ufam.ceteli.mywallet.R;
 import br.edu.ufam.ceteli.mywallet.activities.dialog.fragments.DialogNoPhoto;
@@ -51,7 +43,7 @@ import static br.edu.ufam.ceteli.mywallet.classes.ocr.Utils.getSaldoMes;
 /**
  * Created by rodrigo on 18/10/15.
  */
-public class MainScreenActivity extends Fragment implements OnChartValueSelectedListener {
+public class MainScreenActivity extends Fragment implements Observer{
     private FloatingActionMenu fabNewInput = null;
     private static Fragment instance = null;
 
@@ -144,7 +136,7 @@ public class MainScreenActivity extends Fragment implements OnChartValueSelected
             if(aux1%2==0) {
                 chartView.setAxisBorderValues(0, (int) aux1, (int) aux1 / 2);
             }else{
-//                chartView.setAxisBorderValues(0, (int) aux1, (int) aux1 / 3);
+                chartView.setAxisBorderValues(0, (int) aux1, (((int) aux1) + 1) / 2);
             }
         }
 
@@ -158,69 +150,6 @@ public class MainScreenActivity extends Fragment implements OnChartValueSelected
         animation.setEasing(new CubicEase());
 
         chartView.show(animation);
-
-        /*mChart = (LineChart) view.findViewById(R.id.chart1);
-        mChart.setOnChartValueSelectedListener(this);
-
-        // no description text
-        mChart.setDescription("");
-        mChart.setNoDataTextDescription("You need to provide data for the chart.");
-
-        // enable value highlighting
-        mChart.setHighlightEnabled(true);
-
-        // enable touch gestures
-        mChart.setTouchEnabled(true);
-
-        mChart.setDragDecelerationFrictionCoef(0.9f);
-
-        // enable scaling and dragging
-        mChart.setDragEnabled(true);
-        mChart.setScaleEnabled(true);
-        mChart.setDrawGridBackground(false);
-        mChart.setHighlightPerDragEnabled(true);
-
-        // if disabled, scaling can be done on x- and y-axis separately
-        mChart.setPinchZoom(true);
-
-        // set an alternative background color
-        mChart.setBackgroundColor(Color.LTGRAY);
-
-        mChart.animateX(2500);
-
-        // get the legend (only possible after setting data)
-        Legend l = mChart.getLegend();
-
-        // modify the legend ...
-        // l.setPosition(LegendPosition.LEFT_OF_CHART);
-        l.setForm(Legend.LegendForm.LINE);
-        l.setTextSize(11f);
-        l.setTextColor(Color.WHITE);
-        l.setPosition(Legend.LegendPosition.BELOW_CHART_LEFT);
-//        l.setYOffset(11f);
-
-        XAxis xAxis = mChart.getXAxis();
-        xAxis.setTextSize(12f);
-        xAxis.setTextColor(Color.WHITE);
-        xAxis.setDrawGridLines(false);
-        xAxis.setDrawAxisLine(false);
-        xAxis.setSpaceBetweenLabels(1);
-
-        mesano.add("Jan/15");
-        mesano.add("Fev/15");
-        mesano.add("Mar/15");
-        mesano.add("Abr/15");
-        mesano.add("Mai/15");
-        mesano.add("Jun/15");
-        mesano.add("Jul/15");
-        mesano.add("Ago/15");
-        mesano.add("Set/15");
-        mesano.add("Out/15");
-        mesano.add("Nov/15");
-        mesano.add("Dez/15");
-
-        setData(12, 20.0f);*/
-
 
         orcamento = (TextView) view.findViewById(R.id.textView23);
         renda = (TextView) view.findViewById(R.id.textView24);
@@ -253,80 +182,11 @@ public class MainScreenActivity extends Fragment implements OnChartValueSelected
                 fabNewInput.close(true);
             }
         };
-}
-
-    private void setData(int count,float range) {
-        ArrayList<String> xVals = new ArrayList<>();
-        DateFormat dateFormat = new SimpleDateFormat("yyyymmdd");
-        Date date = new Date();
-        //System.out.println(dateFormat.format(date));
-        int mes=Integer.parseInt(dateFormat.format(date).substring(6));
-        int ano=Integer.parseInt(dateFormat.format(date).substring(0,3));
-        Log.e("graphic", mes + " " + ano);
-        ArrayList<Entry> yVals1 = new ArrayList<>();
-        int cn=0;
-        int i=12-(12-mes);
-        Log.e("App123", "i" + Integer.toString(i));
-        /*for ( i = i; i < count; i++) {
-            //Log.e("App123", "i" + Integer.toString(i));
-            xVals.add(mesano.get(i));
-            yVals1.add(new Entry((float) Utils.getSaidaMes(i,ano),cn));
-            if(i==11) {
-                i = 0;
-                ano = ano + 1;
-            }
-            cn++;
-            }*/
-
-
-
-
-
-
-//        for (int i = 0; i < count; i++) {
-//            float mult = range / 2f;
-//            float val = (float) (Math.random() * mult) + 50;// + (float)
-//            // ((mult *
-//            // 0.1) / 10);
-//            yVals1.add(new Entry(val, i));
-//        }
-
-        // create a dataset and give it a type
-        LineDataSet set1 = new LineDataSet(yVals1, "Gastos mensais");
-        set1.setAxisDependency(YAxis.AxisDependency.LEFT);
-        set1.setColor(ColorTemplate.getHoloBlue());
-        set1.setCircleColor(Color.WHITE);
-        set1.setLineWidth(2f);
-        set1.setCircleSize(3f);
-        set1.setFillAlpha(65);
-        set1.setFillColor(ColorTemplate.getHoloBlue());
-        set1.setHighLightColor(Color.rgb(244, 117, 117));
-        set1.setDrawCircles(true);
-        set1.setDrawFilled(true);
-        //set1.setFillFormatter(new MyFillFormatter(0f));
-//        set1.setDrawHorizontalHighlightIndicator(false);
-//        set1.setVisible(false);
-//        set1.setCircleHoleColor(Color.WHITE);
-
-        ArrayList<LineDataSet> dataSets = new ArrayList<>();
-        dataSets.add(set1); // add the datasets
-
-        // create a data object with the datasets
-        LineData data = new LineData(xVals, dataSets);
-        data.setValueTextColor(Color.WHITE);
-        data.setValueTextSize(9f);
-
-        // set data
-        mChart.setData(data);
     }
 
     @Override
-    public void onValueSelected(Entry e, int dataSetIndex, Highlight h) {
-        android.util.Log.i("Entry selected", e.toString());
-    }
-
-    @Override
-    public void onNothingSelected() {
-        android.util.Log.i("Nothing selected", "Nothing selected.");
+    public void update(Observable observable, Object data) {
+        //TODO: Atualizar View
+        Log.e("UPDATE","View");
     }
 }

@@ -9,6 +9,7 @@ import com.activeandroid.query.Select;
 import java.text.NumberFormat;
 import java.util.List;
 import java.util.Locale;
+import java.util.Observer;
 
 import static br.edu.ufam.ceteli.mywallet.classes.OperacoesData.getDataFormatada;
 
@@ -16,6 +17,9 @@ import static br.edu.ufam.ceteli.mywallet.classes.OperacoesData.getDataFormatada
 
 @Table(name = "Entrada")
 public class Entrada extends Model {
+    private ObserverUpdate observable = null;
+
+
     @Column(name="Tipo")
     private int tipo; // 0 -> Entrada e 1 -> Saída
 
@@ -95,9 +99,22 @@ public class Entrada extends Model {
 
     public Entrada() {
         super();
+        observable = new ObserverUpdate();
     }
 
-    // Will be used by the ArrayAdapter in the ListView
+    public void addObserverClass(Observer observer){
+        observable.addObserver(observer);
+    }
+
+    public void delObserverClass(Observer observer){
+        observable.deleteObserver(observer);
+    }
+
+    public long salvar(){
+        observable.notifyObservers();
+        return save();
+    }
+
 
     @Override
     public String toString() {
