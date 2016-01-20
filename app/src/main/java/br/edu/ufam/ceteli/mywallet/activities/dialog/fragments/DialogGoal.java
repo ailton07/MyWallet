@@ -4,24 +4,17 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatDialogFragment;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Locale;
 
 import br.edu.ufam.ceteli.mywallet.R;
-import br.edu.ufam.ceteli.mywallet.activities.GoalActivity;
-import br.edu.ufam.ceteli.mywallet.classes.Entry;
-import br.edu.ufam.ceteli.mywallet.classes.RecyclerViewBudgetAdapter;
 
 /**
  * Created by ceteli on 10/11/2015.

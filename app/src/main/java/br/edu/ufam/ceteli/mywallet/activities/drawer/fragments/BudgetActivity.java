@@ -15,7 +15,11 @@ import android.widget.TextView;
 
 import com.github.clans.fab.FloatingActionButton;
 
+import java.text.NumberFormat;
 import java.util.Calendar;
+import java.util.Locale;
+import java.util.Observable;
+import java.util.Observer;
 
 import br.edu.ufam.ceteli.mywallet.R;
 import br.edu.ufam.ceteli.mywallet.activities.budget.fragments.BudgetGraphic;
@@ -28,7 +32,7 @@ import br.edu.ufam.ceteli.mywallet.classes.ocr.Utils;
 /**
  * Created by rodrigo on 29/10/15.
  */
-public class BudgetActivity extends Fragment{
+public class BudgetActivity extends Fragment implements Observer{
     private ViewPagerAdapter fragmentPagerAdapter = null;
     private TabLayout tabLayout = null;
     private static Fragment instance = null;
@@ -73,9 +77,9 @@ public class BudgetActivity extends Fragment{
         bonus = (TextView) view.findViewById(R.id.tvValueBonus);
         total = (TextView) view.findViewById(R.id.tvValueTotal);
 
-        budget.setText(String.valueOf(Utils.getSaldoOrcamentoTotal(c.get(Calendar.MONTH) + 1, c.get(Calendar.YEAR))));
-        bonus.setText(String.valueOf(Utils.getSaldoBonus(c.get(Calendar.MONTH) + 1, c.get(Calendar.YEAR))));
-        total.setText(String.valueOf(Utils.getOrcamentoTotalMes(c.get(Calendar.MONTH) + 1, c.get(Calendar.YEAR))));
+        budget.setText(NumberFormat.getCurrencyInstance(Locale.getDefault()).format(Utils.getSaldoOrcamentoTotal(c.get(Calendar.MONTH) + 1, c.get(Calendar.YEAR))));
+        bonus.setText(NumberFormat.getCurrencyInstance(Locale.getDefault()).format(Utils.getSaldoBonus(c.get(Calendar.MONTH) + 1, c.get(Calendar.YEAR))));
+        total.setText(NumberFormat.getCurrencyInstance(Locale.getDefault()).format(Utils.getOrcamento(c.get(Calendar.MONTH) + 1, c.get(Calendar.YEAR))));
 
     }
 
@@ -115,5 +119,12 @@ public class BudgetActivity extends Fragment{
 
             }
         };
+    }
+
+    @Override
+    public void update(Observable observable, Object data) {
+        budget.setText(NumberFormat.getCurrencyInstance(Locale.getDefault()).format(Utils.getSaldoOrcamentoTotal(c.get(Calendar.MONTH) + 1, c.get(Calendar.YEAR))));
+        bonus.setText(NumberFormat.getCurrencyInstance(Locale.getDefault()).format(Utils.getSaldoBonus(c.get(Calendar.MONTH) + 1, c.get(Calendar.YEAR))));
+        total.setText(NumberFormat.getCurrencyInstance(Locale.getDefault()).format(Utils.getOrcamento(c.get(Calendar.MONTH) + 1, c.get(Calendar.YEAR))));
     }
 }

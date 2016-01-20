@@ -1,18 +1,25 @@
 package br.edu.ufam.ceteli.mywallet.classes;
 
+import android.util.Log;
+
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Select;
 
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
+import java.util.Observer;
 
 import static br.edu.ufam.ceteli.mywallet.classes.OperacoesData.getDataFormatada;
 
 @Table(name = "Entry")
 public class Entry extends Model {
+    private ObserverUpdate observable = null;
 
     @Column(name = "Orcamento")
     private float orcamento;
@@ -62,6 +69,20 @@ public class Entry extends Model {
 
     public Entry() {
         super();
+        observable = new ObserverUpdate();
+    }
+
+    public void addObserverClass(Observer observer){
+        observable.addObserver(observer);
+    }
+
+    public void delObserverClass(Observer observer){
+        observable.deleteObserver(observer);
+    }
+
+    public void salvar(){
+        this.save();
+        observable.notifyObservers();
     }
 
     public String toString() {
@@ -79,32 +100,35 @@ public class Entry extends Model {
     }
 
     public static List<Entry> getOrcamento(int mes, int ano){
-        String mes1 = String.valueOf(mes);
-        String ano1 = String.valueOf(ano);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMM", Locale.getDefault());
+        Calendar c = new GregorianCalendar();
+        c.set(Calendar.YEAR, ano);
+        c.set(Calendar.MONTH, mes - 1);
 
-        return new Select().from(Entry.class).where("DataOrcamento > ? and DataOrcamento < ?", (ano1 + mes1 + "00"), (ano1 + mes1 + "32")).execute();
+        return new Select().from(Entry.class).where("DataOrcamento >= ? and DataOrcamento <= ?", dateFormat.format(c.getTime()) + "01", dateFormat.format(c.getTime()) + Integer.toString(c.getActualMaximum(Calendar.DAY_OF_MONTH))).execute();
     }
 
     public static List<Entry> getOrcamentoDia(int dia, int mes, int ano){
-        String diaS = String.valueOf(dia);
-        String mesS = String.valueOf(mes);
-        String anoS = String.valueOf(ano);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd", Locale.getDefault());
 
-        return new Select().from(Entry.class).where("DataOrcamento == ? ", (anoS + mesS + diaS) ).execute();
+        Log.e("DATE", dateFormat.format(Calendar.getInstance().getTime()));
+
+        return new Select().from(Entry.class).where("DataOrcamento == ? ", dateFormat.format(Calendar.getInstance().getTime())).execute();
     }
 
     public static List<Entry> getOrcamentoSemana(int semana, int mes ,int ano){
-        //String semanaS = String.valueOf(semana);
-        String mesS = String.valueOf(mes);
-        String anoS = String.valueOf(ano);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMM", Locale.getDefault());
+        Calendar c = new GregorianCalendar();
+        c.set(Calendar.YEAR, ano);
+        c.set(Calendar.MONTH, mes - 1);
 
         if(semana == 1){
-            return new Select().from(Entry.class).where("DataOrcamento > ? and DataOrcamento <= ? ", (anoS + mesS + "00"), (anoS + mesS + "07")).execute();
+            return new Select().from(Entry.class).where("DataOrcamento > ? and DataOrcamento <= ? ", dateFormat.format(c.getTime()) + "00", dateFormat.format(c.getTime()) + "07").execute();
         }else if(semana == 2){
-            return new Select().from(Entry.class).where("DataOrcamento >= ? and DataOrcamento <= ? ", (anoS + mesS + "08"), (anoS + mesS + "15")).execute();
+            return new Select().from(Entry.class).where("DataOrcamento >= ? and DataOrcamento <= ? ", dateFormat.format(c.getTime()) + "08", dateFormat.format(c.getTime()) + "15").execute();
         }else if(semana == 3){
-            return new Select().from(Entry.class).where("DataOrcamento >= ? and DataOrcamento <= ? ", (anoS + mesS + "16"), (anoS + mesS + "23")).execute();
+            return new Select().from(Entry.class).where("DataOrcamento >= ? and DataOrcamento <= ? ", dateFormat.format(c.getTime()) + "16", dateFormat.format(c.getTime()) + "23").execute();
         }else
-            return new Select().from(Entry.class).where("DataOrcamento >= ? and DataOrcamento < ? ", (anoS + mesS + "24"), (anoS + mesS + "32")).execute();
+            return new Select().from(Entry.class).where("DataOrcamento >= ? and DataOrcamento < ? ", dateFormat.format(c.getTime()) + "24", dateFormat.format(c.getTime()) + "32").execute();
     }
 }

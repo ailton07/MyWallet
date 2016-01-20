@@ -67,9 +67,6 @@ public class FoodReport extends Fragment {
                     builder.setNegativeButton("Cancelar", null);
                     builder.create().show();
                     break;
-
-                case R.id.action_edit_item:
-                    break;
             }
             return true;
         }

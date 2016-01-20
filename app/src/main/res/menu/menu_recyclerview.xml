@@ -4,8 +4,4 @@
         android:title="Remover entrada"
         android:id="@+id/action_remove_item"/>
 
-    <item
-        android:title="Editar entrada"
-        android:id="@+id/action_edit_item"/>
-
 </menu>

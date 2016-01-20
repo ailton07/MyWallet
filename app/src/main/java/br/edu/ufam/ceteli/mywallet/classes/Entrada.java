@@ -1,5 +1,7 @@
 package br.edu.ufam.ceteli.mywallet.classes;
 
+import android.util.Log;
+
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
@@ -7,6 +9,9 @@ import com.activeandroid.query.Delete;
 import com.activeandroid.query.Select;
 
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
 import java.util.Observer;
@@ -87,7 +92,6 @@ public class Entrada extends Model {
         //return dataCompra;
     }
     public void setDataCompra(String dataCompra) {
-
         this.dataCompra = Integer.valueOf(dataCompra);
     }
     public String getDescricao() {
@@ -110,9 +114,9 @@ public class Entrada extends Model {
         observable.deleteObserver(observer);
     }
 
-    public long salvar(){
+    public void salvar(){
+        this.save();
         observable.notifyObservers();
-        return save();
     }
 
 
@@ -199,32 +203,34 @@ public class Entrada extends Model {
     // Pega todas as entradas de determinado mês e de determinado ano.
     // DataCompra => YYYYmmDD
     public static List<Entrada> getEntradasMesAno(int mes, int ano){
-        String mesS = String.valueOf(mes);
-        String anoS = String.valueOf(ano);
-
-        return new Select().from(Entrada.class).where("DataCompra > ? and DataCompra < ?", (anoS + mesS + "00"), (anoS + mesS + "32")).execute();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMM", Locale.getDefault());
+        Calendar c = new GregorianCalendar();
+        c.set(Calendar.YEAR, ano);
+        c.set(Calendar.MONTH, mes - 1);
+        return new Select().from(Entrada.class).where("DataCompra >= ? and DataCompra <= ? ", dateFormat.format(c.getTime()) + "01", dateFormat.format(c.getTime()) + Integer.toString(c.getActualMaximum(Calendar.DAY_OF_MONTH))).execute();
     }
 
     public static List<Entrada> getEntradasDia(int dia, int mes, int ano){
-        String diaS = String.valueOf(dia);
-        String mesS = String.valueOf(mes);
-        String anoS = String.valueOf(ano);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd", Locale.getDefault());
 
-        return new Select().from(Entrada.class).where("DataCompra == ? ", (anoS + mesS + diaS) ).execute();
+        Log.e("DATE", dateFormat.format(Calendar.getInstance().getTime()));
+
+        return new Select().from(Entrada.class).where("DataCompra == ? ",  dateFormat.format(Calendar.getInstance().getTime())).execute();
     }
 
     public static List<Entrada> getEntradasSemana(int semana, int mes ,int ano){
-        //String semanaS = String.valueOf(semana);
-        String mesS = String.valueOf(mes);
-        String anoS = String.valueOf(ano);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMM", Locale.getDefault());
+        Calendar c = new GregorianCalendar();
+        c.set(Calendar.YEAR, ano);
+        c.set(Calendar.MONTH, mes - 1);
 
         if(semana == 1){
-        return new Select().from(Entrada.class).where("DataCompra > ? and DataCompra <= ? ", (anoS + mesS + "00"), (anoS + mesS + "07")).execute();
+        return new Select().from(Entrada.class).where("DataCompra > ? and DataCompra <= ? ", dateFormat.format(c.getTime()) + "00", dateFormat.format(c.getTime()) + "07").execute();
         }else if(semana == 2){
-            return new Select().from(Entrada.class).where("DataCompra >= ? and DataCompra <= ? ", (anoS + mesS + "08"), (anoS + mesS + "15")).execute();
+            return new Select().from(Entrada.class).where("DataCompra >= ? and DataCompra <= ? ", dateFormat.format(c.getTime()) + "08", dateFormat.format(c.getTime()) + "15").execute();
         }else if(semana == 3){
-            return new Select().from(Entrada.class).where("DataCompra >= ? and DataCompra <= ? ", (anoS + mesS + "16"), (anoS + mesS + "23")).execute();
+            return new Select().from(Entrada.class).where("DataCompra >= ? and DataCompra <= ? ", dateFormat.format(c.getTime()) + "16", dateFormat.format(c.getTime()) + "23").execute();
         }else
-            return new Select().from(Entrada.class).where("DataCompra >= ? and DataCompra < ? ", (anoS + mesS + "24"), (anoS + mesS + "32")).execute();
+            return new Select().from(Entrada.class).where("DataCompra >= ? and DataCompra < ? ", dateFormat.format(c.getTime()) + "24", dateFormat.format(c.getTime()) + "32").execute();
         }
 }

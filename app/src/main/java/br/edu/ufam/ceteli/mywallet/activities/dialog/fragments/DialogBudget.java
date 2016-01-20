@@ -11,6 +11,7 @@ import android.widget.EditText;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Observer;
 
 import br.edu.ufam.ceteli.mywallet.R;
 import br.edu.ufam.ceteli.mywallet.classes.Entry;
@@ -52,10 +53,12 @@ public class DialogBudget extends AppCompatDialogFragment {
         return new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                Entry entry = new Entry();
+                if(getFragmentManager().findFragmentById(R.id.frameFragment) instanceof Observer)
+                    entry.addObserverClass((Observer) getFragmentManager().findFragmentById(R.id.frameFragment));
                 EditText etBudget = (EditText) view.findViewById(R.id.etGoal);
                 EditText etBonus = (EditText) view.findViewById(R.id.etBonus);
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
-                Entry entry = new Entry();
                 Date date = new Date();
                 float budget = 0, bonus = 0;
 
@@ -71,7 +74,7 @@ public class DialogBudget extends AppCompatDialogFragment {
                 entry.setBonus(bonus);
                 entry.setTotal(budget + bonus);
                 entry.setDataOrcamento(dateFormat.format(date));
-                entry.save();
+                entry.salvar();
 
                 RecyclerViewBudgetAdapter.getInstance(null).add(entry);
             }

@@ -16,7 +16,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import br.edu.ufam.ceteli.mywallet.R;
-import br.edu.ufam.ceteli.mywallet.activities.dialog.fragments.DialogNoPhoto;
 import br.edu.ufam.ceteli.mywallet.classes.DividerItemDecoration;
 import br.edu.ufam.ceteli.mywallet.classes.Entrada;
 import br.edu.ufam.ceteli.mywallet.classes.RecyclerScrollListener;
@@ -68,11 +67,6 @@ public class AllReport extends Fragment{
                     builder.setNegativeButton("Cancelar", null);
                     builder.create().show();
 
-                    break;
-
-                case R.id.action_edit_item:
-                    DialogNoPhoto dialogNoPhoto = new DialogNoPhoto();
-                    dialogNoPhoto.show(getFragmentManager(), null);
                     break;
             }
             return true;

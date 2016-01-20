@@ -2,11 +2,8 @@ package br.edu.ufam.ceteli.mywallet.classes.ocr;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,10 +13,8 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import java.util.List;
-import java.util.Random;
 
 import br.edu.ufam.ceteli.mywallet.R;
-import br.edu.ufam.ceteli.mywallet.activities.ResultActivity;
 import br.edu.ufam.ceteli.mywallet.classes.Entrada;
 import br.edu.ufam.ceteli.mywallet.classes.Entry;
 
@@ -124,7 +119,27 @@ public class Utils {
 
     }
 
-    static public float getOrcamentoTotalMes(int mes, int ano){
+    static public float getOrcamento(int mes, int ano){
+        // 0 -> Entrada e 1 -> Saída
+        float saldo = 0;
+        float saldo1 = 0;
+        float saldo2 = 0;
+        float saldoTot = 0;
+        List<Entry> valores = Entry.getOrcamento(mes, ano);
+
+        for (Entry x: valores){
+            saldo1 += x.getOrcamento();
+            saldo2 += x.getBonus();
+        }
+
+        saldoTot = saldo1 + saldo2;
+
+
+        return saldoTot;
+
+    }
+
+    static public float getSaldo(int mes, int ano){
         // 0 -> Entrada e 1 -> Saída
         float saldo = 0;
         float saldo1 = 0;

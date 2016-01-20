@@ -24,9 +24,11 @@ import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.github.mikephil.charting.charts.LineChart;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -46,11 +48,14 @@ import static br.edu.ufam.ceteli.mywallet.classes.ocr.Utils.getSaldoMes;
 public class MainScreenActivity extends Fragment implements Observer{
     private FloatingActionMenu fabNewInput = null;
     private static Fragment instance = null;
+    private LineChartView chartView = null;
+    private LineSet mesAtual = null;
+    LineSet mesAnterior = null;
 
     TextView orcamento, gastos, saldo, renda;
     Calendar c = Calendar.getInstance();
     int mes, ano, semana;
-    float aux, aux1;
+    float aux, aux1, aux2, aux3, aux4;
 
     private List<String> mesano=new ArrayList<>();
     private LineChart mChart;
@@ -91,7 +96,7 @@ public class MainScreenActivity extends Fragment implements Observer{
         recyclerView.setAdapter(RecyclerViewAdapter.getInstance(Entrada.getComments()));
 
         // Gráfico
-        LineChartView chartView = (LineChartView) view.findViewById(R.id.mainChart);
+        chartView = (LineChartView) view.findViewById(R.id.mainChart);
 
         mes = c.get(Calendar.MONTH) + 1;
         ano = c.get(Calendar.YEAR);
@@ -105,12 +110,17 @@ public class MainScreenActivity extends Fragment implements Observer{
         float e = Utils.getGastosSemana(3, mes, ano);
         float d = Utils.getGastosSemana(4, mes, ano);
 
+        float f = Utils.getGastosSemana(1, mes-1 ,ano);
+        float g = Utils.getGastosSemana(2, mes-1 ,ano);
+        float h = Utils.getGastosSemana(3, mes-1 ,ano);
+        float i = Utils.getGastosSemana(4, mes-1 ,ano);
+
         float[] algo = {Utils.getGastosSemana(1, mes ,ano), Utils.getGastosSemana(2, mes, ano), Utils.getGastosSemana(3, mes, ano),  Utils.getGastosSemana(4, mes, ano)};
         float[] algo2 = {Utils.getGastosSemana(1, mes-1 ,ano), Utils.getGastosSemana(2, mes-1, ano), Utils.getGastosSemana(3, mes-1, ano),  Utils.getGastosSemana(4, mes-1, ano)};
         String[] labels = {"Semana1", "Semana2", "Semana3", "Semana4"};
 
-        LineSet mesAtual = new LineSet(labels, algo);
-        LineSet mesAnterior = new LineSet(labels, algo2);
+        mesAtual = new LineSet(labels, algo);
+        mesAnterior = new LineSet(labels, algo2);
 
         mesAtual.setFill(getResources().getColor(R.color.chartActualMonth));
         mesAnterior.setFill(getResources().getColor(R.color.chartLastMonth));
@@ -130,13 +140,33 @@ public class MainScreenActivity extends Fragment implements Observer{
         else
             aux1 = d;
 
-        if(aux1 == 0){
+
+
+        if(f>g && f>h)
+            aux2 = f;
+        else if(g>h)
+            aux2 = g;
+        else
+            aux2 = h;
+
+        if(aux2>i)
+            aux3 = aux2;
+        else
+            aux3 = i;
+
+        if(aux1>aux3){
+            aux4=aux1;
+        }else{
+            aux4=aux3;
+        }
+
+        if(aux4 == 0){
             chartView.setAxisBorderValues(0, 1, 1);
         }else{
-            if(aux1%2==0) {
-                chartView.setAxisBorderValues(0, (int) aux1, (int) aux1 / 2);
+            if(aux4%2==0) {
+                chartView.setAxisBorderValues(0, (int) aux4, (int) aux4 / 2);
             }else{
-                chartView.setAxisBorderValues(0, (int) aux1, (((int) aux1) + 1) / 2);
+                chartView.setAxisBorderValues(0, (int) aux4 + 1, (((int) aux4) + 1) / 2);
             }
         }
 
@@ -156,10 +186,10 @@ public class MainScreenActivity extends Fragment implements Observer{
         gastos = (TextView) view.findViewById(R.id.textView25);
         saldo = (TextView) view.findViewById(R.id.textView27);
 
-        orcamento.setText(String.valueOf(Utils.getOrcamentoTotalMes(c.get(Calendar.MONTH) + 1, c.get(Calendar.YEAR))));
-        renda.setText(String.valueOf(Utils.getSaldoOrcamentoTotal(c.get(Calendar.MONTH) + 1, c.get(Calendar.YEAR))));
-        gastos.setText(String.valueOf(Utils.getSaidaMes(c.get(Calendar.MONTH) + 1, c.get(Calendar.YEAR))));
-        saldo.setText(String.valueOf(getSaldoMes(c.get(Calendar.MONTH) + 1, c.get(Calendar.YEAR))));
+        orcamento.setText(NumberFormat.getCurrencyInstance(Locale.getDefault()).format(Utils.getSaldo(c.get(Calendar.MONTH) + 1, c.get(Calendar.YEAR))));
+        renda.setText(NumberFormat.getCurrencyInstance(Locale.getDefault()).format(Utils.getSaldoOrcamentoTotal(c.get(Calendar.MONTH) + 1, c.get(Calendar.YEAR))));
+        gastos.setText(NumberFormat.getCurrencyInstance(Locale.getDefault()).format(Utils.getSaidaMes(c.get(Calendar.MONTH) + 1, c.get(Calendar.YEAR))));
+        saldo.setText(NumberFormat.getCurrencyInstance(Locale.getDefault()).format(getSaldoMes(c.get(Calendar.MONTH) + 1, c.get(Calendar.YEAR))));
     }
 
     private View.OnClickListener fabManualOnClick(){
@@ -186,7 +216,74 @@ public class MainScreenActivity extends Fragment implements Observer{
 
     @Override
     public void update(Observable observable, Object data) {
-        //TODO: Atualizar View
-        Log.e("UPDATE","View");
+        orcamento.setText(NumberFormat.getCurrencyInstance(Locale.getDefault()).format(Utils.getSaldo(c.get(Calendar.MONTH) + 1, c.get(Calendar.YEAR))));
+        renda.setText(NumberFormat.getCurrencyInstance(Locale.getDefault()).format(Utils.getSaldoOrcamentoTotal(c.get(Calendar.MONTH) + 1, c.get(Calendar.YEAR))));
+        gastos.setText(NumberFormat.getCurrencyInstance(Locale.getDefault()).format(Utils.getSaidaMes(c.get(Calendar.MONTH) + 1, c.get(Calendar.YEAR))));
+        saldo.setText(NumberFormat.getCurrencyInstance(Locale.getDefault()).format(getSaldoMes(c.get(Calendar.MONTH) + 1, c.get(Calendar.YEAR))));
+
+        float[] algo = {Utils.getGastosSemana(1, mes ,ano), Utils.getGastosSemana(2, mes, ano), Utils.getGastosSemana(3, mes, ano),  Utils.getGastosSemana(4, mes, ano)};
+        float[] algo2 = {Utils.getGastosSemana(1, mes-1 ,ano), Utils.getGastosSemana(2, mes-1, ano), Utils.getGastosSemana(3, mes-1, ano),  Utils.getGastosSemana(4, mes-1, ano)};
+
+        float a = Utils.getGastosSemana(1, mes ,ano);
+        float b = Utils.getGastosSemana(2, mes, ano);
+        float e = Utils.getGastosSemana(3, mes, ano);
+        float d = Utils.getGastosSemana(4, mes, ano);
+
+        float f = Utils.getGastosSemana(1, mes-1 ,ano);
+        float g = Utils.getGastosSemana(2, mes-1 ,ano);
+        float h = Utils.getGastosSemana(3, mes-1 ,ano);
+        float i = Utils.getGastosSemana(4, mes-1 ,ano);
+
+        if(a>b && a>e)
+            aux = a;
+        else if(b>e)
+            aux = b;
+        else
+            aux = e;
+
+        if(aux>d)
+            aux1 = aux;
+        else
+            aux1 = d;
+
+
+
+
+        if(f>g && f>h)
+            aux2 = f;
+        else if(g>h)
+            aux2 = g;
+        else
+            aux2 = h;
+
+        if(aux2>i)
+            aux3 = aux2;
+        else
+            aux3 = i;
+
+        if(aux1>aux3){
+            aux4=aux1;
+        }else{
+            aux4=aux3;
+        }
+
+
+
+
+
+        if(aux4 == 0){
+            chartView.setAxisBorderValues(0, 1, 1);
+        }else{
+            if(aux4%2==0) {
+                chartView.setAxisBorderValues(0, (int) aux4, (int) aux4 / 2);
+            }else{
+                chartView.setAxisBorderValues(0, (int) aux4 + 1, (((int) aux4) + 1) / 2);
+            }
+        }
+
+        mesAtual.updateValues(algo);
+        mesAnterior.updateValues(algo2);
+
+        chartView.show();
     }
 }

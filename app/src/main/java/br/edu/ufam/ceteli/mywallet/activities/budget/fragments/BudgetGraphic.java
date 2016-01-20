@@ -87,7 +87,7 @@ public class BudgetGraphic extends Fragment {
             if(aux1%2==0) {
                 chartView.setAxisBorderValues(0, (int) aux1, (int) aux1 / 2);
             }else{
-                chartView.setAxisBorderValues(0, (int) aux1, (int) aux1 / 3);
+                chartView.setAxisBorderValues(0, (int) aux1 + 1, ((int) aux1 + 1) / 2);
             }
         }
 
