@@ -1,5 +1,6 @@
 package br.edu.ufam.ceteli.mywallet.activities.budget.fragments;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -42,7 +43,7 @@ public class BudgetGraphic extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        LineChartView chartView = (LineChartView) view.findViewById(R.id.view2);
+        LineChartView chartView = (LineChartView) view.findViewById(R.id.chartView);
 
         mes = c.get(Calendar.MONTH) + 1;
         ano = c.get(Calendar.YEAR);
@@ -94,6 +95,11 @@ public class BudgetGraphic extends Fragment {
 
         chartView.addData(mesAnterior);
         chartView.addData(mesAtual);
+
+        chartView.setAxisThickness(Tools.fromDpToPx(1));
+        chartView.setAxisColor(Color.parseColor("#4E000000"));
+
+        chartView.setPadding(chartView.getPaddingLeft(), (int) ((170) * getResources().getDisplayMetrics().density + 0.5f), chartView.getPaddingRight(), chartView.getPaddingBottom());
 
         Animation animation = new Animation(2000);
         animation.setEasing(new CubicEase());
